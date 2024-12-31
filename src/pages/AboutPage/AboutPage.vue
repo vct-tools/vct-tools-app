@@ -10,7 +10,14 @@
                 </ul>
                 <header-small>Credits</header-small>
                 VCT Tools was created by <a href="https://infinity-atom.org">infinity-atom</a>. VCT Tools is in no way affiliated with valorantesports.com or VCT.
-            </div>
+                <br><br>
+                VCT Tools uses these libraries:
+                <ul style="margin: 0;">
+                    <li>Vue 3</li>
+                    <li>html2canvas</li>
+                    <li>Bootstrap Icons</li>
+                </ul>
+              </div>
         </header-container>
     </div>
 </template>
