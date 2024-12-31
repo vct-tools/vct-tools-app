@@ -16,7 +16,8 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: resolve(__dirname, "index.html"),
-                map_picker: resolve(__dirname, "map_picker.html")
+                map_picker: resolve(__dirname, "map_picker.html"),
+                map_picker_slave: resolve(__dirname, "map_picker_slave.html")
             }
         }
     }
