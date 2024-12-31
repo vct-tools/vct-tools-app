@@ -8,7 +8,8 @@
                             <b-icon-crosshair></b-icon-crosshair>
                             NOTHING YET...
                         </div>
-                        <MapHistoryView v-model="mapHistory" :finished="finished" :finalMap="finalMap" data-map-history-view=""></MapHistoryView>
+                        <MapHistoryView v-model="mapHistory" :finished="finished" :finalMap="finalMap"
+                            data-map-history-view=""></MapHistoryView>
                     </div>
                 </div>
                 <div class="options">
@@ -21,115 +22,135 @@
                         </div>
                         <div class="section game" v-if="selectedMaps && !finished">
                             <header-small>
-                                <span :class="currentTeam == 1 ? `atk` : `def`">Team {{ currentTeam }}</span> <span v-if="currentStage == stage.SELECT_ORDER">Selects which team bans first</span>
+                                <span :class="currentTeam == 1 ? `atk` : `def`">Team {{ currentTeam }}</span> <span
+                                    v-if="currentStage == stage.SELECT_ORDER">Selects which team bans first</span>
                                 <span v-if="currentStage == stage.BAN">Bans one map from the pool</span>
                                 <span v-if="currentStage == stage.PICK">Picks one map from the pool</span>
-                                <span v-if="currentStage == stage.SIDE">Picks a side to play on {{ selectedMap }}</span>
+                                <span v-if="currentStage == stage.SIDE">Picks a side to play on {{ lastSelectedMap }}</span>
                             </header-small>
-                            <UISelect :items="mapPool" prefix="Map: " v-model="selectedMap" v-if="currentStage == stage.BAN || currentStage == stage.PICK"></UISelect>
-                            <UISelect :items="[`Attack`, `Defense`]" prefix="Side: " v-model="selectedSide" v-if="currentStage == stage.SIDE"></UISelect>
-                            <UISelect :items="[`Team 1`, `Team 2`]" prefix="Team: " v-model="selectedTeam" v-if="currentStage == stage.SELECT_ORDER"></UISelect>
-                            <UIButton :disabled="!(selectedMap != null || selectedSide != null || selectedTeam != null)" @click="handleClick()">Continue</UIButton>
+                            <UISelect :items="mapPool" prefix="Map: " v-model="selectedMap"
+                                v-if="currentStage == stage.BAN || currentStage == stage.PICK"></UISelect>
+                            <UISelect :items="[`Attack`, `Defense`]" prefix="Side: " v-model="selectedSide"
+                                v-if="currentStage == stage.SIDE"></UISelect>
+                            <UISelect :items="[`Team 1`, `Team 2`]" prefix="Team: " v-model="selectedTeam"
+                                v-if="currentStage == stage.SELECT_ORDER"></UISelect>
+                            <UIButton :disabled="!(selectedMap != null || selectedSide != null || selectedTeam != null)"
+                                @click="handleClick()">Continue</UIButton>
                         </div>
                         <div class="section" v-if="finished">
                             <header-small>Map picking finished</header-small>
-                            <div class="final-splash" :style="`background-image: url(${maps.find((a) => a.name == finalMap)?.image});`" data-map-splash-view="">
+                            <div class="final-splash"
+                                :style="`background-image: url(${maps.find((a) => a.name == finalMap)?.image});`"
+                                data-map-splash-view="">
                                 <div class="text">
-                                    <span :class="mapHistory[mapHistory.length - 1].team == 1 ? `atk` : `def`">TEAM {{ mapHistory[mapHistory.length - 1].team }}</span> will play ATTACK on {{ finalMap?.toUpperCase() }}.
+                                    <span :class="mapHistory[mapHistory.length - 1].team == 1 ? `atk` : `def`">TEAM {{
+                                        mapHistory[mapHistory.length - 1].team }}</span> will play ATTACK on {{
+                                    finalMap?.toUpperCase() }}.
                                 </div>
                             </div>
                             <UIButton @click="copyMapLog()">Copy map log</UIButton>
+                        </div>
+                        <div class="section-div" v-if="externalWindow == null"></div>
+                        <div class="section" v-if="externalWindow == null">
+                            <header-small>Viewing window</header-small>
+                            Create a floating window to add as a source in your recording software.
+                            <UIButton @click="createWindow()">Create window</UIButton>
                         </div>
                     </div>
                 </div>
             </div>
         </header-container>
     </div>
+    <div id="bottomScroll"></div>
 </template>
 
 <style scoped>
-    .container {
-        width: 100vw;
-        min-height: 100vh;
+.container {
+    width: 100vw;
+    min-height: 100vh;
 
-        display: flex;
-        flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-        align-items: center;
-    }
+    align-items: center;
+}
 
-    .map-pick-body {
-        width: 70vw;
-        font-size: 12pt;
+.map-pick-body {
+    width: 70vw;
+    font-size: 12pt;
 
-        display: flex;
-    }
+    display: flex;
+}
 
-    .logs-container {
-        width: 40%;
-        margin-right: 2em;
-    }
+.logs-container {
+    width: 40%;
+    margin-right: 2em;
+}
 
-    .logs {
-        width: 100%;
+.logs {
+    width: 100%;
 
-        border: 1px solid #6b7476;
+    border: 1px solid #6b7476;
 
-        padding: 5px;
+    padding: 5px;
 
-        display: flex;
-        flex-direction: column;
-    }
+    display: flex;
+    flex-direction: column;
+}
 
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 10px 0;
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
 
-        font-size: 16pt;
-    }
+    font-size: 16pt;
+}
 
-    .options {
-        width: 60%;
-    }
+.options {
+    width: 60%;
+}
 
-    .options-container {
-        position: sticky;
-        top: 1em;
+.options-container {
+    position: sticky;
+    top: 1em;
 
-        width: 100%;
+    width: 100%;
 
-        border: 1px solid #6b7476;
+    border: 1px solid #6b7476;
 
-        font-size: 14pt;
-    }
+    font-size: 14pt;
+}
 
-    .options-container .section {
-        padding: 5px;
-        position: relative;
-    }
+.options-container .section {
+    padding: 5px;
+    position: relative;
+}
 
-    .final-splash {
-        width: 100%;
-        aspect-ratio: 200/113;
+.options-container .section-div {
+    border-bottom: 1px solid #6b7476;
+}
 
-        background-position: center;
-        background-size: cover;
+.final-splash {
+    width: 100%;
+    aspect-ratio: 200/113;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    background-position: center;
+    background-size: cover;
 
-    .final-splash .text {
-        background-color: #01171f;
-        padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        opacity: 0.9;
+.final-splash .text {
+    background-color: #01171f;
+    padding: 5px;
 
-        font-size: 20pt;
-    }
+    opacity: 0.9;
+
+    font-size: 20pt;
+}
 </style>
 
 <script setup lang="ts">
@@ -144,6 +165,8 @@ import { ref, type Ref } from "vue";
 import { maps, sides } from "@/maps.ts";
 import MapHistoryView from '@/components/MapHistoryView.vue';
 import html2canvas from 'html2canvas';
+
+const externalWindow: Ref<WindowProxy | null> = ref(null);
 
 enum stage {
     SELECT_ORDER,
@@ -224,6 +247,7 @@ const mapPool = ref([
 
 const selectedMaps = ref(false);
 const selectedMap: Ref<string | null> = ref(null);
+const lastSelectedMap: Ref<string> = ref("Not a map!!!");
 const selectedSide: Ref<string | null> = ref(null);
 const selectedTeam: Ref<string | null> = ref(null);
 const times = ref(0);
@@ -236,6 +260,8 @@ const handleClick = () => {
         if ((selectedTeam.value == "Team 1" && currentTeam.value == 2) || (selectedTeam.value == "Team 2" && currentTeam.value == 1)) {
             currentTeam.value = currentTeam.value == 1 ? 2 : 1;
         }
+
+        selectedTeam.value = null;
 
         currentStage.value = stage.BAN;
     } else if (currentStage.value == stage.BAN) {
@@ -252,9 +278,7 @@ const handleClick = () => {
         if (times.value == 2) {
             times.value = 0;
             currentStage.value = stage.PICK;
-
             if (cycles.value == 4) {
-                currentTeam.value = selectedTeam.value == "Team 1" ? 1 : 2;
                 selectedMap.value = mapPool.value[0];
                 finalMap.value = mapPool.value[0];
                 currentStage.value = stage.SIDE;
@@ -270,6 +294,8 @@ const handleClick = () => {
             map: selectedMap.value
         });
         currentStage.value = stage.SIDE;
+        lastSelectedMap.value = selectedMap.value || "";
+        selectedMap.value = null;
 
         currentTeam.value = currentTeam.value == 1 ? 2 : 1;
     } else if (currentStage.value == stage.SIDE) {
@@ -292,5 +318,21 @@ const handleClick = () => {
             currentStage.value = stage.BAN;
         }
     }
+
+    if (externalWindow.value) {
+        externalWindow.value.postMessage({
+            mapHistory: JSON.parse(JSON.stringify(mapHistory.value)),
+            finished: finished.value,
+            finalMap: finalMap.value
+        });
+    }
+
+    const a = document.createElement("a")
+    a.href = "#bottomScroll";
+    a.click();
+}
+
+const createWindow = () => {
+    externalWindow.value = window.open("/map_picker_slave", "Map picker", "width=400,height=800");
 }
 </script>
