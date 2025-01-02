@@ -20,7 +20,7 @@
         </ul>
         <br />
         <UIButton @click="openUrl(`https://github.com/infinity-atom/vct-tools`)">Source Code - GitHub</UIButton>
-        <UIButton @click="openUrl(`https://buymeacoffee.com/infinityatom`)" :flush="true" disabled>Donate to support the hosting costs of VCT Tools</UIButton>
+        <UIButton @click="openUrl(`https://buymeacoffee.com/infinityatom`)" :flush="true">Donate to support the hosting costs of VCT Tools</UIButton>
       </div>
     </header-container>
   </div>
