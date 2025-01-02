@@ -1,9 +1,9 @@
 /* Remove scrollbar but still allow scrolling */
 
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 * {
-    scrollbar-width: none;
+  scrollbar-width: none;
 }

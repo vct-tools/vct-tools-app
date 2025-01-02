@@ -11,55 +11,55 @@ import Split from "@/assets/images/split.webp";
 import Sunset from "@/assets/images/sunset.webp";
 
 const maps = [
-    {
-        name: "Ascent",
-        image: Ascent
-    },
-    {
-        name: "Abyss",
-        image: Abyss
-    },
-    {
-        name: "Bind",
-        image: Bind
-    },
-    {
-        name: "Breeze",
-        image: Breeze
-    },
-    {
-        name: "Fracture",
-        image: Fracture
-    },
-    {
-        name: "Haven",
-        image: Haven
-    },
-    {
-        name: "Icebox",
-        image: Icebox
-    },
-    {
-        name: "Lotus",
-        image: Lotus
-    },
-    {
-        name: "Pearl",
-        image: Pearl
-    },
-    {
-        name: "Split",
-        image: Split
-    },
-    {
-        name: "Sunset",
-        image: Sunset
-    }
-]
+  {
+    name: "Ascent",
+    image: Ascent
+  },
+  {
+    name: "Abyss",
+    image: Abyss
+  },
+  {
+    name: "Bind",
+    image: Bind
+  },
+  {
+    name: "Breeze",
+    image: Breeze
+  },
+  {
+    name: "Fracture",
+    image: Fracture
+  },
+  {
+    name: "Haven",
+    image: Haven
+  },
+  {
+    name: "Icebox",
+    image: Icebox
+  },
+  {
+    name: "Lotus",
+    image: Lotus
+  },
+  {
+    name: "Pearl",
+    image: Pearl
+  },
+  {
+    name: "Split",
+    image: Split
+  },
+  {
+    name: "Sunset",
+    image: Sunset
+  }
+];
 
 enum sides {
-    ATTACK,
-    DEFENSE
+  ATTACK,
+  DEFENSE
 }
 
-export { maps, sides }
+export { maps, sides };
