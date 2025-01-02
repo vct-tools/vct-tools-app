@@ -19,8 +19,8 @@
           <li>Bootstrap Icons</li>
         </ul>
         <br />
-        <UIButton disabled>Source Code - GitHub</UIButton>
-        <UIButton :flush="true" disabled>Donate to support the hosting costs of VCT Tools</UIButton>
+        <UIButton @click="openUrl(`https://github.com/infinity-atom/vct-tools`)">Source Code - GitHub</UIButton>
+        <UIButton @click="openUrl(`https://buymeacoffee.com/infinityatom`)" :flush="true" disabled>Donate to support the hosting costs of VCT Tools</UIButton>
       </div>
     </header-container>
   </div>
@@ -51,4 +51,8 @@
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
+
+const openUrl = (url: string) => {
+  window.open(url, "_blank");
+}
 </script>
