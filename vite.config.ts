@@ -18,7 +18,8 @@ export default defineConfig({
         index: resolve(__dirname, "index.html"),
         map_picker: resolve(__dirname, "map_picker.html"),
         map_picker_slave: resolve(__dirname, "map_picker_slave.html"),
-        404: resolve(__dirname, "404.html")
+        404: resolve(__dirname, "404.html"),
+        overlay_control: resolve(__dirname, "overlay_control.html")
       }
     }
   }
