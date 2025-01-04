@@ -19,8 +19,12 @@
           <li>Bootstrap Icons</li>
         </ul>
         <br />
-        <UIButton @click="openUrl(`https://github.com/infinity-atom/vct-tools`)">Source Code - GitHub</UIButton>
-        <UIButton @click="openUrl(`https://buymeacoffee.com/infinityatom`)" :flush="true">Donate to support the hosting costs of VCT Tools</UIButton>
+        <UIButton @click="openUrl(`https://github.com/infinity-atom/vct-tools`)"
+          >Source Code - GitHub</UIButton
+        >
+        <UIButton @click="openUrl(`https://buymeacoffee.com/infinityatom`)" :flush="true"
+          >Donate to support the hosting costs of VCT Tools</UIButton
+        >
       </div>
     </header-container>
   </div>
@@ -54,5 +58,5 @@ import UIButton from "@/components/UIElement/UIButton.vue";
 
 const openUrl = (url: string) => {
   window.open(url, "_blank");
-}
+};
 </script>

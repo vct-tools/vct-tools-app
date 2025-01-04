@@ -46,7 +46,6 @@ const openLink = (link: string) => {
 
 .tabs-container {
   color: #6b7476;
-  border-bottom: 1px solid #6b7476;
 
   font-size: 12pt;
 
@@ -56,11 +55,13 @@ const openLink = (link: string) => {
 .tabs-container .tab {
   padding: 5px 50px;
   cursor: pointer;
+  border-bottom: 1px solid #6b7476;
 }
 
 .tabs-container .tab.selected {
-  border-bottom: 3px solid #6b7476;
+  border-bottom: 4px solid #04ca8f;
   position: relative;
+  color: #04ca8f;
 }
 
 .tabs-container .tab.selected::after {

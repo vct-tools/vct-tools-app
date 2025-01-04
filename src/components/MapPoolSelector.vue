@@ -35,10 +35,6 @@
   background-color: #54758150;
 }
 
-.map-pool-select > *.selected::after {
-  content: " [S]";
-}
-
 .map-pool-select > *.selected:hover {
   background-color: #5475813f;
 }

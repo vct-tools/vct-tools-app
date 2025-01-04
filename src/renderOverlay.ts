@@ -63,6 +63,8 @@ export function renderOverlay(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   gameData: GameData | null
 ): void {
+  ctx.clearRect(0, 0, 1920, 1080);
+
   const text = ["SORRY, PREVIEW UNAVAILABLE", "The overlay preview is still work in progress"];
 
   ctx.font = "100px Tungsten";

@@ -6,7 +6,7 @@
           <div class="panel-1">
             <header-small>Customize overlay</header-small>
             <div class="panel-content">
-              <OverlayOptionsPanel></OverlayOptionsPanel>
+              <OverlayOptionsPanel v-model="overlayOptions"></OverlayOptionsPanel>
             </div>
           </div>
           <div class="panel-2">
@@ -21,13 +21,14 @@
           </div>
         </div>
         <div class="sidebar-right">
-          <header-small>Select Match</header-small>
+          <header-small>Select Party</header-small>
           <div class="sidebar-right-wrapper">
-            <UIButtonIcon :icon="RiotGames" tooltip="The login system is incomplete"
+            <UIButton :flush="true" tooltip="The login system is incomplete"
               >Login to Riot Games
-            </UIButtonIcon>
-            <div class="match-list"></div>
-            <UIButton :flush="true">Select</UIButton>
+            </UIButton>
+            <div class="match-list">
+              <MatchList :members="dummyData"></MatchList>
+            </div>
           </div>
         </div>
       </div>
@@ -111,14 +112,58 @@
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
-import UIButtonIcon from "@/components/UIElement/UIButtonIcon.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
 
-import RiotGames from "@/assets/images/riot_games.png";
 import UIField from "@/components/UIElement/UIField.vue";
 
 import { ref } from "vue";
 import OverlayOptionsPanel from "@/components/OverlayOptionsPanel.vue";
+import { createDefaultOverlaySettings } from "@/overlayType";
+import MatchList from "@/components/MembersList.vue";
 
-const overlayUrl = ref("https://vcttools.infinity-atom.org/overlay_source");
+const overlayUrl = ref("https://vcttools.net/overlay_source");
+const overlayOptions = ref(createDefaultOverlaySettings());
+
+const dummyData = ref([
+  {
+    name: "Player 1",
+    tagline: "0000"
+  },
+  {
+    name: "Player 2",
+    tagline: "0000"
+  },
+  {
+    name: "Player 3",
+    tagline: "0000"
+  },
+  {
+    name: "Player 4",
+    tagline: "0000"
+  },
+  {
+    name: "Player 5",
+    tagline: "0000"
+  },
+  {
+    name: "Player 6",
+    tagline: "0000"
+  },
+  {
+    name: "Player 7",
+    tagline: "0000"
+  },
+  {
+    name: "Player 8",
+    tagline: "0000"
+  },
+  {
+    name: "Player 9",
+    tagline: "0000"
+  },
+  {
+    name: "Player 10",
+    tagline: "0000"
+  }
+]);
 </script>

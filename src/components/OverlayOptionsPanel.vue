@@ -1,11 +1,6 @@
 <template>
   <div class="main flex-h">
     <div class="flex-v flex-qh p">
-      <UIButtonLabel>Enemy color</UIButtonLabel>
-      <UISelect
-        :items="[`Red (Default)`, `Yellow (deuteranopia)`, `Yellow (protanopia)`, `Purple`]"
-        v-model="model.enemyColor"
-      ></UISelect>
       <UIButtonLabel>Round outcome banner</UIButtonLabel>
       <UISwitch v-model="model.roundOutcomeBanner.clutch">Clutch</UISwitch>
       <UISwitch v-model="model.roundOutcomeBanner.flawless">Flawless</UISwitch>
@@ -19,6 +14,8 @@
       <UISwitch v-model="model.gameOverviewVisible.shields">Shields</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.agentImages">Agent images</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.matchLog">Match log</UISwitch>
+      <UIButtonLabel>Attacking team name</UIButtonLabel>
+      <UIField v-model="model.attackerTeamName"></UIField>
     </div>
     <div class="flex-v flex-qh p">
       <UIButtonLabel>Player overlay features</UIButtonLabel>
@@ -35,6 +32,10 @@
       <UISwitch v-model="model.otherOverlayFeatures.roundOutcomeBanner"
         >Round outcome banner</UISwitch
       >
+      <UIButtonLabel>Visible name</UIButtonLabel>
+      <UISelect v-model="model.nameType" :items="[`Name`, `Name and tagline`]"></UISelect>
+      <UIButtonLabel>Defending team name</UIButtonLabel>
+      <UIField v-model="model.defenderTeamName"></UIField>
     </div>
     <div class="flex-v flex-hh p">
       <UIButtonLabel>Preview</UIButtonLabel>
@@ -114,6 +115,7 @@ import HavenGameplay from "@/assets/images/haven_gameplay.webp";
 
 import { ref, type Ref, watch } from "vue";
 import { renderOverlay } from "@/renderOverlay";
+import UIField from "./UIElement/UIField.vue";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
 

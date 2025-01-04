@@ -34,7 +34,7 @@
                 <span v-if="currentStage == stage.BAN">Bans one map from the pool</span>
                 <span v-if="currentStage == stage.PICK">Picks one map from the pool</span>
                 <span v-if="currentStage == stage.SIDE"
-                  >Picks a side to play on {{ lastSelectedMap }}</span
+                  >Picks a side to play on {{ finalMap }}</span
                 >
               </header-small>
               <UISelect

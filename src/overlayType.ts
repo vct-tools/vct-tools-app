@@ -30,16 +30,20 @@ type RoundOutcomeBanner = {
 };
 
 type OverlaySettings = {
-  enemyColor: string;
   playerOverlayFeatures: PlayerOverlayFeatures;
   gameOverviewVisible: GameOverviewVisible;
   otherOverlayFeatures: OtherOverlayFeatures;
   roundOutcomeBanner: RoundOutcomeBanner;
+  nameType: "Name" | "Name and tagline";
+  attackerTeamName: string;
+  defenderTeamName: string;
 };
 
 function createDefaultOverlaySettings(): OverlaySettings {
   return {
-    enemyColor: "Red (Default)",
+    nameType: "Name",
+    attackerTeamName: "Team 1",
+    defenderTeamName: "Team 2",
     playerOverlayFeatures: {
       playerAbilities: true,
       playerHealth: true,

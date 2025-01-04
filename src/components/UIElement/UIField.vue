@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :value="model" :readonly="$props.readonly" />
+  <input type="text" v-model="model" :readonly="$props.readonly" ref="mInput" />
 </template>
 
 <script setup lang="ts">
