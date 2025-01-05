@@ -18,6 +18,18 @@
     >
       OVERLAY
     </div>
+    <div
+      :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`"
+      @click="openLink(`/news`)"
+    >
+      NEWS
+    </div>
+    <!-- <div
+      :class="`tab ${$props.pageName == 'Report problems' ? 'selected' : ''}`"
+      @click="openLink(`/bugs`)"
+    >
+      REPORT PROBLEMS
+    </div> -->
   </div>
   <div class="body">
     <slot></slot>

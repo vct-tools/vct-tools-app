@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico?v=2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="VCT Tools" />
+    <meta property="og:description" content="Map picker and stream overlays for your Valorant tournaments" />
+    <meta property="og:url" content="https://vcttools.net/" />
+
+    <title>VCT Tools - News</title>
+  </head>
+  <body>
+    <noscript>
+      <div
+        style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: #f34453;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-family: sans-serif;
+          flex-direction: column;
+          color: white;
+        "
+      >
+        <b style="font-size: 16pt">An error occured</b>
+        <span>JavaScript must be enabled in order to use this website</span>
+      </div>
+    </noscript>
+
+    <div id="app"></div>
+    <script type="module" src="/src/pages/NewsPage/news.ts"></script>
+  </body>
+</html>
