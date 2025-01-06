@@ -18,18 +18,24 @@
     >
       OVERLAY
     </div>
+    <!-- <div
+      :class="`tab ${$props.pageName == 'Learn maps' ? 'selected' : ''}`"
+      @click="openLink(`/map_game`)"
+    >
+      LEARN MAPS
+    </div> -->
     <div
-      :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`"
+      :class="`tab small ${$props.pageName == 'News' ? 'selected' : ''}`"
       @click="openLink(`/news`)"
     >
-      NEWS
+      <BIconNewspaper />
     </div>
-    <!-- <div
-      :class="`tab ${$props.pageName == 'Report problems' ? 'selected' : ''}`"
+    <div
+      :class="`tab small ${$props.pageName == 'Report problems' ? 'selected' : ''}`"
       @click="openLink(`/bugs`)"
     >
-      REPORT PROBLEMS
-    </div> -->
+      <BIconBugFill />
+    </div>
   </div>
   <div class="body">
     <slot></slot>
@@ -38,6 +44,7 @@
 
 <script setup lang="ts">
 import HeaderBig from "@/components/HeaderBig.vue";
+import { BIconBugFill, BIconNewspaper } from "bootstrap-icons-vue";
 
 defineProps({
   pageName: String
@@ -68,6 +75,10 @@ const openLink = (link: string) => {
   padding: 5px 50px;
   cursor: pointer;
   border-bottom: 1px solid #6b7476;
+}
+
+.tabs-container .tab.small {
+  padding: 5px 20px;
 }
 
 .tabs-container .tab.selected {

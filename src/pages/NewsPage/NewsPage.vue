@@ -6,6 +6,8 @@
     <div class="message">
       <span>An error ocurred</span>
       <span>{{ error }}</span>
+      <div style="margin-bottom: 1em;"></div>
+      <UIButton @click="reportError()">Report this error</UIButton>
     </div>
   </div>
   <div class="container">
@@ -159,6 +161,11 @@
 
   display: flex;
   gap: 1px;
+
+  color: white;
+
+  border-radius: 5px;
+  border: 1px solid #6b7476;
 }
 
 .error .icon {
@@ -167,10 +174,7 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1/1;
-  background-color: #f34453;
-
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-right: 1px solid #6b7476;
 }
 
 .error .message {
@@ -178,16 +182,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: white;
-  background-color: #f34453;
-
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 </style>
 
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
+import UIButton from "@/components/UIElement/UIButton.vue";
 import UIThrobber from "@/components/UIElement/UIThrobber.vue";
 import { BIconXCircleFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
@@ -220,4 +220,16 @@ const data = ref([
     error.value = (err as Error).message;
   }
 })();
+
+const reportError = () => {
+  const errorBody = [
+    `Error message: ${error.value}`,
+    `User agent: ${navigator.userAgent}`,
+    `URL: ${window.location.href}`, "",
+    "Please give a brief description of what you were doing when this error occurred:",
+    "..."
+  ]
+
+  window.open(`/bugs?report=${encodeURIComponent(errorBody.join("\n"))}`, "_self");
+}
 </script>

@@ -1,12 +1,13 @@
 <template>
-  <div class="ui-button" :style="$props.flush ? `margin-bottom: 0;` : ``">
+  <div class="ui-button" :style="`${$props.flush ? `margin-bottom: 0;` : ``}${$props.spacer ? `opacity: 0;`: ``}`">
     <slot></slot>
   </div>
 </template>
 
 <script setup lang="ts">
 defineProps({
-  flush: Boolean
+  flush: Boolean,
+  spacer: Boolean
 });
 </script>
 
