@@ -39,6 +39,7 @@ const enabled = defineModel();
 
 .switch {
   width: 22%;
+  max-width: 50px;
 
   padding: 7px 0;
 

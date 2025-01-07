@@ -20,14 +20,14 @@
           <div class="panel" v-if="!inGame">
             <HeaderSmall>Select difficulty</HeaderSmall>
             <div style="display: flex; gap: 2px; width: 100%">
-              <div style="width: 50%">
+              <div style="flex: 1;">
                 <UISelect
                   prefix="Lives: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
                   v-model="difficulty.lives"
                 ></UISelect>
               </div>
-              <div style="width: 50%">
+              <div style="flex: 1;">
                 <UISelect
                   prefix="Hints: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -35,6 +35,7 @@
                 ></UISelect>
               </div>
             </div>
+            <UISwitch v-model="repeatMaps">Allow callouts to be repeated</UISwitch>
           </div>
           <div class="panel" v-if="!inGame">
             <UIButton :disabled="mapPool.length == 0" @click="play(true)">Start</UIButton>
@@ -133,6 +134,7 @@ import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
 import UISelect from "@/components/UIElement/UISelect.vue";
+import UISwitch from "@/components/UIElement/UISwitch.vue";
 import { maps } from "@/maps";
 import { BIconHeartFill, BIconQuestionDiamondFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
@@ -146,9 +148,12 @@ const currentCallout = ref<{ x: number; y: number; name: string }>({ x: 0, y: 0,
 const gameCanvas = ref<HTMLCanvasElement | null>(null);
 const alreadyUsedCallouts = ref<Record<string, string[]>>({});
 const drawStack = ref<{ correct: { x: number; y: number } | null }>({ correct: null });
+const repeatMaps = ref<boolean>(false);
+
+const canClick = ref(true);
 
 const handleClick = (e: MouseEvent) => {
-  if (!inGame.value) return;
+  if (!inGame.value || !canClick.value) return;
 
   // Get the x and y of the mouse click in the image
   const x = e.offsetX;
@@ -161,15 +166,43 @@ const handleClick = (e: MouseEvent) => {
       currentCallout.value.name
     ];
     drawStack.value.correct = { x, y };
-    drawCorrect(x, y);
     play(false);
   } else {
     gameStats.value.lives--;
     drawX(x, y);
     if (gameStats.value.lives == 0) {
       inGame.value = false;
+    } else {
+      drawCorrectXL(currentCallout.value.x, currentCallout.value.y);
+      delayPlay();
     }
   }
+};
+
+const delayPlay = () => {
+  canClick.value = false;
+  let ms = 0;
+
+  const a = setInterval(() => {
+    if (gameCanvas.value) {
+      const ctx = gameCanvas.value.getContext("2d");
+      if (ctx) {
+        ctx.clearRect(0, 0, gameCanvas.value.width, 20);
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, gameCanvas.value.width, 20);
+        ctx.fillStyle = "white";
+        ctx.fillRect(5, 5, ms - 5, 10);
+      }
+    }
+
+    if (ms < 500) {
+      ms += 1;
+    } else {
+      clearInterval(a);
+      play(false);
+      canClick.value = true;
+    }
+  }, 1);
 };
 
 const drawCorrect = (x: number, y: number) => {
@@ -178,6 +211,18 @@ const drawCorrect = (x: number, y: number) => {
     if (ctx) {
       ctx.beginPath();
       ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgba(0, 255, 0, 1)";
+      ctx.fill();
+    }
+  }
+};
+
+const drawCorrectXL = (x: number, y: number) => {
+  if (gameCanvas.value) {
+    const ctx = gameCanvas.value.getContext("2d");
+    if (ctx) {
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, 2 * Math.PI);
       ctx.fillStyle = "rgba(0, 255, 0, 1)";
       ctx.fill();
     }
@@ -208,26 +253,31 @@ const play = (reset: boolean) => {
     }
   }
 
-  if (drawStack.value.correct) {
-    drawCorrect(drawStack.value.correct.x, drawStack.value.correct.y);
-  }
-
   inGame.value = true;
   if (reset) {
     gameStats.value = { lives: difficulty.value.lives, hints: difficulty.value.hints };
     alreadyUsedCallouts.value = {};
   }
+  const oldMap = currentMap.value;
   currentMap.value = randMap();
+
+  if (drawStack.value.correct && oldMap == currentMap.value) {
+    drawCorrect(drawStack.value.correct.x, drawStack.value.correct.y);
+  }
+
   const rMap = maps.find((a) => a.name == currentMap.value);
   if (rMap) {
-    const availableCallouts = rMap.callouts.filter(
+    const availableCallouts = repeatMaps.value ? rMap.callouts : rMap.callouts.filter(
       (callout) => !alreadyUsedCallouts.value[currentMap.value]?.includes(callout.name)
     );
     if (availableCallouts.length === 0) {
       inGame.value = false;
       return;
     }
-    currentCallout.value = availableCallouts[Math.floor(Math.random() * availableCallouts.length)];
+    const lastCallout = currentCallout.value.name;
+    while (currentCallout.value.name == lastCallout) {
+      currentCallout.value = availableCallouts[Math.floor(Math.random() * availableCallouts.length)];
+    }
   }
 };
 
