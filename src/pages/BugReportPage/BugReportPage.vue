@@ -6,8 +6,9 @@
     <div class="message">
       <span>An error ocurred</span>
       <span>{{ error }}</span>
-      <div style="margin-bottom: 1em;"></div>
-      You can't really report this error from the bug reporter page, can you? Please contact admin@vcttools.net.
+      <div style="margin-bottom: 1em"></div>
+      You can't really report this error from the bug reporter page, can you? Please contact
+      admin@vcttools.net.
     </div>
   </div>
   <div class="container">
@@ -25,7 +26,10 @@
               <UIButtonLabel>Filter by title</UIButtonLabel>
               <UIField placeholder="Title..." v-model="filters.title"></UIField>
               <UIButtonLabel>Filter by outcome</UIButtonLabel>
-              <UISelect :items="[`None`, `Unresolved`, `Working as intended`, `Fixed`, `Will not fix`]" v-model="filters.outcome"></UISelect>
+              <UISelect
+                :items="[`None`, `Unresolved`, `Working as intended`, `Fixed`, `Will not fix`]"
+                v-model="filters.outcome"
+              ></UISelect>
             </div>
             <div class="right">
               <UIButtonLabel>Filter by scope</UIButtonLabel>
@@ -38,8 +42,12 @@
             <div class="emptystate" v-if="data.length == 0">
               Sorry, there were no bug reports matching the selected filters.
             </div>
-              <div :class="`listItem ${openedReport == i ? 'selected' : ''}`" v-for="(report, i) in data" :key="i"
-              @click="openedReport = i">
+            <div
+              :class="`listItem ${openedReport == i ? 'selected' : ''}`"
+              v-for="(report, i) in data"
+              :key="i"
+              @click="openedReport = i"
+            >
               <div class="title">{{ report.title }}</div>
             </div>
           </div>
@@ -50,18 +58,22 @@
           </div>
           <div class="reportMetadata">
             <table>
-              <tr>
-                <td>Submitted by: {{ "UNKNOWN" }}</td>
-                <td>Datetime: {{ new Date(data[openedReport].timestamp).toLocaleString() }}</td>
-              </tr>
-              <tr>
-                <td>Outcome: {{ outcome_to_readable(data[openedReport].outcome) }}</td>
-                <td>Scope: {{ scope_to_readable(data[openedReport].scope) }}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>Submitted by: {{ "UNKNOWN" }}</td>
+                  <td>Datetime: {{ new Date(data[openedReport].timestamp).toLocaleString() }}</td>
+                </tr>
+                <tr>
+                  <td>Outcome: {{ outcome_to_readable(data[openedReport].outcome) }}</td>
+                  <td>Scope: {{ scope_to_readable(data[openedReport].scope) }}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div class="reportBody">
-            <b style="font-size: 14pt;">The following is a description of the bug provided by the submitter.</b>
+            <b style="font-size: 14pt"
+              >The following is a description of the bug provided by the submitter.</b
+            >
             <p>
               {{ data[openedReport].report_body }}
             </p>
@@ -112,7 +124,8 @@
   gap: 5px;
 }
 
-.reports .options .left, .right {
+.reports .options .left,
+.right {
   width: 50%;
 }
 
@@ -212,18 +225,28 @@ import UISelect from "@/components/UIElement/UISelect.vue";
 import { BIconXCircleFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
 
-const scopes = [`Overlay - Config`, `Overlay - Drawing`, `Overlay - Other`, `Map picker - Other`, `UI - Other`, `News - Other`, `Bug reporter - Other`];
+const scopes = [
+  `Overlay - Config`,
+  `Overlay - Drawing`,
+  `Overlay - Other`,
+  `Map picker - Other`,
+  `UI - Other`,
+  `News - Other`,
+  `Bug reporter - Other`
+];
 
 const openedReport = ref<number | null>(null);
-const data = ref<{
-  id: number;
-  title: string;
-  scope: string;
-  outcome: string;
-  report_body: string;
-  timestamp: string;
-  submitted_by: string;
-}[]>([]);
+const data = ref<
+  {
+    id: number;
+    title: string;
+    scope: string;
+    outcome: string;
+    report_body: string;
+    timestamp: string;
+    submitted_by: string;
+  }[]
+>([]);
 const loaded = ref(false);
 const error = ref<string | null>(null);
 const filters = ref({
@@ -234,12 +257,12 @@ const filters = ref({
 
 const readable_to_outcome = (humanReadable: string) => {
   return {
-    "Unresolved": "unresolved",
+    Unresolved: "unresolved",
     "Working as intended": "intended",
-    "Fixed": "fixed",
+    Fixed: "fixed",
     "Will not fix": "will_not_fix"
   }[humanReadable];
-}
+};
 
 const readable_to_scope = (humanReadable: string) => {
   return {
@@ -251,28 +274,28 @@ const readable_to_scope = (humanReadable: string) => {
     "News - Other": "news_other",
     "Bug reporter - Other": "bugreporter_other"
   }[humanReadable];
-}
+};
 
 const scope_to_readable = (scope: string) => {
   return {
-    "overlay_config": "Overlay - Config",
-    "overlay_drawing": "Overlay - Drawing",
-    "overlay_other": "Overlay - Other",
-    "mappicker_other": "Map picker - Other",
-    "ui_other": "UI - Other",
-    "news_other": "News - Other",
-    "bugreporter_other": "Bug reporter - Other"
+    overlay_config: "Overlay - Config",
+    overlay_drawing: "Overlay - Drawing",
+    overlay_other: "Overlay - Other",
+    mappicker_other: "Map picker - Other",
+    ui_other: "UI - Other",
+    news_other: "News - Other",
+    bugreporter_other: "Bug reporter - Other"
   }[scope];
-}
+};
 
 const outcome_to_readable = (outcome: string) => {
   return {
-    "unresolved": "Unresolved",
-    "intended": "Working as intended",
-    "fixed": "Fixed",
-    "will_not_fix": "Will not fix"
+    unresolved: "Unresolved",
+    intended: "Working as intended",
+    fixed: "Fixed",
+    will_not_fix: "Will not fix"
   }[outcome];
-}
+};
 
 const reloadNews = async () => {
   loaded.value = false;
@@ -298,7 +321,9 @@ const reloadNews = async () => {
     const response = await fetch(`https://api.vcttools.net/v1/bugs/list${filterString}`);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch news. Response from server: ${response.status}, ${JSON.stringify(await response.json())}`);
+      throw new Error(
+        `Failed to fetch news. Response from server: ${response.status}, ${JSON.stringify(await response.json())}`
+      );
     } else {
       data.value = (await response.json()).data;
       loaded.value = true;
@@ -306,7 +331,7 @@ const reloadNews = async () => {
   } catch (err) {
     error.value = (err as Error).message;
   }
-}
+};
 
 reloadNews();
 </script>

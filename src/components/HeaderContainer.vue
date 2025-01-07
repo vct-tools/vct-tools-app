@@ -18,12 +18,12 @@
     >
       OVERLAY
     </div>
-    <!-- <div
+    <div
       :class="`tab ${$props.pageName == 'Learn maps' ? 'selected' : ''}`"
-      @click="openLink(`/map_game`)"
+      @click="openLink(`/learn_maps`)"
     >
       LEARN MAPS
-    </div> -->
+    </div>
     <div
       :class="`tab small ${$props.pageName == 'News' ? 'selected' : ''}`"
       @click="openLink(`/news`)"

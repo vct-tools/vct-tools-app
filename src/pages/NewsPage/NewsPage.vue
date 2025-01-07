@@ -6,7 +6,7 @@
     <div class="message">
       <span>An error ocurred</span>
       <span>{{ error }}</span>
-      <div style="margin-bottom: 1em;"></div>
+      <div style="margin-bottom: 1em"></div>
       <UIButton @click="reportError()">Report this error</UIButton>
     </div>
   </div>
@@ -17,8 +17,12 @@
       </div>
       <div class="news" v-if="loaded">
         <div class="updates">
-          <div :class="`listItem ${openedArticle == i ? 'selected' : ''}`" v-for="(article, i) in data" :key="i"
-            @click="openedArticle = i">
+          <div
+            :class="`listItem ${openedArticle == i ? 'selected' : ''}`"
+            v-for="(article, i) in data"
+            :key="i"
+            @click="openedArticle = i"
+          >
             <div class="title">{{ article.title }}</div>
             <div class="preview">{{ article.preview }}</div>
           </div>
@@ -29,8 +33,8 @@
               {{ data[openedArticle].title }}
             </div>
             <div class="date">
-              Published {{ new Date(data[openedArticle].datetime).toLocaleDateString() }} {{ new
-                Date(data[openedArticle].datetime).toLocaleTimeString() }}
+              Published {{ new Date(data[openedArticle].datetime).toLocaleDateString() }}
+              {{ new Date(data[openedArticle].datetime).toLocaleTimeString() }}
             </div>
           </div>
           <div class="content" v-html="data[openedArticle].contents"></div>
@@ -196,7 +200,6 @@ const openedArticle = ref(0);
 const loaded = ref(false);
 const error = ref<string | null>(null);
 
-
 const data = ref([
   {
     title: "",
@@ -211,7 +214,9 @@ const data = ref([
     const response = await fetch(`https://api.vcttools.net/v1/news/latest`);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch news. Response from server: ${response.status}, ${JSON.stringify(await response.json())}`);
+      throw new Error(
+        `Failed to fetch news. Response from server: ${response.status}, ${JSON.stringify(await response.json())}`
+      );
     } else {
       data.value = (await response.json()).data;
       loaded.value = true;
@@ -225,11 +230,12 @@ const reportError = () => {
   const errorBody = [
     `Error message: ${error.value}`,
     `User agent: ${navigator.userAgent}`,
-    `URL: ${window.location.href}`, "",
+    `URL: ${window.location.href}`,
+    "",
     "Please give a brief description of what you were doing when this error occurred:",
     "..."
-  ]
+  ];
 
   window.open(`/bugs?report=${encodeURIComponent(errorBody.join("\n"))}`, "_self");
-}
+};
 </script>

@@ -40,6 +40,8 @@
   left: 0px;
 
   width: 100%;
+  max-height: 200px;
+  overflow: auto;
 
   background-color: #f3efee;
   color: black;
@@ -75,12 +77,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+type T = unknown;
+
 const props = defineProps({
-  items: Array<string>,
+  items: Array<T>,
   prefix: String
 });
 
-const model = defineModel();
+const model = defineModel<T>();
 
 const optionsVisible = ref(false);
 </script>
