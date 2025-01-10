@@ -7,6 +7,10 @@
       <div class="info">
         Sorry, this website is unable to be used on mobile devices, or any device with a small screen resolution.
       </div>
+      <div class="info">
+        <br>
+        <a href="/stat_com">Open Stat-Com</a>
+      </div>
     </div>
   </div>
   <div class="header-container">
