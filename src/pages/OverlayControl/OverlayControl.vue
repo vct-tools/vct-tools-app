@@ -20,17 +20,6 @@
             </div>
           </div>
         </div>
-        <div class="sidebar-right">
-          <header-small>Select Party</header-small>
-          <div class="sidebar-right-wrapper">
-            <UIButton :flush="true" tooltip="The login system is incomplete"
-              >Login to Riot Games
-            </UIButton>
-            <div class="match-list">
-              <MatchList :members="dummyData"></MatchList>
-            </div>
-          </div>
-        </div>
       </div>
     </header-container>
   </div>
@@ -119,51 +108,7 @@ import UIField from "@/components/UIElement/UIField.vue";
 import { ref } from "vue";
 import OverlayOptionsPanel from "@/components/OverlayOptionsPanel.vue";
 import { createDefaultOverlaySettings } from "@/overlayType";
-import MatchList from "@/components/MembersList.vue";
 
 const overlayUrl = ref("https://vcttools.net/overlay_source");
 const overlayOptions = ref(createDefaultOverlaySettings());
-
-const dummyData = ref([
-  {
-    name: "Player 1",
-    tagline: "0000"
-  },
-  {
-    name: "Player 2",
-    tagline: "0000"
-  },
-  {
-    name: "Player 3",
-    tagline: "0000"
-  },
-  {
-    name: "Player 4",
-    tagline: "0000"
-  },
-  {
-    name: "Player 5",
-    tagline: "0000"
-  },
-  {
-    name: "Player 6",
-    tagline: "0000"
-  },
-  {
-    name: "Player 7",
-    tagline: "0000"
-  },
-  {
-    name: "Player 8",
-    tagline: "0000"
-  },
-  {
-    name: "Player 9",
-    tagline: "0000"
-  },
-  {
-    name: "Player 10",
-    tagline: "0000"
-  }
-]);
 </script>

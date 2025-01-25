@@ -20,14 +20,14 @@
           <div class="panel" v-if="!inGame">
             <HeaderSmall>Select difficulty</HeaderSmall>
             <div style="display: flex; gap: 2px; width: 100%">
-              <div style="flex: 1;">
+              <div style="flex: 1">
                 <UISelect
                   prefix="Lives: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
                   v-model="difficulty.lives"
                 ></UISelect>
               </div>
-              <div style="flex: 1;">
+              <div style="flex: 1">
                 <UISelect
                   prefix="Hints: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -37,8 +37,13 @@
             </div>
             <UISwitch v-model="repeatMaps">Allow callouts to be repeated</UISwitch>
           </div>
-          <div class="panel" v-if="!inGame">
-            <UIButton :disabled="mapPool.length == 0" @click="play(true)">Start</UIButton>
+          <div style="padding: 1em; display: flex; justify-content: center" v-if="!inGame">
+            <UILargeButton
+              :disabled="mapPool.length == 0"
+              disabledLabel="Maps not selected"
+              @click="play(true)"
+              >Start</UILargeButton
+            >
           </div>
           <div class="panel" v-if="inGame">
             <div style="display: flex; justify-content: space-between; width: 100%">
@@ -61,6 +66,9 @@
           </div>
           <div class="panel" v-if="inGame">
             <UIButton :disabled="gameStats.hints == 0" @click="hint()">Use hint</UIButton>
+          </div>
+          <div class="panel">
+            <SidebarAd></SidebarAd>
           </div>
         </div>
       </div>
@@ -129,10 +137,12 @@
 </style>
 
 <script setup lang="ts">
+import SidebarAd from "@/components/Adsense/SidebarAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
+import UILargeButton from "@/components/UIElement/UILargeButton.vue";
 import UISelect from "@/components/UIElement/UISelect.vue";
 import UISwitch from "@/components/UIElement/UISwitch.vue";
 import { maps } from "@/maps";
@@ -267,16 +277,19 @@ const play = (reset: boolean) => {
 
   const rMap = maps.find((a) => a.name == currentMap.value);
   if (rMap) {
-    const availableCallouts = repeatMaps.value ? rMap.callouts : rMap.callouts.filter(
-      (callout) => !alreadyUsedCallouts.value[currentMap.value]?.includes(callout.name)
-    );
+    const availableCallouts = repeatMaps.value
+      ? rMap.callouts
+      : rMap.callouts.filter(
+          (callout) => !alreadyUsedCallouts.value[currentMap.value]?.includes(callout.name)
+        );
     if (availableCallouts.length === 0) {
       inGame.value = false;
       return;
     }
     const lastCallout = currentCallout.value.name;
     while (currentCallout.value.name == lastCallout) {
-      currentCallout.value = availableCallouts[Math.floor(Math.random() * availableCallouts.length)];
+      currentCallout.value =
+        availableCallouts[Math.floor(Math.random() * availableCallouts.length)];
     }
   }
 };

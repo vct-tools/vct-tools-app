@@ -3,8 +3,7 @@
     class="ui-button"
     @click="onClick"
     :disabled="$props.disabled"
-    :style="`--icon: url(${$props.icon})`"
-    :data-tooltip="$props.tooltip"
+    :style="`--icon: url(${$props.icon}); ${$props.paddingFix ? 'padding-left: 31px;' : ''}`"
   >
     <slot></slot>
   </button>
@@ -14,7 +13,7 @@
 const props = defineProps({
   disabled: Boolean,
   icon: String,
-  tooltip: String
+  paddingFix: Boolean
 });
 
 const emit = defineEmits(["click"]);
@@ -30,7 +29,6 @@ const onClick = () => {
 button {
   padding: 7px 0;
   width: 100%;
-  padding-left: 31px;
 
   text-align: center;
 
@@ -73,22 +71,5 @@ button::before {
   position: absolute;
   top: 0;
   left: 0;
-}
-
-button:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  padding: 2px;
-  width: 100%;
-
-  font-size: 9pt;
-
-  box-sizing: border-box;
-
-  background-color: rgba(0, 0, 0, 0.897);
 }
 </style>

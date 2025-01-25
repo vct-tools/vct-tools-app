@@ -1,18 +1,27 @@
 <template>
+  <DialogBox header="Account" v-model="accountDialog">
+    <UIButtonLabel style="color: rgb(255, 70, 70)">YOU ARE NOT LOGGED IN</UIButtonLabel>
+    <UIButtonIcon :icon="RiotGames" :disabled="true">Log in with Riot Games</UIButtonIcon>
+  </DialogBox>
+
+  <div class="version">Client version: {{ version }} {{ npmV }}</div>
+
   <div class="no-mobile-support" v-if="isMobile">
     <div class="content">
       <div class="title">
         <HeaderBig>VCT Tools</HeaderBig>
       </div>
       <div class="info">
-        Sorry, this website is unable to be used on mobile devices, or any device with a small screen resolution.
+        Sorry, this website is unable to be used on mobile devices, or any device with a small
+        screen resolution.
       </div>
       <div class="info">
-        <br>
+        <br />
         <a href="/stat_com">Open Stat-Com</a>
       </div>
     </div>
   </div>
+
   <div class="header-container">
     <header-big>VCT Tools // {{ $props.pageName }}</header-big>
   </div>
@@ -38,18 +47,15 @@
     >
       LEARN MAPS
     </div>
-    <div
-      :class="`tab small ${$props.pageName == 'News' ? 'selected' : ''}`"
-      @click="openLink(`/news`)"
-    >
-      <BIconNewspaper />
+    <div :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`" @click="openLink(`/news`)">
+      NEWS
     </div>
-    <div
-      :class="`tab small ${$props.pageName == 'Report problems' ? 'selected' : ''}`"
-      @click="openLink(`/bugs`)"
+    <!-- <div
+      :class="`tab`"
+      @click="accountDialog = true"
     >
-      <BIconBugFill />
-    </div>
+      MY ACCOUNT
+    </div> -->
   </div>
   <div class="body">
     <slot></slot>
@@ -58,12 +64,26 @@
 
 <script setup lang="ts">
 import HeaderBig from "@/components/HeaderBig.vue";
-import { BIconBugFill, BIconNewspaper } from "bootstrap-icons-vue";
-import { computed } from "vue";
+import DialogBox from "@/components/DialogBox.vue";
+import { ref, computed } from "vue";
+import UIButtonLabel from "./UIElement/UIButtonLabel.vue";
+import UIButtonIcon from "./UIElement/UIButtonIcon.vue";
+import RiotGames from "@/assets/images/riot_games.png";
+
+import { version } from "vue";
+import { version as npmV } from "../../package.json";
+
+declare global {
+  interface Window {
+    google_ad_modifications: unknown;
+  }
+}
 
 defineProps({
   pageName: String
 });
+
+const accountDialog = ref(false);
 
 const openLink = (link: string) => {
   window.location.href = link;
@@ -168,5 +188,20 @@ if (isMobile.value) {
   color: white;
   font-size: 14pt;
   text-align: center;
+}
+
+.account-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.version {
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+
+  font-size: 9pt;
+  color: rgba(201, 201, 201, 0.534);
 }
 </style>

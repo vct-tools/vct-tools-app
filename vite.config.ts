@@ -21,7 +21,6 @@ export default defineConfig({
         404: resolve(__dirname, "404.html"),
         overlay_control: resolve(__dirname, "overlay_control.html"),
         news: resolve(__dirname, "news.html"),
-        bugs: resolve(__dirname, "bugs.html"),
         learn_maps: resolve(__dirname, "learn_maps.html"),
         stat_com: resolve(__dirname, "stat_com.html")
       }

@@ -14,8 +14,6 @@
       <UISwitch v-model="model.gameOverviewVisible.shields">Shields</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.agentImages">Agent images</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.matchLog">Match log</UISwitch>
-      <UIButtonLabel>Attacking team name</UIButtonLabel>
-      <UIField v-model="model.attackerTeamName"></UIField>
     </div>
     <div class="flex-v flex-qh p">
       <UIButtonLabel>Player overlay features</UIButtonLabel>
@@ -36,6 +34,8 @@
       <UISelect v-model="model.nameType" :items="[`Name`, `Name and tagline`]"></UISelect>
       <UIButtonLabel>Defending team name</UIButtonLabel>
       <UIField v-model="model.defenderTeamName"></UIField>
+      <UIButtonLabel>Attacking team name</UIButtonLabel>
+      <UIField v-model="model.attackerTeamName"></UIField>
     </div>
     <div class="flex-v flex-hh p">
       <UIButtonLabel>Preview</UIButtonLabel>
