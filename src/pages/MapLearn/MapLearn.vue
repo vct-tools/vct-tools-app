@@ -68,7 +68,7 @@
             <UIButton :disabled="gameStats.hints == 0" @click="hint()">Use hint</UIButton>
           </div>
           <div class="panel">
-            <AdsenseSidebarAd></AdsenseSidebarAd>
+            <AdsenseMultiplexAd></AdsenseMultiplexAd>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@
 </style>
 
 <script setup lang="ts">
-import AdsenseSidebarAd from "@/components/Adsense/AdsenseSidebarAd.vue";
+import AdsenseMultiplexAd from "@/components/Adsense/AdsenseMultiplexAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
