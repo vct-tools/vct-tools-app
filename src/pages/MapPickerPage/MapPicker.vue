@@ -84,9 +84,6 @@
             <div class="panel">
               <AdsenseSidebarAd></AdsenseSidebarAd>
             </div>
-            <div class="panel">
-              <AdsenseSidebarAd></AdsenseSidebarAd>
-            </div>
           </div>
         </div>
       </div>
