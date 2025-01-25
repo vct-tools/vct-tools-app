@@ -1,6 +1,4 @@
 <template>
-  <link v-for="(map, i) in maps" :key="i" rel="preload" :href="map.image" />
-
   <div class="logs">
     <div class="empty-state" v-if="mapHistory.length == 0">
       <b-icon-crosshair></b-icon-crosshair>
@@ -16,7 +14,7 @@
     </MapHistoryView>
   </div>
   <div class="watermark-container">
-    <span class="watermark">vcttools.infinity-atom.org</span>
+    <span class="watermark">vcttools.net</span>
   </div>
   <div id="bottomScroll"></div>
 </template>
@@ -49,6 +47,10 @@
 
   margin-top: 1em;
 }
+
+.watermark {
+  color: rgba(255, 255, 255, 0.1);
+}
 </style>
 
 <script setup lang="ts">
@@ -70,7 +72,7 @@ declare global {
 import { BIconCrosshair } from "bootstrap-icons-vue";
 
 import { ref, type Ref } from "vue";
-import { maps, sides } from "@/maps.ts";
+import { sides } from "@/maps.ts";
 import MapHistoryView from "@/components/MapHistoryView.vue";
 
 const mapHistory: Ref<

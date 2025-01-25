@@ -19,15 +19,15 @@
         </div>
         <div class="options">
           <div class="options-container">
-            <div class="section pool" v-if="!selectedMaps">
+            <div class="panel pool" v-if="!selectedMaps">
               <header-small>Map pool selection</header-small>
               Select 7 maps to be used in the map pool.
               <map-pool-selector v-model="mapPool"></map-pool-selector>
-              <UIButton :disabled="mapPool.length != 7" @click="selectedMaps = true"
-                >Save maps</UIButton
-              >
+              <div style="display: flex; justify-content: center; margin-top: 1em;">
+                <UILargeButton :disabled="mapPool.length != 7" @click="selectedMaps = true" disabled-label="Select 7 maps">Save maps</UILargeButton>
+              </div>
             </div>
-            <div class="section game" v-if="selectedMaps && !finished">
+            <div class="panel game" v-if="selectedMaps && !finished">
               <header-small>
                 <span :class="currentTeam == 1 ? `atk` : `def`">Team {{ currentTeam }}&nbsp;</span>
                 <span v-if="currentStage == stage.SELECT_ORDER">Selects which team bans first</span>
@@ -55,13 +55,12 @@
                 v-model="selectedTeam"
                 v-if="currentStage == stage.SELECT_ORDER"
               ></UISelect>
-              <UIButton
-                :disabled="!(selectedMap != null || selectedSide != null || selectedTeam != null)"
-                @click="handleClick()"
-                >Continue</UIButton
-              >
+              <div style="display: flex; justify-content: center; margin-top: 1em;">
+                <UILargeButton :disabled="!(selectedMap != null || selectedSide != null || selectedTeam != null)"
+                @click="handleClick()" disabled-label="Select a choice">Continue</UILargeButton>
+              </div>
             </div>
-            <div class="section" v-if="finished">
+            <div class="panel" v-if="finished">
               <header-small>Map picking finished</header-small>
               <div
                 class="final-splash"
@@ -77,11 +76,16 @@
               </div>
               <UIButton @click="copyMapLog()">Copy map log</UIButton>
             </div>
-            <div class="section-div" v-if="externalWindow == null"></div>
-            <div class="section" v-if="externalWindow == null">
+            <div class="panel" v-if="externalWindow == null">
               <header-small>Viewing window</header-small>
               Create a floating window to add as a source in your recording software.
               <UIButton @click="createWindow()">Create window</UIButton>
+            </div>
+            <div class="panel">
+              <AdsenseSidebarAd></AdsenseSidebarAd>
+            </div>
+            <div class="panel">
+              <AdsenseSidebarAd></AdsenseSidebarAd>
             </div>
           </div>
         </div>
@@ -104,7 +108,6 @@
 
 .map-pick-body {
   width: 70vw;
-  font-size: 12pt;
 
   display: flex;
 }
@@ -134,28 +137,27 @@
   font-size: 16pt;
 }
 
-.options {
-  width: 60%;
-}
-
 .options-container {
   position: sticky;
   top: 1em;
 
   width: 100%;
 
-  border: 1px solid #6b7476;
+  flex: 1;
+  margin-left: 1em;
 
-  font-size: 14pt;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.options-container .section {
-  padding: 5px;
-  position: relative;
+.options {
+  width: 60%;
 }
 
-.options-container .section-div {
-  border-bottom: 1px solid #6b7476;
+.options .panel {
+  padding: 1em;
+  background-color: #54758142;
 }
 
 .final-splash {
@@ -192,6 +194,8 @@ import { ref, type Ref } from "vue";
 import { maps, sides } from "@/maps.ts";
 import MapHistoryView from "@/components/MapHistoryView.vue";
 import html2canvas from "html2canvas";
+import AdsenseSidebarAd from "@/components/Adsense/AdsenseSidebarAd.vue";
+import UILargeButton from "@/components/UIElement/UILargeButton.vue";
 
 const externalWindow: Ref<WindowProxy | null> = ref(null);
 

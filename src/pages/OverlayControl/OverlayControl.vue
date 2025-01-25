@@ -7,6 +7,7 @@
             <header-small>Customize overlay</header-small>
             <div class="panel-content">
               <OverlayOptionsPanel v-model="overlayOptions"></OverlayOptionsPanel>
+              <AdsenseSidebarAd></AdsenseSidebarAd>
             </div>
           </div>
           <div class="panel-2">
@@ -108,6 +109,7 @@ import UIField from "@/components/UIElement/UIField.vue";
 import { ref } from "vue";
 import OverlayOptionsPanel from "@/components/OverlayOptionsPanel.vue";
 import { createDefaultOverlaySettings } from "@/overlayType";
+import AdsenseSidebarAd from "@/components/Adsense/AdsenseSidebarAd.vue";
 
 const overlayUrl = ref("https://vcttools.net/overlay_source");
 const overlayOptions = ref(createDefaultOverlaySettings());
