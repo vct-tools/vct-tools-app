@@ -23,6 +23,7 @@ export default defineConfig({
         news: resolve(__dirname, "news.html"),
         learn_maps: resolve(__dirname, "learn_maps.html"),
         stat_com: resolve(__dirname, "stat_com.html"),
+        graphic_creator: resolve(__dirname, "graphic_creator.html")
       }
     }
   }

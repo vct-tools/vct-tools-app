@@ -47,6 +47,9 @@
     >
       LEARN MAPS
     </div>
+    <div :class="`tab ${$props.pageName == 'Create graphics' ? 'selected' : ''}`" @click="openLink(`/graphic_creator`)">
+      CREATE GRAPHICS
+    </div>
     <div :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`" @click="openLink(`/news`)">
       NEWS
     </div>
@@ -109,7 +112,7 @@ if (isMobile.value) {
 .tabs-container {
   color: #6b7476;
 
-  font-size: 12pt;
+  font-size: 10pt;
 
   display: flex;
 }
@@ -142,7 +145,7 @@ if (isMobile.value) {
 
   position: absolute;
 
-  top: 24px;
+  top: 21px;
   left: 50%;
   transform: translateX(-50%);
 }

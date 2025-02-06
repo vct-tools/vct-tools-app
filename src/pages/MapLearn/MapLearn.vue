@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header-container pageName="Learn maps">
-      <div class="learn-body">
+      <div class="graphics-body">
         <div class="map">
           <div class="imgContainer">
             <canvas ref="gameCanvas" width="500" height="500" @click="handleClick"></canvas>
@@ -87,7 +87,7 @@
   align-items: center;
 }
 
-.learn-body {
+.graphics-body {
   width: 100%;
   flex: 1;
   font-size: 12pt;
