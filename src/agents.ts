@@ -25,33 +25,65 @@ import Viper from "@/assets/images/agents/Viper_icon.webp";
 import Vyse from "@/assets/images/agents/Vyse_icon.webp";
 import Yoru from "@/assets/images/agents/Yoru_icon.webp";
 
+import Duelist from "@/assets/images/agents_roles/DuelistClassSymbol.webp";
+import Controller from "@/assets/images/agents_roles/ControllerClassSymbol.webp";
+import Sentinel from "@/assets/images/agents_roles/SentinelClassSymbol.webp";
+import Initiator from "@/assets/images/agents_roles/InitiatorClassSymbol.webp";
+
+enum Role {
+  Duelist,
+  Controller,
+  Sentinel,
+  Initiator
+}
+
+const roleImages = [
+  {
+    role: Role.Duelist,
+    image: Duelist
+  },
+  {
+    role: Role.Controller,
+    image: Controller
+  },
+  {
+    role: Role.Sentinel,
+    image: Sentinel
+  },
+  {
+    role: Role.Initiator,
+    image: Initiator
+  }
+]
+
 const agents = [
-  { name: "Astra", icon: Astra },
-  { name: "Breach", icon: Breach },
-  { name: "Brimstone", icon: Brimstone },
-  { name: "Chamber", icon: Chamber },
-  { name: "Clove", icon: Clove },
-  { name: "Cypher", icon: Cypher },
-  { name: "Deadlock", icon: Deadlock },
-  { name: "Fade", icon: Fade },
-  { name: "Gekko", icon: Gekko },
-  { name: "Harbor", icon: Harbor },
-  { name: "Iso", icon: Iso },
-  { name: "Jett", icon: Jett },
-  { name: "KAYO", icon: KAYO },
-  { name: "Killjoy", icon: Killjoy },
-  { name: "Neon", icon: Neon },
-  { name: "Omen", icon: Omen },
-  { name: "Phoenix", icon: Phoenix },
-  { name: "Raze", icon: Raze },
-  { name: "Reyna", icon: Reyna },
-  { name: "Sage", icon: Sage },
-  { name: "Skye", icon: Skye },
-  { name: "Sova", icon: Sova },
-  { name: "Tejo", icon: Tejo },
-  { name: "Viper", icon: Viper },
-  { name: "Vyse", icon: Vyse },
-  { name: "Yoru", icon: Yoru },
+  { name: "Astra", icon: Astra, role: Role.Controller },
+  { name: "Breach", icon: Breach, role: Role.Initiator },
+  { name: "Brimstone", icon: Brimstone, role: Role.Controller },
+  { name: "Chamber", icon: Chamber, role: Role.Sentinel },
+  { name: "Clove", icon: Clove, role: Role.Controller },
+  { name: "Cypher", icon: Cypher, role: Role.Sentinel },
+  { name: "Deadlock", icon: Deadlock, role: Role.Sentinel },
+  { name: "Fade", icon: Fade, role: Role.Initiator },
+  { name: "Gekko", icon: Gekko, role: Role.Initiator },
+  { name: "Harbor", icon: Harbor, role: Role.Controller },
+  { name: "Iso", icon: Iso, role: Role.Duelist },
+  { name: "Jett", icon: Jett, role: Role.Duelist },
+  { name: "KAYO", icon: KAYO, role: Role.Initiator },
+  { name: "Killjoy", icon: Killjoy, role: Role.Sentinel },
+  { name: "Neon", icon: Neon, role: Role.Duelist },
+  { name: "Omen", icon: Omen, role: Role.Controller },
+  { name: "Phoenix", icon: Phoenix, role: Role.Duelist },
+  { name: "Raze", icon: Raze, role: Role.Duelist },
+  { name: "Reyna", icon: Reyna, role: Role.Duelist },
+  { name: "Sage", icon: Sage, role: Role.Sentinel },
+  { name: "Skye", icon: Skye, role: Role.Initiator },
+  { name: "Sova", icon: Sova, role: Role.Initiator },
+  { name: "Tejo", icon: Tejo, role: Role.Initiator },
+  { name: "Viper", icon: Viper, role: Role.Controller },
+  { name: "Vyse", icon: Vyse, role: Role.Sentinel },
+  { name: "Yoru", icon: Yoru, role: Role.Duelist },
 ];
 
 export default agents;
+export { roleImages, Role };

@@ -57,6 +57,7 @@
 
 canvas {
   border: 1px solid #54758142;
+  max-width: 100%;
 }
 
 .options {
@@ -80,6 +81,7 @@ import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import UISelect from "@/components/UIElement/UISelect.vue";
 import NoAgentImg from "@/assets/images/agents/Unknown.webp";
+import { roleImages, Role } from "@/agents";
 import agents from "@/agents";
 import { maps } from "@/maps";
 
@@ -128,62 +130,75 @@ const draw = async () => {
         canvasHeight.value = 620;
 
         // Draw map image
+        ctx.textAlign = "left";
         const map = maps.find((a) => a.name == teamCompData.value.map);
         if (map) {
-          ctx.drawImage(await loadImg(map.image), 0, -200, 700, 394); // 394px aspect ratio 16:9
+          ctx.drawImage(await loadImg(map.image), 0, -100, 700, 394); // 394px aspect ratio 16:9
         }
 
-        ctx.fillStyle = "rgba(32, 86, 95, 0.6)";
-        ctx.fillRect(0, 0, 700, 100);
+        ctx.fillStyle = "rgba(32, 86, 95, 0.5)";
+        ctx.fillRect(0, 0, 700, 270);
+        ctx.fillStyle = "rgba(32, 86, 95, 0.7)";
+        ctx.fillRect(700 - 270, 0, 270, 270);
 
         ctx.font = "50px Tungsten";
-        ctx.textAlign = "center";
         ctx.fillStyle = "#e0ebb9";
 
-        ctx.fillText("TEAM COMP", 700/2, 50);
+        ctx.fillText("TEAM COMPOSITION", 15, 120);
         ctx.font = "25px 'Din Next'";
         ctx.fillStyle = "white";
-        ctx.fillText(`Map: ${teamCompData.value.map}`, 700/2, 80);
+        ctx.fillText(`Map: ${teamCompData.value.map}`, 15, 80 + 70);
 
-        let offsetY = 100;
-        ctx.textAlign = "left";
+        if (map) {
+          ctx.drawImage(await loadImg(map.map), 700 - 250, 5, 250, 250); // 394px aspect ratio 16:9
+        }
+
+        let offsetY = 250;
+        let alt = false;
         for (const player of teamCompData.value.comp) {
           const a = agents.find((a) => a.name == player.agent);
           if (a) {
             const agentImg = await loadImg(a.icon);
+            const c = roleImages.find((b) => b.role == a.role);
+            if (c) {
+              const roleImg = await loadImg(c.image);
+              ctx.fillStyle = alt ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
+              ctx.fillRect(0, offsetY, 700, 100);
 
-            ctx.fillStyle = (offsetY / 100) % 2 == 0 ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-            ctx.fillRect(0, offsetY, 700, 100);
+              ctx.fillStyle = "#e0ebb9";
+              ctx.font = "40px Tungsten";
 
-            ctx.fillStyle = "#e0ebb9";
-            ctx.font = "40px Tungsten";
+              ctx.drawImage(roleImg, 90, offsetY + 15, 40, 40);
 
-            ctx.fillText(a.name.toUpperCase(), 120, offsetY + 55);
+              ctx.fillText(a.name.toUpperCase(), 120 + 40, offsetY + 40);
 
-            ctx.fillStyle = "white";
-            ctx.font = "20px 'Din Next'";
+              ctx.fillStyle = "white";
+              ctx.font = "20px 'Din Next'";
+              ctx.fillText(player.player, 120 + 40, offsetY + 60);
 
-            ctx.fillText(player.player, 120, offsetY + 75);
-
-            ctx.drawImage(agentImg, 0, offsetY, 100, 100);
-            offsetY += 100;
+              ctx.drawImage(agentImg, 0, offsetY, 70, 70);
+              offsetY += 70;
+              alt = !alt;
+            }
           } else if (player.agent == "(Show as unknown)") {
             const agentImg = await loadImg(NoAgentImg);
 
-            ctx.fillStyle = (offsetY / 100) % 2 == 0 ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-            ctx.fillRect(0, offsetY, 700, 100);
+            ctx.fillStyle = alt ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
+            ctx.fillRect(0, offsetY, 700, 70);
 
             ctx.fillStyle = "white";
             ctx.font = "20px 'Din Next'";
 
-            ctx.fillText(player.player, 120, offsetY + 55);
+            ctx.fillText(player.player, 120 + 40, offsetY + 42);
 
-            ctx.drawImage(agentImg, 10, offsetY + 10, 80, 80);
-            offsetY += 100;
+            ctx.drawImage(agentImg, 10, offsetY + 10, 50, 50);
+            offsetY += 70;
+            alt = !alt;
           } else {
             ctx.fillStyle = (offsetY / 100) % 2 == 0 ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-            ctx.fillRect(0, offsetY, 700, 100);
-            offsetY += 100;
+            ctx.fillRect(0, offsetY, 700, 70);  
+            offsetY += 70;
+            alt = !alt;
           }
         }
         ctx.fillStyle = (offsetY / 100) % 2 == 0 ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
