@@ -1,0 +1,60 @@
+VCT Tools Privacy Policy (Version 1)
+Last Updated: 07/02/2025
+
+We respect your privacy and are committed to protecting it. This Privacy Policy ("Policy") describes the type of information we may collect from you or that you may provide ("Personal Information") on the VCT Tools (vcttools.net) website ("Website" or "Service").
+
+This Policy is a legally binding agreement between you ("User", "you", or "your") and VCT Tools ("VCT Tools", "we", "us", or "our"). If you are entering into this Policy on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Policy, in which case the terms “User”, “you” or “your” shall refer to such entity. If you do not have such authority, or if you disagree with the terms of this Policy, you must not accept this Policy and may not access and use the Website and Services. By accessing and using the Website and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Policy. This Policy does not apply to the practices of companies that we do not own or control, or to individuals that we do not employ or manage.
+
+This website uses third-party services with their Privacy Policies. The following parties may collect data in accordance with the related Privacy Policies.
+- Riot Games (https://www.riotgames.com/en/privacy-notice)
+- Google (https://policies.google.com/privacy)
+
+Table of Contents
+1. Personal information we collect
+1.1 Data provided by third-parties
+1.2 Data we collect
+2. Data we disclose
+2.1 Data requests
+3. Security Measures
+4. Data Retention
+5. User Rights
+5.1 Data removal
+5.2 Opt Out
+6. Updates
+7. Contact Information
+
+1. Personal information we collect
+We collect personal information in two ways:
+- You provide the information to inputs on the website
+- When you sign into the website using Riot Sign On ("RSO"), or from other third parties (See 1.1)
+
+1.1 Data provided by third-parties
+When you sign in to the website using RSO, Riot Games provides the website with information about your account, such as your username and email.
+
+1.2 Data we collect
+When you sign in to the website, we keep a record of your Riot account identifier and an email contact. We also use information from your VALORANT account, including your matches, for use in VCT Tools apps ("Apps").
+
+2. Data we disclose
+We will never disclose your personal information to the public, however, data such as VALORANT matches will be able to be seen by others through apps if you accept the policy.
+
+2.1 Data requests
+We will return you a copy of all personal information we have collected if you wish to view it.
+
+3. Security Measures
+Your data requires your authorization to access. Your data is secured in transit using the HTTPS protocol, and sensitive information is hashed or encrypted.
+
+4. Data Retention
+User data is kept for the duration of your VCT Tools account (created when you log in with RSO) lifetime. If you request an account deletion from the website, your data will be deleted alongside your account, immediately.
+
+5. User Rights
+5.1 Data removal
+To delete collected data, you are required to delete your VCT Tools account (See Data Retention).
+
+5.2 Opt Out
+We only collect data that is completely necessary for the website to function, and it is not possible to opt out of data collection.
+
+6. Updates
+This policy is subject to change. In the case that the policy does change, an email notification will be sent to your email contact that is collected when your account is made. A notice will also be available on the website.
+
+7. Contact Information
+You can email "contact@vcttools.net" for questions or concerns regarding the Policy.
