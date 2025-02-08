@@ -14,9 +14,9 @@
   </div>
 
   <div class="rightbar">
-    <div class="panel" style="flex: 1;">
+    <div class="panel" style="flex: 1 1 0;">
       <div class="title">ABOUT VCT TOOLS</div>
-      <div class="content" style="flex: 1;">
+      <div class="content" style="flex: 1 1 0;">
         Welcome to VCT Tools! We host apps that make tournaments easier for organizers, or players too!<br>
         <br>
         For tournament organizers: <a href="/map_picker">Map Picker</a> &bull; <a href="/overlay_control">Stream Overlays</a><br>
@@ -119,6 +119,7 @@
 
 .panel .content {
   padding: 10px;
+  overflow-y: auto;
 }
 
 .panel.selectable {
