@@ -8,7 +8,6 @@
       <div class="sk-chase-dot"></div>
       <div class="sk-chase-dot"></div>
     </div>
-    <div class="progress">LOADING DATA FROM REMOTE. PLEASE WAIT.</div>
   </div>
 </template>
 
@@ -19,17 +18,11 @@
   align-items: center;
 }
 
-.progress {
-  font-size: 14pt;
-  padding: 4px;
-}
-
 .sk-chase {
   width: 40px;
   height: 40px;
   position: relative;
   animation: sk-chase 2.5s infinite linear both;
-  margin-bottom: 1em;
 }
 
 .sk-chase-dot {

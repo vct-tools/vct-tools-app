@@ -6,7 +6,7 @@
         <HeaderSmall>VCT Tools Privacy Policy</HeaderSmall>
         <p>Version 1, Last Updated: 07/02/2025</p>
         <p>We respect your privacy and are committed to protecting it. This Privacy Policy ("Policy") describes the type of information we may collect from you or that you may provide ("Personal Information") on the VCT Tools (vcttools.net) website ("Website" or "Service").</p>
-        <p>This Policy is a legally binding agreement between you ("User", "you", or "your") and VCT Tools ("VCT Tools", "we", "us", or "our"). If you are entering into this Policy on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Policy, in which case the terms “User”, “you” or “your” shall refer to such entity. If you do not have such authority, or if you disagree with the terms of this Policy, you must not accept this Policy and may not access and use the Website and Services. By accessing and using the Website and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Policy. This Policy does not apply to the practices of companies that we do not own or control, or to individuals that we do not employ or manage.</p>
+        <p>This Policy is a legally binding agreement between you ("User", "you", or "your") and VCT Tools ("VCT Tools", "we", "us", or "our"). If you are entering into this Policy on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Policy, in which case the terms "User", "you", or "your" shall refer to such entity. If you do not have such authority, or if you disagree with the terms of this Policy, you must not accept this Policy and may not access and use the Website and Services. By accessing and using the Website and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Policy. This Policy does not apply to the practices of companies that we do not own or control, or to individuals that we do not employ or manage.</p>
         <p>
           This website uses third-party services with their Privacy Policies. The following parties may collect data in accordance with the related Privacy Policies.
         </p>
@@ -79,13 +79,14 @@
 }
 
 .about-body {
-  width: 100vw;
-  max-width: 600px;
+  width: 50vw;
   height: fit-content;
   padding: 5px 1em;
   font-size: 12pt;
 
   border: 1px solid #6b7476;
+
+  user-select: text !important;
 }
 </style>
 

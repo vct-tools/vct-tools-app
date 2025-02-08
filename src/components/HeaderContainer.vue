@@ -26,8 +26,8 @@
     <header-big>VCT Tools // {{ $props.pageName }}</header-big>
   </div>
   <div class="tabs-container">
-    <div :class="`tab ${$props.pageName == 'About' ? 'selected' : ''}`" @click="openLink(`/`)">
-      ABOUT
+    <div :class="`tab`" @click="openLink(`/`)">
+      MAIN MENU
     </div>
     <div
       :class="`tab ${$props.pageName == 'Map picker' ? 'selected' : ''}`"

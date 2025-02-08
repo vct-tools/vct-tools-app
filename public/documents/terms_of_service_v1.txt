@@ -1,0 +1,74 @@
+VCT Tools Terms of Service (Version 1)
+Last Updated: 07/02/2025
+
+Welcome to VCT Tools ("VCT Tools", "we", "us", or "our"). By accessing the vcttools.net website ("Website", or "Services"), you agree to comply with and be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use our Services.
+
+Table of Contents
+1. Acceptance of Terms
+2. Use of Services
+2.1 Eligibility
+2.2 Account Registration
+2.3 Acceptable Use
+3. Data Collection and Privacy
+4. Service Availability and Modifications
+5. Intellectual Property
+6. Termination
+7. Disclaimers and Limitation of Liability
+8. Governing Law and Dispute Resolution
+9. Updates to Terms
+10. Contact Information
+
+1. Acceptance of Terms
+- These terms constitute a legally binding agreement between you ("User", "you", or "your") and VCT Tools ("VCT Tools", "we", "us", or "our").
+- If you are using the Services on behalf of a business or legal entity, you represent that you have the authority to bind that entity to these Terms.
+
+2. Use of Services
+2.1 Eligibility
+- You must be at least 13 years of age to use the Services.
+- You may not use the Services if prohibited by applicable laws.
+
+2.2 Account Registration
+- To access certain features, you must sign in using Riot Sign On ("RSO").
+- You are responsible for maintaining the confidentiality of your account credentials.
+
+2.3 Acceptable Use
+You agree not to:
+- Use the Services for illegal or unauthorized purposes.
+- Attempt to reverse-engineer, modify, or disrupt the Services.
+- Exploit security vulnerabilities or interfere with the Services' operations.
+- Engage in automated data scraping, extraction, or similar activities
+
+3. Data Collection and Privacy
+- Our Privacy Policy (https://vcttools.net/privacy) governs how we collect, use, and protect your data.
+- By using the services, you acknowledge and consent to our data collection practices.
+
+4. Service Availability and Modifications
+- We reserve the right to modify, suspend, or discontinue the Services at any time without notice.
+- We are not liable for any disruptions, losses, or damages resulting from service downtime.
+
+5. Intellectual Property
+- The Services were created under Riot Games' "Legal Jibber Jabber" policy (https://www.riotgames.com/en/legal) using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.
+- All original content created by VCT Tools, including but not limited to software code, user interface design, and analytics tools, remains the exclusive property of VCT Tools.
+- If users submit any content through the Services, they retain ownership but grant VCT Tools a non-exclusive, worldwide, royalty-free license to use, modify, and display such content for the operation of the Services.
+
+6. Termination
+- We reserve the right to suspend or terminate your access to the Services if you violate these Terms.
+- Upon termination, you lose access to your account and stored data.
+
+7. Disclaimers and Limitation of Liability
+- The Services are provided "as is" and "as available" without warranties of any kind.
+- We are not responsible for any damages, data loss, or security breaches arising from your use of the Services.
+- We do not guarantee the accuracy or availability of third-party data (e.g., Riot Games API data).
+
+8. Governing Law and Dispute Resolution
+- These Terms are governed by the laws of Queensland, Australia.
+- Any disputes shall be resolved through arbitration or courts in Brisbane, Australia.
+
+9. Updates to Terms
+- We may update these Terms at any time. The latest version will always be available on our website.
+- If changes are significant, we will notify users via email or a website notice.
+
+10. Contact Information
+- For questions or concerns regarding these Terms, contact us at contact@vcttools.net.
+
+By using VCT Tools, you acknowledge that you have read, understood, and agreed to these Terms of Service.
