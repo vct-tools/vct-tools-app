@@ -4,6 +4,9 @@
   </video>
 
   <div class="leftbar">
+    <div class="branding">
+      <img :src="LargeLogo" draggable="false">
+    </div>
     <div class="btn" @click="openUrl(`/map_picker`)">Map picker</div>
     <div class="btn" @click="openUrl(`/overlay_control`)">Overlay</div>
     <div class="btn" @click="openUrl(`/learn_maps`)">Learn Maps</div>
@@ -84,7 +87,7 @@
   top: 0;
   left: 50px;
 
-  width: fit-content;
+  width: 500px;
   height: 100%;
 
   display: flex;
@@ -163,12 +166,21 @@
   transform: translateY(-50%) rotate(45deg) rotate(180deg);
   background-color: rgb(72, 239, 213);
 }
+
+.branding {
+  width: 100%;
+}
+
+.branding img {
+  width: 100%;
+}
 </style>
 
 <script setup lang="ts">
 import HomeScreenVideo from "@/assets/homescreen_10_02.webm";
 import UIButtonIcon from "@/components/UIElement/UIButtonIcon.vue";
 import UIThrobber from "@/components/UIElement/UIThrobber.vue";
+import LargeLogo from "@/assets/images/logo-large.png";
 
 import GithubMark from "@/assets/images/github-mark-white.png";
 
