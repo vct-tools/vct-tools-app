@@ -26,7 +26,7 @@ const onClick = () => {
 
 <style scoped>
 button {
-  padding: 7px 0;
+  padding: 7px;
   width: 100%;
 
   text-align: center;
