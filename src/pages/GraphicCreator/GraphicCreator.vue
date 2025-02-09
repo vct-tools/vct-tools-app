@@ -7,8 +7,9 @@
             <canvas width="600" :height="canvasHeight" ref="mainCanvas"></canvas>
             <div style="display: flex; width: 100%; gap: 2px;">
               <UIButtonLabel>{{ rendered ? "Done rendering" : "Rendering graphic..." }}</UIButtonLabel>
-              <UIButton>Copy to clipboard</UIButton>
-              <UIButton>Save image</UIButton>
+              <UIButton @click="copy()">Copy to clipboard</UIButton>
+              <UIButton @click="save()">Save image</UIButton>
+              <UIButton @click="draw()">Re-render</UIButton>
             </div>
           </div>
         </div>
@@ -29,7 +30,8 @@
             <HeaderSmall>Team Roster</HeaderSmall>
             <div class="fg">
               <UIField v-model="teamRosterData.teamName"></UIField>
-              <UIButton @click="teamRosterData.roster.push({ name: `Player 1`, image: { imageType: `Agent Portrait`, agent: `Brimstone`, dataUri: null }, type: `Player` })">+ Add new member</UIButton>
+              <UIField v-model="teamRosterData.tagline"></UIField>
+              <UIButton @click="teamRosterData.roster.push({ name: `Player 1`, image: { imageType: `Agent Portrait`, agent: `Brimstone`, dataUri: null }, type: `Player` })" :disabled="teamRosterData.roster.length >= 8">+ Add new member</UIButton>
             </div>
             <div class="fg">
               <UIButtonLabel>Name</UIButtonLabel>
@@ -87,6 +89,7 @@
 canvas {
   border: 1px solid #54758142;
   max-width: 100%;
+  background-color: #54758142;
 }
 
 .options {
@@ -126,7 +129,7 @@ import HeaderSmall from "@/components/HeaderSmall.vue";
 import UISelect from "@/components/UIElement/UISelect.vue";
 import agents from "@/agents";
 import { maps } from "@/maps";
-import { ref, type Ref, watch, onMounted } from "vue";
+import { nextTick, ref, type Ref, watch } from "vue";
 import UIField from "@/components/UIElement/UIField.vue";
 import UIButtonLabel from "@/components/UIElement/UIButtonLabel.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
@@ -135,7 +138,7 @@ import { type TeamRoster, renderTeamRoster } from "./Renderers/teamRoster";
 
 const rendered = ref(false);
 const canvasHeight = ref(600);
-const graphicType = ref("Team roster");
+const graphicType = ref("Team composition");
 const teamCompData = ref<TeamComp>({
   map: "Ascent",
   comp: [
@@ -148,6 +151,7 @@ const teamCompData = ref<TeamComp>({
 });
 const teamRosterData = ref<TeamRoster>({
   teamName: "My Team",
+  tagline: "TMN",
   roster: [
     {
       name: "Player 1",
@@ -199,40 +203,70 @@ const draw = async () => {
   if (mainCanvas.value) {
     const ctx = mainCanvas.value.getContext("2d");
     if (ctx) {
-      ctx.clearRect(0, 0, mainCanvas.value.width, mainCanvas.value.height);
-
       canvasHeight.value = {
-        "Team composition": 450,
-        "Team roster": 600
+        "Team composition": 470,
+        "Team roster": 540
       }[graphicType.value] || 500;
+
+      await nextTick();
+
+      ctx.clearRect(0, 0, mainCanvas.value.width, mainCanvas.value.height);
 
       if (graphicType.value == "Team composition") {
         await renderTeamComp(teamCompData, ctx, mainCanvas.value);
       } else if (graphicType.value == "Team roster") {
-        await renderTeamRoster(teamRosterData, ctx, mainCanvas.value);
+        await renderTeamRoster(teamRosterData, ctx);
       }
     }
   }
   rendered.value = true;
 }
 
-const loadImgRoster = (i: int) => {
-
+const loadImgRoster = (i: number) => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        teamRosterData.value.roster[i].image.dataUri = e.target?.result as string;
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+  input.click();
 }
 
-watch(teamCompData, () => {
-  draw();
-}, { deep: true });
+const copy = () => {
+  if (mainCanvas.value) {
+    mainCanvas.value.toBlob((blob) => {
+      if (blob) {
+        const item = new ClipboardItem({ "image/png": blob });
+        navigator.clipboard.write([item]);
+      }
+    });
+  }
+}
 
-watch(teamRosterData, () => {
-  draw();
-}, { deep: true });
+const save = () => {
+  if (mainCanvas.value) {
+    mainCanvas.value.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "graphic.png";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
+}
 
-watch(graphicType, () => {
+watch([graphicType, teamCompData, teamRosterData, mainCanvas], async () => {
+  await nextTick();
   draw();
-});
-
-onMounted(() => {
-  draw();
-});
+}, { deep: true, immediate: true });
 </script>

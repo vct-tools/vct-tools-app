@@ -45,6 +45,7 @@ const renderTeamComp = async (teamCompData: Ref<TeamComp>, ctx: CanvasRenderingC
       if (c) {
         const roleImg = await loadImg(c.image);
         ctx.fillStyle = alt ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
+        ctx.textAlign = "left";
         ctx.fillRect(0, offsetY, 600, 70);
 
         ctx.fillStyle = "#e0ebb9";
@@ -55,6 +56,7 @@ const renderTeamComp = async (teamCompData: Ref<TeamComp>, ctx: CanvasRenderingC
         ctx.fillText(a.name.toUpperCase(), 120 + 40, offsetY + 40);
 
         ctx.fillStyle = "white";
+        ctx.textAlign = "left";
         ctx.font = "20px 'Din Next'";
         ctx.fillText(player.player, 120 + 40, offsetY + 60);
 
