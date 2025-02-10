@@ -50,6 +50,10 @@ const renderGamePlan = async (gamePlan: Ref<string>, ctx: CanvasRenderingContext
       if (!cMap) throw new Error("Agent must be declared after map");
       if (!["Attacker", "Defender"].includes(line[1])) throw new Error(`Unknown team: ${line[1]}`);
 
+      if (!callouts[line[3]]) {
+        throw new Error(`Unknown callout: ${line[3]}`);
+      }
+
       callouts[line[3]]?.push([line[2], line[1], cMap, line[3]]);
     } else {
       throw new Error(`Unknown command: ${line[0]}`);

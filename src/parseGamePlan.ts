@@ -21,7 +21,7 @@ const parseGamePlan = (gamePlan: string): GamePlan => {
     }
   }
 
-  return out;
+  return out || [];
 }
 
 export { type GamePlan, parseGamePlan };

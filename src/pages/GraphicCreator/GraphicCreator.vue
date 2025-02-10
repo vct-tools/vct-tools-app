@@ -149,6 +149,7 @@ import * as monaco from "monaco-editor";
 import MonacoEditor from "@guolao/vue-monaco-editor";
 import { loader } from "@guolao/vue-monaco-editor";
 import { renderGamePlan } from "./Renderers/gamePlan";
+import { parseGamePlan } from "@/parseGamePlan";
 
 monaco.languages.register({ id: "gpnotation" });
 monaco.languages.setMonarchTokensProvider("gpnotation", {
@@ -159,6 +160,66 @@ monaco.languages.setMonarchTokensProvider("gpnotation", {
       [/\/\/.*/, "comment"],
       [new RegExp(`\\b(${agents.map((a) => a.name).join("|")}|${maps.map((a) => a.name).join("|")})\\b`), "type"]
     ]
+  }
+});
+
+monaco.languages.registerCompletionItemProvider("gpnotation", {
+  provideCompletionItems: (model, position) => {
+    // ...agents.map((a) => { return {
+    //       label: a.name,
+    //       kind: monaco.languages.CompletionItemKind.Enum,
+    //       insertText: a.name,
+    //       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+    //     }}),
+    //     ...maps.map((a) => { return {
+    //       label: a.name,
+    //       kind: monaco.languages.CompletionItemKind.Enum,
+    //       insertText: a.name,
+    //       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+    //     }})
+
+    const currentLineParsed = parseGamePlan(model.getLineContent(position.lineNumber))[0];
+    const currentMap = parseGamePlan(model.getValue()).find((a) => a[0] == "Map")?.[1] || "Ascent";
+
+    const suggestions: Array<object> = [];
+    const addSuggestions = (items: string[], kind: monaco.languages.CompletionItemKind, itemsInsertText: string[] | null = null) => {
+      suggestions.push(...items.map((a, index) => {
+        return {
+          label: a,
+          kind: kind,
+          insertText: itemsInsertText ? itemsInsertText[index] : a,
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+        }
+      }));
+    }
+
+    if (currentLineParsed.length <= 1) {
+      addSuggestions(["Map", "Callouts", "Agent"], monaco.languages.CompletionItemKind.Keyword);
+    }
+
+    if (currentLineParsed.length >= 1 && currentLineParsed[0] == "Map" && currentLineParsed.length <= 2) {
+      addSuggestions(maps.map((a) => a.name), monaco.languages.CompletionItemKind.Enum);
+    }
+
+    if (currentLineParsed.length >= 1 && currentLineParsed[0] == "Agent" && currentLineParsed.length <= 2) {
+      addSuggestions(["Attacker", "Defender"], monaco.languages.CompletionItemKind.Enum);
+    }
+
+    if (currentLineParsed.length >= 3 && currentLineParsed[0] == "Agent" && currentLineParsed.length <= 3) {
+      addSuggestions(agents.map((a) => a.name), monaco.languages.CompletionItemKind.Enum);
+    }
+
+    if (currentLineParsed.length >= 4 && currentLineParsed[0] == "Agent" && currentLineParsed.length <= 4) {
+      const cm = maps.find((a) => a.name == currentMap);
+      if (cm) {
+        const isAlreadyQuoted = model.getLineContent(position.lineNumber).includes("\"");
+        addSuggestions(
+          cm.callouts.map((a) => a.name),
+          monaco.languages.CompletionItemKind.Enum, isAlreadyQuoted ? cm.callouts.map((a) => `${a.name}"`) : cm.callouts.map((a) => `"${a.name}"`));
+      }
+    }
+
+    return { suggestions };
   }
 });
 
