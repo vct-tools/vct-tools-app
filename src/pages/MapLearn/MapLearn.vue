@@ -192,8 +192,10 @@ const handleClick = (e: MouseEvent) => {
 const delayPlay = () => {
   canClick.value = false;
   let ms = 0;
+  let d = false;
 
-  const a = setInterval(() => {
+  const a = () => {
+    d = true;
     if (gameCanvas.value) {
       const ctx = gameCanvas.value.getContext("2d");
       if (ctx) {
@@ -206,13 +208,17 @@ const delayPlay = () => {
     }
 
     if (ms < 500) {
-      ms += 1;
+      ms += 6;
+      requestAnimationFrame(a);
     } else {
-      clearInterval(a);
       play(false);
       canClick.value = true;
     }
-  }, 1);
+  }
+
+  if (!d) {
+    a();
+  }
 };
 
 const drawCorrect = (x: number, y: number) => {

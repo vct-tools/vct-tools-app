@@ -1,4 +1,6 @@
 <template>
+  <SmallResWarning></SmallResWarning>
+
   <video autoplay loop muted playsinline class="mainVideo">
     <source :src="HomeScreenVideo" type="video/webm">
   </video>
@@ -187,6 +189,7 @@ import GithubMark from "@/assets/images/github-mark-white.png";
 
 import { ref } from "vue";
 import { BIconExclamationTriangle } from "bootstrap-icons-vue";
+import SmallResWarning from "@/components/SmallResWarning.vue";
 
 const latestNews = ref([false, "", ""]);
 

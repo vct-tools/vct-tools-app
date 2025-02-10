@@ -13,9 +13,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@guolao/vue-monaco-editor": "^1.5.4",
     "bootstrap-icons": "^1.11.3",
     "bootstrap-icons-vue": "^1.11.3",
     "html2canvas": "^1.4.1",
+    "nearley": "^2.20.1",
+    "ohm-js": "^17.1.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {

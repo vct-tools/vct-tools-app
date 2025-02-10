@@ -3,12 +3,20 @@
     <header-container pageName="Create graphics">
       <div class="graphics-body">
         <div class="graphic">
-          <canvas width="700" :height="canvasHeight" ref="mainCanvas"></canvas>
+          <div class="graphic-canvas">
+            <canvas width="600" :height="canvasHeight" ref="mainCanvas"></canvas>
+            <div style="display: flex; width: 100%; gap: 2px;">
+              <UIButtonLabel>{{ rendered ? "Done rendering" : "Rendering graphic..." }}</UIButtonLabel>
+              <UIButton @click="copy()">Copy to clipboard</UIButton>
+              <UIButton @click="save()">Save image</UIButton>
+              <UIButton @click="draw()">Re-render</UIButton>
+            </div>
+          </div>
         </div>
         <div class="options">
           <div class="panel">
             <HeaderSmall>Select Graphic</HeaderSmall>
-            <UISelect prefix="Graphic Type: " :items="[`Team composition`]" v-model="graphicType"></UISelect>
+            <UISelect prefix="Graphic Type: " :items="[`Team composition`, `Team roster`]" v-model="graphicType"></UISelect>
           </div>
           <div class="panel" v-if="graphicType == `Team composition`">
             <HeaderSmall>Team Comp</HeaderSmall>
@@ -16,6 +24,29 @@
             <div v-for="(p, i) in teamCompData.comp" :key="i" style="display: flex; gap: 2px;">
               <UISelect prefix="Agent: " :items="[`(Remove player)`, `(Show as unknown)`, ...agents.map((a) => a.name)]" v-model="teamCompData.comp[i].agent" style="width: 50%;"></UISelect>
               <UIField v-model="teamCompData.comp[i].player" style="width: 50%; text-align: center;"></UIField>
+            </div>
+          </div>
+          <div class="panel" v-if="graphicType == `Team roster`">
+            <HeaderSmall>Team Roster</HeaderSmall>
+            <div class="fg">
+              <UIField v-model="teamRosterData.teamName"></UIField>
+              <UIField v-model="teamRosterData.tagline"></UIField>
+              <UIButton @click="teamRosterData.roster.push({ name: `Player 1`, image: { imageType: `Agent Portrait`, agent: `Brimstone`, dataUri: null }, type: `Player` })" :disabled="teamRosterData.roster.length >= 8">+ Add new member</UIButton>
+            </div>
+            <div class="fg">
+              <UIButtonLabel>Name</UIButtonLabel>
+              <UIButtonLabel>Image Type</UIButtonLabel>
+              <UIButtonLabel>Image/Agent</UIButtonLabel>
+              <UIButtonLabel>Type</UIButtonLabel>
+              <div class="fgs"></div>
+            </div>
+            <div class="fg" v-for="(member, i) in teamRosterData.roster" :key="i">
+              <UIField v-model="teamRosterData.roster[i].name"></UIField>
+              <UISelect v-model="teamRosterData.roster[i].image.imageType" :items="[`File Upload`, `Agent Portrait`]"></UISelect>
+              <UISelect v-model="teamRosterData.roster[i].image.agent" :items="agents.map((a) => a.name)" v-if="teamRosterData.roster[i].image.imageType == `Agent Portrait`"></UISelect>
+              <UIButton v-else @click="loadImgRoster(i)">Select image...</UIButton>
+              <UISelect v-model="teamRosterData.roster[i].type" :items="[`Player`, `Substitute`, `Coach`]"></UISelect>
+              <UIButton @click="teamRosterData.roster.splice(i, 1)">Delete</UIButton>
             </div>
           </div>
           <div class="panel">
@@ -58,6 +89,7 @@
 canvas {
   border: 1px solid #54758142;
   max-width: 100%;
+  background-color: #54758142;
 }
 
 .options {
@@ -73,6 +105,21 @@ canvas {
   padding: 1em;
   background-color: #54758142;
 }
+
+.mc-editor {
+  width: 100%;
+  height: 40vh;
+}
+
+.fg {
+  display: flex;
+  width: 100%;
+  gap: 2px;
+}
+
+.fgs {
+  width: 100%;
+}
 </style>
 
 <script setup lang="ts">
@@ -80,25 +127,19 @@ import AdsenseMultiplexAd from "@/components/Adsense/AdsenseMultiplexAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import UISelect from "@/components/UIElement/UISelect.vue";
-import NoAgentImg from "@/assets/images/agents/Unknown.webp";
-import { roleImages, Role } from "@/agents";
 import agents from "@/agents";
 import { maps } from "@/maps";
-
-import { ref, type Ref, watch, onMounted } from "vue";
+import { nextTick, ref, type Ref, watch } from "vue";
 import UIField from "@/components/UIElement/UIField.vue";
+import UIButtonLabel from "@/components/UIElement/UIButtonLabel.vue";
+import UIButton from "@/components/UIElement/UIButton.vue";
+import { type TeamComp, renderTeamComp } from "./Renderers/teamComp";
+import { type TeamRoster, renderTeamRoster } from "./Renderers/teamRoster";
 
-const canvasHeight = ref(500);
+const rendered = ref(false);
+const canvasHeight = ref(600);
 const graphicType = ref("Team composition");
-const teamCompData = ref<
-  {
-    map: string;
-    comp: {
-      player: string;
-      agent: string;
-    }[]
-  }
->({
+const teamCompData = ref<TeamComp>({
   map: "Ascent",
   comp: [
     { player: "Player 1", agent: "Brimstone" },
@@ -108,116 +149,124 @@ const teamCompData = ref<
     { player: "Player 5", agent: "Sova" },
   ]
 });
+const teamRosterData = ref<TeamRoster>({
+  teamName: "My Team",
+  tagline: "TMN",
+  roster: [
+    {
+      name: "Player 1",
+      image: { imageType: "Agent Portrait", agent: "Brimstone", dataUri: null },
+      type: "Player"
+    },
+    {
+      name: "Player 2",
+      image: { imageType: "Agent Portrait", agent: "Jett", dataUri: null },
+      type: "Player"
+    },
+    {
+      name: "Player 3",
+      image: { imageType: "Agent Portrait", agent: "Phoenix", dataUri: null },
+      type: "Player"
+    },
+    {
+      name: "Player 4",
+      image: { imageType: "Agent Portrait", agent: "Sage", dataUri: null },
+      type: "Player"
+    },
+    {
+      name: "Player 5",
+      image: { imageType: "Agent Portrait", agent: "Sova", dataUri: null },
+      type: "Player"
+    },
+    {
+      name: "Player 6",
+      image: { imageType: "Agent Portrait", agent: "Brimstone", dataUri: null },
+      type: "Substitute"
+    },
+    {
+      name: "Player 7",
+      image: { imageType: "Agent Portrait", agent: "Jett", dataUri: null },
+      type: "Substitute"
+    },
+    {
+      name: "Player 8",
+      image: { imageType: "Agent Portrait", agent: "Sova", dataUri: null },
+      type: "Coach"
+    }
+  ]
+});
 
 const mainCanvas: Ref<HTMLCanvasElement | null> = ref(null);
 
-const loadImg = (url: string): Promise<HTMLImageElement> => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = url;
-    img.onload = () => resolve(img);
-    img.onerror = (err) => reject(err);
-  });
-}
-
 const draw = async () => {
+  rendered.value = false;
   if (mainCanvas.value) {
     const ctx = mainCanvas.value.getContext("2d");
     if (ctx) {
+      canvasHeight.value = {
+        "Team composition": 470,
+        "Team roster": 540
+      }[graphicType.value] || 500;
+
+      await nextTick();
+
       ctx.clearRect(0, 0, mainCanvas.value.width, mainCanvas.value.height);
 
       if (graphicType.value == "Team composition") {
-        canvasHeight.value = 620;
-
-        // Draw map image
-        ctx.textAlign = "left";
-        const map = maps.find((a) => a.name == teamCompData.value.map);
-        if (map) {
-          ctx.drawImage(await loadImg(map.image), 0, -100, 700, 394); // 394px aspect ratio 16:9
-        }
-
-        ctx.fillStyle = "rgba(32, 86, 95, 0.5)";
-        ctx.fillRect(0, 0, 700, 270);
-        ctx.fillStyle = "rgba(32, 86, 95, 0.7)";
-        ctx.fillRect(700 - 270, 0, 270, 270);
-
-        ctx.font = "50px Tungsten";
-        ctx.fillStyle = "#e0ebb9";
-
-        ctx.fillText("TEAM COMPOSITION", 15, 120);
-        ctx.font = "25px 'Din Next'";
-        ctx.fillStyle = "white";
-        ctx.fillText(`Map: ${teamCompData.value.map}`, 15, 80 + 70);
-
-        if (map) {
-          ctx.drawImage(await loadImg(map.map), 700 - 250, 5, 250, 250); // 394px aspect ratio 16:9
-        }
-
-        let offsetY = 250;
-        let alt = false;
-        for (const player of teamCompData.value.comp) {
-          const a = agents.find((a) => a.name == player.agent);
-          if (a) {
-            const agentImg = await loadImg(a.icon);
-            const c = roleImages.find((b) => b.role == a.role);
-            if (c) {
-              const roleImg = await loadImg(c.image);
-              ctx.fillStyle = alt ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-              ctx.fillRect(0, offsetY, 700, 100);
-
-              ctx.fillStyle = "#e0ebb9";
-              ctx.font = "40px Tungsten";
-
-              ctx.drawImage(roleImg, 90, offsetY + 15, 40, 40);
-
-              ctx.fillText(a.name.toUpperCase(), 120 + 40, offsetY + 40);
-
-              ctx.fillStyle = "white";
-              ctx.font = "20px 'Din Next'";
-              ctx.fillText(player.player, 120 + 40, offsetY + 60);
-
-              ctx.drawImage(agentImg, 0, offsetY, 70, 70);
-              offsetY += 70;
-              alt = !alt;
-            }
-          } else if (player.agent == "(Show as unknown)") {
-            const agentImg = await loadImg(NoAgentImg);
-
-            ctx.fillStyle = alt ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-            ctx.fillRect(0, offsetY, 700, 70);
-
-            ctx.fillStyle = "white";
-            ctx.font = "20px 'Din Next'";
-
-            ctx.fillText(player.player, 120 + 40, offsetY + 42);
-
-            ctx.drawImage(agentImg, 10, offsetY + 10, 50, 50);
-            offsetY += 70;
-            alt = !alt;
-          } else {
-            ctx.fillStyle = (offsetY / 100) % 2 == 0 ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-            ctx.fillRect(0, offsetY, 700, 70);  
-            offsetY += 70;
-            alt = !alt;
-          }
-        }
-        ctx.fillStyle = (offsetY / 100) % 2 == 0 ? "rgb(32, 86, 95)" : "rgb(28, 66, 73)";
-        ctx.fillRect(0, offsetY, 700, 20);
-        ctx.textAlign = "center";
-        ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-        ctx.font = "15px 'Din Next'";
-
-        ctx.fillText("VCTtools.net", 700/2, offsetY + 15);
+        await renderTeamComp(teamCompData, ctx, mainCanvas.value);
+      } else if (graphicType.value == "Team roster") {
+        await renderTeamRoster(teamRosterData, ctx);
       }
     }
   }
+  rendered.value = true;
 }
 
-watch(teamCompData, () => {
-  draw();
-}, { deep: true });
+const loadImgRoster = (i: number) => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        teamRosterData.value.roster[i].image.dataUri = e.target?.result as string;
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+  input.click();
+}
 
-onMounted(() => {
+const copy = () => {
+  if (mainCanvas.value) {
+    mainCanvas.value.toBlob((blob) => {
+      if (blob) {
+        const item = new ClipboardItem({ "image/png": blob });
+        navigator.clipboard.write([item]);
+      }
+    });
+  }
+}
+
+const save = () => {
+  if (mainCanvas.value) {
+    mainCanvas.value.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "graphic.png";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
+}
+
+watch([graphicType, teamCompData, teamRosterData, mainCanvas], async () => {
+  await nextTick();
   draw();
-});
+}, { deep: true, immediate: true });
 </script>
