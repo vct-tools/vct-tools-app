@@ -11,7 +11,7 @@ const parseGamePlan = (gamePlan: string): GamePlan => {
     const parts = (line.match(/(?:[^\s"]+|"([^"]*)")/g) || []).map(part => part.replace(/^"|"$/g, ""));
 
     // Remove anything past comments (//)
-    const commentIndex = parts.findIndex(part => part.startsWith("//"));
+    const commentIndex = parts.findIndex(part => part == "//");
     if (commentIndex != -1) {
       parts.splice(commentIndex);
     }

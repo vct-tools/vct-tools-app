@@ -55,7 +55,7 @@
           <div class="panel" v-if="graphicType == `Game plan`">
             <HeaderSmall>Game Plan</HeaderSmall>
             <div style="width: 100%; height: 400px;">
-              <MonacoEditor v-model:value="gamePlanCode" theme="vs-dark" language="gpnotation"></MonacoEditor>
+              <MonacoEditor v-model:value="gamePlanCode" theme="vs-dark"></MonacoEditor>
             </div>
             <div class="panel" v-if="parseError" style="color: lightcoral;">{{ parseError }}</div>
           </div>
@@ -98,7 +98,7 @@
 
 canvas {
   border: 1px solid #54758142;
-  width: 100%;
+  max-width: 100%;
   background-color: #54758142;
 }
 
@@ -145,24 +145,8 @@ import UIButtonLabel from "@/components/UIElement/UIButtonLabel.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
 import { type TeamComp, renderTeamComp } from "./Renderers/teamComp";
 import { type TeamRoster, renderTeamRoster } from "./Renderers/teamRoster";
-import * as monaco from "monaco-editor";
 import MonacoEditor from "@guolao/vue-monaco-editor";
-import { loader } from "@guolao/vue-monaco-editor";
 import { renderGamePlan } from "./Renderers/gamePlan";
-
-monaco.languages.register({ id: "gpnotation" });
-monaco.languages.setMonarchTokensProvider("gpnotation", {
-  tokenizer: {
-    root: [
-      [/\b(Map|Callouts|Agent|Attacker|Defender)\b/, "keyword"],
-      [/".*?"/, "string"],
-      [/\/\/.*/, "comment"],
-      [new RegExp(`\\b(${agents.map((a) => a.name).join("|")}|${maps.map((a) => a.name).join("|")})\\b`), "type"]
-    ]
-  }
-});
-
-loader.config({ monaco });
 
 const parseError = ref<string | null>(null);
 const rendered = ref(false);
