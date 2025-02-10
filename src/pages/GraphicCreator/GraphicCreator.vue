@@ -4,11 +4,14 @@
       <div class="graphics-body">
         <div class="graphic">
           <div class="graphic-canvas">
+            <div style="display: flex; width: 100%;">
+              <UIButtonLabel>600 x {{ canvasHeight }}</UIButtonLabel>
+            </div>
             <canvas width="600" :height="canvasHeight" ref="mainCanvas"></canvas>
             <div style="display: flex; width: 100%; gap: 2px;">
               <UIButtonLabel>{{ rendered ? "Done rendering" : "Rendering graphic..." }}</UIButtonLabel>
-              <UIButton @click="copy()">Copy to clipboard</UIButton>
-              <UIButton @click="save()">Save image</UIButton>
+              <UIButton @click="copyImg()">Copy to clipboard</UIButton>
+              <UIButton @click="saveImg()">Save image</UIButton>
               <UIButton @click="draw()">Re-render</UIButton>
             </div>
           </div>
@@ -16,7 +19,7 @@
         <div class="options">
           <div class="panel">
             <HeaderSmall>Select Graphic</HeaderSmall>
-            <UISelect prefix="Graphic Type: " :items="[`Team composition`, `Team roster`]" v-model="graphicType"></UISelect>
+            <UISelect prefix="Graphic Type: " :items="[`Team composition`, `Team roster`, `Game plan`]" v-model="graphicType"></UISelect>
           </div>
           <div class="panel" v-if="graphicType == `Team composition`">
             <HeaderSmall>Team Comp</HeaderSmall>
@@ -48,6 +51,13 @@
               <UISelect v-model="teamRosterData.roster[i].type" :items="[`Player`, `Substitute`, `Coach`]"></UISelect>
               <UIButton @click="teamRosterData.roster.splice(i, 1)">Delete</UIButton>
             </div>
+          </div>
+          <div class="panel" v-if="graphicType == `Game plan`">
+            <HeaderSmall>Game Plan</HeaderSmall>
+            <div style="width: 100%; height: 400px;">
+              <MonacoEditor v-model:value="gamePlanCode" theme="vs-dark"></MonacoEditor>
+            </div>
+            <div class="panel" v-if="parseError" style="color: lightcoral;">{{ parseError }}</div>
           </div>
           <div class="panel">
             <AdsenseMultiplexAd></AdsenseMultiplexAd>
@@ -135,10 +145,13 @@ import UIButtonLabel from "@/components/UIElement/UIButtonLabel.vue";
 import UIButton from "@/components/UIElement/UIButton.vue";
 import { type TeamComp, renderTeamComp } from "./Renderers/teamComp";
 import { type TeamRoster, renderTeamRoster } from "./Renderers/teamRoster";
+import MonacoEditor from "@guolao/vue-monaco-editor";
+import { renderGamePlan } from "./Renderers/gamePlan";
 
+const parseError = ref<string | null>(null);
 const rendered = ref(false);
 const canvasHeight = ref(600);
-const graphicType = ref("Team composition");
+const graphicType = ref("Game plan");
 const teamCompData = ref<TeamComp>({
   map: "Ascent",
   comp: [
@@ -195,6 +208,7 @@ const teamRosterData = ref<TeamRoster>({
     }
   ]
 });
+const gamePlanCode = ref<string>("");
 
 const mainCanvas: Ref<HTMLCanvasElement | null> = ref(null);
 
@@ -205,7 +219,8 @@ const draw = async () => {
     if (ctx) {
       canvasHeight.value = {
         "Team composition": 470,
-        "Team roster": 540
+        "Team roster": 540,
+        "Game plan": 670
       }[graphicType.value] || 500;
 
       await nextTick();
@@ -216,6 +231,13 @@ const draw = async () => {
         await renderTeamComp(teamCompData, ctx, mainCanvas.value);
       } else if (graphicType.value == "Team roster") {
         await renderTeamRoster(teamRosterData, ctx);
+      } else if (graphicType.value == "Game plan") {
+        try {
+          await renderGamePlan(gamePlanCode, ctx);
+          parseError.value = null;
+        } catch(e) {
+          parseError.value = (e as Error).toString();
+        }
       }
     }
   }
@@ -239,7 +261,7 @@ const loadImgRoster = (i: number) => {
   input.click();
 }
 
-const copy = () => {
+const copyImg = () => {
   if (mainCanvas.value) {
     mainCanvas.value.toBlob((blob) => {
       if (blob) {
@@ -250,7 +272,7 @@ const copy = () => {
   }
 }
 
-const save = () => {
+const saveImg = () => {
   if (mainCanvas.value) {
     mainCanvas.value.toBlob((blob) => {
       if (blob) {
@@ -265,7 +287,7 @@ const save = () => {
   }
 }
 
-watch([graphicType, teamCompData, teamRosterData, mainCanvas], async () => {
+watch([graphicType, teamCompData, teamRosterData, gamePlanCode, mainCanvas], async () => {
   await nextTick();
   draw();
 }, { deep: true, immediate: true });
