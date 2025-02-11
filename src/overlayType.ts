@@ -42,8 +42,8 @@ type OverlaySettings = {
 function createDefaultOverlaySettings(): OverlaySettings {
   return {
     nameType: "Name",
-    attackerTeamName: "Team 1",
-    defenderTeamName: "Team 2",
+    attackerTeamName: "TEAM1",
+    defenderTeamName: "TEAM2",
     playerOverlayFeatures: {
       playerAbilities: true,
       playerHealth: true,
@@ -69,7 +69,7 @@ function createDefaultOverlaySettings(): OverlaySettings {
       flawless: true,
       ace: true,
       teamAce: true,
-      thrifty: false
+      thrifty: true
     }
   };
 }

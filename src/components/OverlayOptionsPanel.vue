@@ -47,11 +47,7 @@
         ref="canvasElement"
       ></canvas>
       <div class="flex-l"></div>
-      <UIButtonLabel>Preview settings</UIButtonLabel>
-      <UISelect
-        v-model="previewSettings"
-        :items="[`Buy phase`, `Mid round`, `Round end`]"
-      ></UISelect>
+      <UIButtonLabel>Preview options</UIButtonLabel>
       <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
     </div>
   </div>
@@ -111,10 +107,10 @@ import UIButtonLabel from "./UIElement/UIButtonLabel.vue";
 import UISelect from "./UIElement/UISelect.vue";
 import UISwitch from "./UIElement/UISwitch.vue";
 
-import HavenGameplay from "@/assets/images/haven_gameplay.webp";
+import HavenGameplay from "@/assets/images/haven_gameplay.png";
 
-import { ref, type Ref, watch } from "vue";
-import { renderOverlay } from "@/renderOverlay";
+import { onMounted, ref, type Ref } from "vue";
+import { renderLoop } from "@/renderOverlay";
 import UIField from "./UIElement/UIField.vue";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
@@ -127,36 +123,13 @@ const model: Ref<OverlaySettings> = defineModel({
   default: createDefaultOverlaySettings()
 });
 
-const previewSettings = ref("Buy phase");
-
-watch(previewSettings, () => {
+onMounted(() => {
   if (canvasElement.value) {
-    const r = canvasElement.value.getContext("2d");
-    if (r) {
-      renderOverlay(r, model.value, null);
+    const ctx = canvasElement.value.getContext("2d");
+    if (ctx) {
+      renderLoop(null, model, ctx);
     }
   }
-});
+})
 
-watch(
-  model,
-  (value) => {
-    if (canvasElement.value) {
-      const r = canvasElement.value.getContext("2d");
-      if (r) {
-        renderOverlay(r, value, null);
-      }
-    }
-  },
-  { deep: true }
-);
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (canvasElement.value) {
-    const r = canvasElement.value.getContext("2d");
-    if (r) {
-      renderOverlay(r, model.value, null);
-    }
-  }
-});
 </script>
