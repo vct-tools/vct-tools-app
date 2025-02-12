@@ -68,7 +68,7 @@ const images: Record<string, HTMLImageElement> = {};
 
 const shownInformation = {
   roundWin: {
-    trigger: (ceromony: string, winningTeamName: string, winningTeamSide: string, roundNum: number) => { 
+    trigger: (ceromony: string, winningTeamName: string, winningTeamSide: string, roundNum: number) => {
       shownInformation.roundWin.i.data = { ceromony, winningTeamName, winningTeamSide, roundNum };
       shownInformation.roundWin.i.t = 0;
       shownInformation.roundWin.i.running = true;
@@ -81,6 +81,9 @@ const shownInformation = {
         winningTeamName: "",
         winningTeamSide: "",
         roundNum: 0
+      },
+      animation: {
+        stall: 2000
       }
     }
   }
@@ -157,6 +160,10 @@ export function renderLoop(
   requestAnimationFrame(r);
 }
 
+const stalls = {
+  roundWin: 0
+}
+
 export function renderOverlay(
   ctx: CanvasRenderingContext2D,
   settings: OverlaySettings,
@@ -173,10 +180,18 @@ export function renderOverlay(
       shownInformation.roundWin.i.data.roundNum,
       shownInformation.roundWin.i.t
     );
-    shownInformation.roundWin.i.t += 0.02;
+    if (shownInformation.roundWin.i.t == 0.9) {
+      stalls.roundWin += 1;
+      if (stalls.roundWin >= shownInformation.roundWin.i.animation.stall) {
+        stalls.roundWin = 0;
+        shownInformation.roundWin.i.t += 0.02;
+      }
+    } else {
+      shownInformation.roundWin.i.t += 0.02;
+    }
     if (shownInformation.roundWin.i.t >= 1) shownInformation.roundWin.i.running = false;
   }
-  
+
   score(ctx, {
     attackerScore: 4,
     defenderScore: 5,
@@ -298,7 +313,7 @@ function score(
     roundNum: number;
   }
 ): void {
-  const color = "rgb(15, 25, 35)";
+  const color = "15, 25, 35";
   const timerWidth = 140;
   const timerHeight = 72;
 
@@ -311,7 +326,7 @@ function score(
   ctx.lineTo(1920 / 2 - timerWidth / 2 - width, timerHeight);
   ctx.lineTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 2, 0);
   ctx.lineTo(1920 / 2 - timerWidth / 2 - 1, 0);
-  ctx.fillStyle = color;
+  ctx.fillStyle = `rgb(${color})`;
   ctx.fill();
   ctx.closePath();
 
@@ -321,17 +336,7 @@ function score(
   ctx.lineTo(1920 / 2 + timerWidth / 2 + width, timerHeight);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 2, 0);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + 1, 0);
-  ctx.fillStyle = color;
-  ctx.fill();
-  ctx.closePath();
-
-  // Draw center
-  ctx.beginPath();
-  ctx.moveTo(1920 / 2 - timerWidth / 2, timerHeight + 6);
-  ctx.lineTo(1920 / 2 - timerWidth / 2 + 10, timerHeight + 26);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 - 10, timerHeight + 26);
-  ctx.lineTo(1920 / 2 + timerWidth / 2, timerHeight + 6);
-  ctx.fillStyle = color;
+  ctx.fillStyle = `rgb(${color})`;
   ctx.fill();
   ctx.closePath();
 
@@ -341,7 +346,7 @@ function score(
   ctx.lineTo(1920 / 2 - timerWidth / 2 - width - 5, timerHeight + 6);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + width + 5, timerHeight + 6);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 2 + 10, -5);
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = `rgb(${color})`;
   ctx.lineWidth = 4;
   ctx.stroke();
   ctx.closePath();
@@ -351,9 +356,9 @@ function score(
     ctx,
     "VCTTools.net",
     1920 / 2,
-    timerHeight + 15,
+    timerHeight + 20,
     "20px 'Din Next'",
-    "rgba(255, 255, 255, 0.2)",
+    `rgba(${color}, 0.5)`,
     "center",
     "middle"
   );
@@ -478,7 +483,7 @@ async function playerLeft(ctx: CanvasRenderingContext2D, x: number, y: number, a
       const pointCount = ultProgress[1];
       const totalWidth = (pointCount - 1) * spacing;
       const location = x + 250 - totalWidth / 2;
-  
+
       for (let i = 0; i < pointCount; i++) {
         ctx.fillStyle = ultProgress[0] > i ? "white" : "rgb(58, 58, 58)";
         ctx.beginPath();
