@@ -48,6 +48,11 @@
       ></canvas>
       <div class="flex-l"></div>
       <UIButtonLabel>Preview options</UIButtonLabel>
+      <div class="flex-h">
+        <UISelect v-model="previewOptions.triggerCeromonyWinTeam" prefix="Winning team: " :items="[`Attack`, `Defense`]"></UISelect>
+        <UISelect v-model="previewOptions.triggerCeromonyType" prefix="Ceromony: " :items="[`Round Win`, `Clutch`, `Flawless`, `Ace`, `Team Ace`, `Thrifty`]"></UISelect>
+        <UIButton @click="preview_TriggerCeromony()">Trigger ceromony</UIButton>
+      </div>
       <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
     </div>
   </div>
@@ -56,6 +61,7 @@
 <style scoped>
 .flex-h {
   display: flex;
+  gap: 2px;
 }
 
 .flex-v {
@@ -110,10 +116,15 @@ import UISwitch from "./UIElement/UISwitch.vue";
 import HavenGameplay from "@/assets/images/haven_gameplay.png";
 
 import { onMounted, ref, type Ref } from "vue";
-import { renderLoop } from "@/renderOverlay";
+import { renderLoop, shownInformation } from "@/renderOverlay";
 import UIField from "./UIElement/UIField.vue";
+import { ceromonyFilter } from "@/overlayPreParse";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
+const previewOptions = ref({
+  triggerCeromonyType: "Round Win",
+  triggerCeromonyWinTeam: "Attack"
+});
 
 const fullscreenPreview = () => {
   canvasElement.value?.requestFullscreen();
@@ -130,6 +141,17 @@ onMounted(() => {
       renderLoop(null, model, ctx);
     }
   }
-})
+});
 
+const preview_TriggerCeromony = () => {
+  shownInformation.roundWin.trigger(
+    ceromonyFilter(
+      previewOptions.value.triggerCeromonyType,
+      model.value
+    ),
+    previewOptions.value.triggerCeromonyWinTeam == "Attack" ? model.value.attackerTeamName : model.value.defenderTeamName,
+    previewOptions.value.triggerCeromonyWinTeam,
+    1
+  );
+}
 </script>
