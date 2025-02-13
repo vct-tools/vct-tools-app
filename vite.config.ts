@@ -6,7 +6,17 @@ import vueDevTools from "vite-plugin-vue-devtools";
 import { resolve } from "node:path";
 
 export default defineConfig({
-  plugins: [vue(), vueDevTools()],
+  plugins: [
+    vue(),
+    vueDevTools(),
+    {
+      name: "full-reload",
+      handleHotUpdate({ server }) {
+        server.ws.send({ type: "full-reload" });
+        return [];
+      }
+    }
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url))

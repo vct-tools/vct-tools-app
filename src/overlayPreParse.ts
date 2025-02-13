@@ -25,3 +25,8 @@ export function ceromonyFilter(ceromony: string, settings: OverlaySettings) {
 
     return "Round Win";
 }
+
+export function nameFilter(name: string, tagline: string, settings: OverlaySettings) {
+    if (settings.nameType == "Name") return name;
+    else return name + "#" + tagline;
+}

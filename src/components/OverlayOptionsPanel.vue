@@ -14,14 +14,23 @@
       <UISwitch v-model="model.gameOverviewVisible.shields">Shields</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.agentImages">Agent images</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.matchLog">Match log</UISwitch>
+      <UIButtonLabel>Series - Branding</UIButtonLabel>
+      <UISwitch v-model="model.series.showBrandingImg">Show branding</UISwitch>
+      <UIButton @click="loadBranding()">Select branding image</UIButton>
+      <UIButtonLabel>Series - Maps</UIButtonLabel>
+      <div class="flex-h" v-for="(map, index) in model.series.maps" :key="index">
+        <UIField v-model="model.series.maps[index]"></UIField>
+        <UIButton style="width: 25%;" @click="model.series.maps.splice(index, 1)">DEL</UIButton>
+      </div>
+      <UIButton @click="model.series.maps.push(`Map Name`)">Add map</UIButton>
+      <UIButtonLabel>Series - Name</UIButtonLabel>
+      <UIField v-model="model.series.seriesName"></UIField>
     </div>
     <div class="flex-v flex-qh p">
       <UIButtonLabel>Player overlay features</UIButtonLabel>
       <UISwitch v-model="model.playerOverlayFeatures.playerAbilities">Player abilities</UISwitch>
       <UISwitch v-model="model.playerOverlayFeatures.playerHealth">Player health</UISwitch>
-      <UISwitch v-model="model.playerOverlayFeatures.playerCredits">Player credits</UISwitch>
       <UISwitch v-model="model.playerOverlayFeatures.agentImages">Agent images</UISwitch>
-      <UISwitch v-model="model.playerOverlayFeatures.playerLoadout">Player loadout</UISwitch>
       <UISwitch v-model="model.playerOverlayFeatures.playerKDA">Player K/D/A</UISwitch>
       <UIButtonLabel>Other overlay features</UIButtonLabel>
       <UISwitch v-model="model.otherOverlayFeatures.gameOverviewDuringBuyPhase"
@@ -32,10 +41,19 @@
       >
       <UIButtonLabel>Visible name</UIButtonLabel>
       <UISelect v-model="model.nameType" :items="[`Name`, `Name and tagline`]"></UISelect>
-      <UIButtonLabel>Defending team name</UIButtonLabel>
-      <UIField v-model="model.defenderTeamName"></UIField>
-      <UIButtonLabel>Attacking team name</UIButtonLabel>
-      <UIField v-model="model.attackerTeamName"></UIField>
+      <UIButtonLabel>Blue (starting defender) team name</UIButtonLabel>
+      <UIField v-model="model.blueTeamName"></UIField>
+      <UIButtonLabel>Red (starting attacker) team name</UIButtonLabel>
+      <UIField v-model="model.redTeamName"></UIField>
+      <UIButtonLabel>Top-right corner sponsors</UIButtonLabel>
+      <UISwitch v-model="model.sponsors.sponsorEnabled">Show sponsors</UISwitch>
+      <div v-for="(img, index) in model.sponsors.sponsorImgs" :key="index">
+        <div style="display: flex; justify-content: center;">
+          <img :src="img" style="max-height: 70px;" />
+        </div>
+        <UIButton @click="model.sponsors.sponsorImgs.splice(index, 1)">DEL</UIButton>
+      </div>
+      <UIButton @click="newSponsor()">Add sponsor</UIButton>
     </div>
     <div class="flex-v flex-hh p">
       <UIButtonLabel>Preview</UIButtonLabel>
@@ -149,9 +167,48 @@ const preview_TriggerCeromony = () => {
       previewOptions.value.triggerCeromonyType,
       model.value
     ),
-    previewOptions.value.triggerCeromonyWinTeam == "Attack" ? model.value.attackerTeamName : model.value.defenderTeamName,
+    previewOptions.value.triggerCeromonyWinTeam == "Attack" ? model.value.redTeamName : model.value.blueTeamName,
     previewOptions.value.triggerCeromonyWinTeam,
     1
   );
+}
+
+const getImageDataURI = async () => {
+  return new Promise<string>((resolve, reject) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target) {
+            if (typeof e.target.result === "string") {
+              resolve(e.target.result);
+            } else {
+              reject("Invalid image file");
+            }
+          }
+        }
+        reader.readAsDataURL(file);
+      } else {
+        reject("No file selected");
+      }
+    }
+    input.click();
+  })
+}
+
+const loadBranding = async () => {
+  try {
+    model.value.series.brandingImg = await getImageDataURI();
+  } catch {}
+}
+
+const newSponsor = async () => {
+  try {
+    model.value.sponsors.sponsorImgs.push(await getImageDataURI());
+  } catch {}
 }
 </script>

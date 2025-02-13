@@ -1,9 +1,7 @@
 type PlayerOverlayFeatures = {
   playerAbilities: boolean;
   playerHealth: boolean;
-  playerCredits: boolean;
   agentImages: boolean;
-  playerLoadout: boolean;
   playerKDA: boolean;
 };
 
@@ -29,27 +27,39 @@ type RoundOutcomeBanner = {
   thrifty: boolean;
 };
 
+type SeriesInformation = {
+  maps: string[];
+  brandingImg: string | null;
+  showBrandingImg: boolean;
+  seriesName: string;
+}
+
+type SponsorInformation = {
+  sponsorEnabled: boolean;
+  sponsorImgs: string[];
+}
+
 type OverlaySettings = {
   playerOverlayFeatures: PlayerOverlayFeatures;
   gameOverviewVisible: GameOverviewVisible;
   otherOverlayFeatures: OtherOverlayFeatures;
   roundOutcomeBanner: RoundOutcomeBanner;
   nameType: "Name" | "Name and tagline";
-  attackerTeamName: string;
-  defenderTeamName: string;
+  redTeamName: string;
+  blueTeamName: string;
+  series: SeriesInformation;
+  sponsors: SponsorInformation;
 };
 
 function createDefaultOverlaySettings(): OverlaySettings {
   return {
     nameType: "Name",
-    attackerTeamName: "TEAM1",
-    defenderTeamName: "TEAM2",
+    redTeamName: "TEAM2",
+    blueTeamName: "TEAM1",
     playerOverlayFeatures: {
       playerAbilities: true,
       playerHealth: true,
-      playerCredits: true,
       agentImages: true,
-      playerLoadout: true,
       playerKDA: true
     },
     gameOverviewVisible: {
@@ -70,6 +80,16 @@ function createDefaultOverlaySettings(): OverlaySettings {
       ace: true,
       teamAce: true,
       thrifty: true
+    },
+    series: {
+      maps: ["Ascent (TEAM1)", "Bind (TEAM2)", "Fracture (DECIDER)"],
+      brandingImg: null,
+      showBrandingImg: false,
+      seriesName: "Tournament Name - Lower Bracket Series 1"
+    },
+    sponsors: {
+      sponsorEnabled: false,
+      sponsorImgs: []
     }
   };
 }
