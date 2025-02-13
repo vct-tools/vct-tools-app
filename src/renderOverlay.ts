@@ -64,7 +64,8 @@ const defC = "50, 175, 138";
 const headerC = "224, 235, 185";
 const accent = "134, 191, 42";
 
-const images: Record<string, HTMLImageElement> = {};
+const agentImages: Record<string, HTMLImageElement> = {};
+const abilityImages: Record<string, { Ability1: HTMLImageElement; Ability2: HTMLImageElement; Signature: HTMLImageElement; Ultimate: HTMLImageElement; }> = {};
 
 const shownInformation = {
   roundWin: {
@@ -83,7 +84,7 @@ const shownInformation = {
         roundNum: 0
       },
       animation: {
-        stall: 2000
+        stall: 120
       }
     }
   }
@@ -141,19 +142,18 @@ export function renderLoop(
   settings: Ref<OverlaySettings>,
   ctx: CanvasRenderingContext2D
 ): void {
-  const targetFps = 30;
+  const targetFps = 60;
   const frameTime = 1000 / targetFps;
-  let lastFrameTime = 0;
+  let lastFrameTime = performance.now();
 
   const r = (timestamp: number) => {
-    if (timestamp - lastFrameTime < frameTime) {
-      requestAnimationFrame(r);
-      return;
+    const deltaTime = timestamp - lastFrameTime;
+
+    if (deltaTime >= frameTime) {
+      lastFrameTime = timestamp - (deltaTime % frameTime);
+      renderOverlay(ctx, settings.value, gameData ? gameData.value : null);
     }
 
-    lastFrameTime = timestamp;
-
-    renderOverlay(ctx, settings.value, gameData ? gameData.value : null);
     requestAnimationFrame(r);
   };
 
@@ -178,18 +178,18 @@ export function renderOverlay(
       shownInformation.roundWin.i.data.winningTeamName,
       shownInformation.roundWin.i.data.winningTeamSide,
       shownInformation.roundWin.i.data.roundNum,
-      shownInformation.roundWin.i.t
+      shownInformation.roundWin.i.t / 100
     );
-    if (shownInformation.roundWin.i.t == 0.9) {
+    if (shownInformation.roundWin.i.t == 90) {
       stalls.roundWin += 1;
       if (stalls.roundWin >= shownInformation.roundWin.i.animation.stall) {
         stalls.roundWin = 0;
-        shownInformation.roundWin.i.t += 0.02;
+        shownInformation.roundWin.i.t += 2;
       }
     } else {
-      shownInformation.roundWin.i.t += 0.02;
+      shownInformation.roundWin.i.t += 2;
     }
-    if (shownInformation.roundWin.i.t >= 1) shownInformation.roundWin.i.running = false;
+    if (shownInformation.roundWin.i.t >= 100) shownInformation.roundWin.i.running = false;
   }
 
   score(ctx, {
@@ -446,17 +446,27 @@ function score(
 
 async function playerLeft(ctx: CanvasRenderingContext2D, x: number, y: number, alive: boolean) {
   const playerHealth = 100;
-  const ultProgress = [4, 9];
+  const ultProgress = [6, 6];
   const playerShields = 50;
-  const agent = "Raze";
+  const agent = "Reyna";
+  const kda = [15, 5, 3];
+  const agentData = agents.find((a) => a.name == agent);
+  if (!agentData) return;
 
   // get agent image
-  if (!images[agent]) {
-    const agentF = agents.find((a) => a.name == agent);
-    if (agentF) {
-      images[agentF.name] = await loadImg(agentF.icon);
+  if (!agentImages[agent]) {
+    agentImages[agent] = await loadImg(agentData.icon);
+  }
+
+  if (!abilityImages[agent]) {
+    abilityImages[agent] = {
+      Ability1: await loadImg(agentData.abilities.Ability1.icon),
+      Ability2: await loadImg(agentData.abilities.Ability2.icon),
+      Signature: await loadImg(agentData.abilities.Signature.icon),
+      Ultimate: await loadImg(agentData.abilities.Ultimate.icon)
     }
   }
+
   ctx.filter = alive ? "" : "grayscale(1)";
   ctx.fillStyle = `rgba(${defC}, 0.5)`;
   ctx.fillRect(x, y - 30, 400, 30);
@@ -477,24 +487,35 @@ async function playerLeft(ctx: CanvasRenderingContext2D, x: number, y: number, a
     "middle"
   );
 
-  if (alive) {
-    (() => {
-      const spacing = 12;
-      const pointCount = ultProgress[1];
-      const totalWidth = (pointCount - 1) * spacing;
-      const location = x + 250 - totalWidth / 2;
+  ctx.fillStyle = `rgba(0, 0, 0, 0.3)`;
+  ctx.fillRect(x, y - 30 - 10 - 70, 400, 70);
 
-      for (let i = 0; i < pointCount; i++) {
-        ctx.fillStyle = ultProgress[0] > i ? "white" : "rgb(58, 58, 58)";
-        ctx.beginPath();
-        ctx.moveTo(location + i * spacing, y - 15);
-        ctx.lineTo(location + 5 + i * spacing, y - 20);
-        ctx.lineTo(location + 10 + i * spacing, y - 15);
-        ctx.lineTo(location + 5 + i * spacing, y - 10);
-        ctx.closePath();
-        ctx.fill();
-      }
-    })();
+  if (alive) {
+    if (ultProgress[0] != ultProgress[1]) {
+      (() => {
+        const spacing = 12;
+        const pointCount = ultProgress[1];
+        const totalWidth = (pointCount - 1) * spacing;
+        const location = x + 250 - totalWidth / 2;
+
+        for (let i = 0; i < pointCount; i++) {
+          ctx.fillStyle = ultProgress[0] > i ? "white" : "rgb(58, 58, 58)";
+          ctx.beginPath();
+          ctx.moveTo(location + i * spacing, y - 15);
+          ctx.lineTo(location + 5 + i * spacing, y - 20);
+          ctx.lineTo(location + 10 + i * spacing, y - 15);
+          ctx.lineTo(location + 5 + i * spacing, y - 10);
+          ctx.closePath();
+          ctx.fill();
+        }
+      })();
+    } else {
+      ctx.fillStyle = `rgba(${defC}, 0.9)`;
+      ctx.fillRect(x + 250 - 30, y - 30, 60, 30);
+
+      // Draw ultimate icon
+      ctx.drawImage(abilityImages[agent].Ultimate, x + 250 - 15, y - 30, 30, 30);
+    }
 
     // draw shield
     ctx.strokeStyle = "white";
@@ -536,14 +557,31 @@ async function playerLeft(ctx: CanvasRenderingContext2D, x: number, y: number, a
       "center",
       "middle"
     );
+
+    // Draw abilities
+    ctx.fillStyle = `rgba(0, 0, 0, 0.1)`;
+    ctx.fillRect(x + 100 - 10, y - 30 - 10 - 70 - 10 + 35/2, 35 + 20, 35 + 20);
+    ctx.drawImage(abilityImages[agent].Ability1, x + 100, y - 30 - 10 - 70 + 35/2, 35, 35);
+    ctx.fillRect(x + 160 - 10, y - 30 - 10 - 70 - 10 + 35/2, 35 + 20, 35 + 20);
+    ctx.drawImage(abilityImages[agent].Ability2, x + 160, y - 30 - 10 - 70 + 35/2, 35, 35);
+    ctx.fillRect(x + 220 - 10, y - 30 - 10 - 70 - 10 + 35/2, 35 + 20, 35 + 20);
+    ctx.drawImage(abilityImages[agent].Signature, x + 220, y - 30 - 10 - 70 + 35/2, 35, 35);
+
+    // Draw KDA
+    drawCenteredText(
+      ctx,
+      `${kda[0]} / ${kda[1]} / ${kda[2]}`,
+      x + 330,
+      y - 30 - 10 - 70 + 35,
+      "20px 'Din Next'",
+      "white",
+      "center",
+      "middle"
+    );
   }
 
-  // Draw box
-  ctx.fillStyle = `rgba(0, 0, 0, 0.3)`;
-  ctx.fillRect(x, y - 30 - 10 - 70, 400, 70);
-
   // Draw agent
-  ctx.drawImage(images[agent], x + 5, y - 30 - 10 - 70, 70, 70);
+  ctx.drawImage(agentImages[agent], x + 5, y - 30 - 10 - 70, 70, 70);
   ctx.filter = "none";
 }
 
