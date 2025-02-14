@@ -95,6 +95,18 @@ const shownInformation = {
         stall: 120
       }
     }
+  },
+  gameOverview: {
+    shown: false,
+    lastShown: false,
+    running: false,
+    t: 0
+  },
+  playerInformation: {
+    shown: true,
+    lastShown: true,
+    running: false,
+    t: 0
   }
 };
 
@@ -287,6 +299,16 @@ export function renderOverlay(
     );
   }
 
+  if (shownInformation.playerInformation.shown && !shownInformation.playerInformation.lastShown) {
+    shownInformation.playerInformation.running = true;
+    shownInformation.playerInformation.t = 0;
+  }
+
+  if (shownInformation.playerInformation.running) {
+    
+  }
+
+  // Draw overlay overlay
   if (settings.series.maps.length > 0) {
     seriesMaps(ctx, settings);
   }

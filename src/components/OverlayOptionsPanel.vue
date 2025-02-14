@@ -66,6 +66,7 @@
       ></canvas>
       <div class="flex-l"></div>
       <UIButtonLabel>Preview options</UIButtonLabel>
+      <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown">Show game overview</UIButton>
       <div class="flex-h">
         <UISelect v-model="previewOptions.triggerCeromonyWinTeam" prefix="Winning team: " :items="[`Attack`, `Defense`]"></UISelect>
         <UISelect v-model="previewOptions.triggerCeromonyType" prefix="Ceromony: " :items="[`Round Win`, `Clutch`, `Flawless`, `Ace`, `Team Ace`, `Thrifty`]"></UISelect>
