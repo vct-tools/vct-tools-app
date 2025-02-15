@@ -164,10 +164,8 @@ canvas {
 import AdsenseMultiplexAd from "@/components/Adsense/AdsenseMultiplexAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
-import agents from "@/agents";
-import { maps } from "@/maps";
 import { nextTick, ref, type Ref, watch } from "vue";
-import { UIField, UIButtonLabel, UIButton, UISelect } from "vct-tools-components";
+import { UIField, UIButtonLabel, UIButton, UISelect, agents, maps } from "vct-tools-components";
 import { type TeamComp, renderTeamComp } from "./Renderers/teamComp";
 import { type TeamRoster, renderTeamRoster } from "./Renderers/teamRoster";
 

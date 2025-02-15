@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
 import { BIconDashCircle, BIconCheckCircle } from "bootstrap-icons-vue";
-import { maps, sides } from "@/maps";
+import { maps, sides } from "vct-tools-components";
 import { type Ref } from "vue";
 
 defineProps({

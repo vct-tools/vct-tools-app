@@ -1,7 +1,5 @@
-import { maps } from "@/maps";
 import NoAgentImg from "@/assets/images/Unknown.webp";
-import { roleImages } from "@/agents";
-import agents from "@/agents";
+import { roleImages, agents, maps } from "vct-tools-components";
 import type { Ref } from "vue";
 import { loadImg } from "../load_img";
 

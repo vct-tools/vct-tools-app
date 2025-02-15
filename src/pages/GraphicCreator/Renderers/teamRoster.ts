@@ -1,5 +1,5 @@
 import { type Ref } from "vue";
-import agents from "@/agents";
+import { agents } from "vct-tools-components";
 import { loadImg } from "../load_img";
 
 type TeamRoster = {

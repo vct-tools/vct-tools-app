@@ -72,7 +72,7 @@ declare global {
 import { BIconCrosshair } from "bootstrap-icons-vue";
 
 import { ref, type Ref } from "vue";
-import { sides } from "@/maps.ts";
+import { sides } from "vct-tools-components";
 import MapHistoryView from "@/components/MapHistoryView.vue";
 
 const mapHistory: Ref<

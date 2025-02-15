@@ -41,7 +41,7 @@
 </style>
 
 <script setup lang="ts">
-import { maps } from "@/maps.ts";
+import { maps } from "vct-tools-components";
 import { ref, watch, type Ref } from "vue";
 
 const model: Ref<string[] | undefined> = defineModel();

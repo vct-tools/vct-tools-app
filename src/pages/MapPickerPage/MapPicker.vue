@@ -192,11 +192,10 @@
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
-import { UIButton, UILargeButton, UISelect } from "vct-tools-components";
+import { UIButton, UILargeButton, UISelect, maps, sides } from "vct-tools-components";
 import { BIconCrosshair } from "bootstrap-icons-vue";
 
 import { ref, type Ref } from "vue";
-import { maps, sides } from "@/maps.ts";
 import MapHistoryView from "@/components/MapHistoryView.vue";
 import html2canvas from "html2canvas";
 import AdsenseSidebarAd from "@/components/Adsense/AdsenseSidebarAd.vue";

@@ -141,8 +141,7 @@ import AdsenseMultiplexAd from "@/components/Adsense/AdsenseMultiplexAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
-import { UIButton, UILargeButton, UISelect, UISwitch } from "vct-tools-components";
-import { maps } from "@/maps";
+import { UIButton, UILargeButton, UISelect, UISwitch, maps } from "vct-tools-components";
 import { BIconHeartFill, BIconQuestionDiamondFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
 
