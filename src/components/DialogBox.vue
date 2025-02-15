@@ -106,7 +106,7 @@
 </style>
 
 <script setup lang="ts">
-import UILargeButton from "@/components/UIElement/UILargeButton.vue";
+import { UILargeButton } from "vct-tools-components";
 
 defineProps({
   header: String

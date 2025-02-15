@@ -5,8 +5,10 @@
         <div class="graphic">
           <div class="graphic-canvas">
             <canvas width="600" :height="canvasHeight" ref="mainCanvas"></canvas>
-            <div style="display: flex; width: 100%; gap: 2px;">
-              <UIButtonLabel>{{ rendered ? "Done rendering" : "Rendering graphic..." }}</UIButtonLabel>
+            <div style="display: flex; width: 100%; gap: 2px">
+              <UIButtonLabel>{{
+                rendered ? "Done rendering" : "Rendering graphic..."
+              }}</UIButtonLabel>
               <UIButton @click="copy()">Copy to clipboard</UIButton>
               <UIButton @click="save()">Save image</UIButton>
               <UIButton @click="draw()">Re-render</UIButton>
@@ -16,14 +18,30 @@
         <div class="options">
           <div class="panel">
             <HeaderSmall>Select Graphic</HeaderSmall>
-            <UISelect prefix="Graphic Type: " :items="[`Team composition`, `Team roster`]" v-model="graphicType"></UISelect>
+            <UISelect
+              prefix="Graphic Type: "
+              :items="[`Team composition`, `Team roster`]"
+              v-model="graphicType"
+            ></UISelect>
           </div>
           <div class="panel" v-if="graphicType == `Team composition`">
             <HeaderSmall>Team Comp</HeaderSmall>
-            <UISelect prefix="Map: " :items="maps.map((a) => a.name)" v-model="teamCompData.map"></UISelect>
-            <div v-for="(p, i) in teamCompData.comp" :key="i" style="display: flex; gap: 2px;">
-              <UISelect prefix="Agent: " :items="[`(Remove player)`, `(Show as unknown)`, ...agents.map((a) => a.name)]" v-model="teamCompData.comp[i].agent" style="width: 50%;"></UISelect>
-              <UIField v-model="teamCompData.comp[i].player" style="width: 50%; text-align: center;"></UIField>
+            <UISelect
+              prefix="Map: "
+              :items="maps.map((a) => a.name)"
+              v-model="teamCompData.map"
+            ></UISelect>
+            <div v-for="(p, i) in teamCompData.comp" :key="i" style="display: flex; gap: 2px">
+              <UISelect
+                prefix="Agent: "
+                :items="[`(Remove player)`, `(Show as unknown)`, ...agents.map((a) => a.name)]"
+                v-model="teamCompData.comp[i].agent"
+                style="width: 50%"
+              ></UISelect>
+              <UIField
+                v-model="teamCompData.comp[i].player"
+                style="width: 50%; text-align: center"
+              ></UIField>
             </div>
           </div>
           <div class="panel" v-if="graphicType == `Team roster`">
@@ -31,7 +49,17 @@
             <div class="fg">
               <UIField v-model="teamRosterData.teamName"></UIField>
               <UIField v-model="teamRosterData.tagline"></UIField>
-              <UIButton @click="teamRosterData.roster.push({ name: `Player 1`, image: { imageType: `Agent Portrait`, agent: `Brimstone`, dataUri: null }, type: `Player` })" :disabled="teamRosterData.roster.length >= 8">+ Add new member</UIButton>
+              <UIButton
+                @click="
+                  teamRosterData.roster.push({
+                    name: `Player 1`,
+                    image: { imageType: `Agent Portrait`, agent: `Brimstone`, dataUri: null },
+                    type: `Player`
+                  })
+                "
+                :disabled="teamRosterData.roster.length >= 8"
+                >+ Add new member</UIButton
+              >
             </div>
             <div class="fg">
               <UIButtonLabel>Name</UIButtonLabel>
@@ -42,10 +70,20 @@
             </div>
             <div class="fg" v-for="(member, i) in teamRosterData.roster" :key="i">
               <UIField v-model="teamRosterData.roster[i].name"></UIField>
-              <UISelect v-model="teamRosterData.roster[i].image.imageType" :items="[`File Upload`, `Agent Portrait`]"></UISelect>
-              <UISelect v-model="teamRosterData.roster[i].image.agent" :items="agents.map((a) => a.name)" v-if="teamRosterData.roster[i].image.imageType == `Agent Portrait`"></UISelect>
+              <UISelect
+                v-model="teamRosterData.roster[i].image.imageType"
+                :items="[`File Upload`, `Agent Portrait`]"
+              ></UISelect>
+              <UISelect
+                v-model="teamRosterData.roster[i].image.agent"
+                :items="agents.map((a) => a.name)"
+                v-if="teamRosterData.roster[i].image.imageType == `Agent Portrait`"
+              ></UISelect>
               <UIButton v-else @click="loadImgRoster(i)">Select image...</UIButton>
-              <UISelect v-model="teamRosterData.roster[i].type" :items="[`Player`, `Substitute`, `Coach`]"></UISelect>
+              <UISelect
+                v-model="teamRosterData.roster[i].type"
+                :items="[`Player`, `Substitute`, `Coach`]"
+              ></UISelect>
               <UIButton @click="teamRosterData.roster.splice(i, 1)">Delete</UIButton>
             </div>
           </div>
@@ -126,13 +164,10 @@ canvas {
 import AdsenseMultiplexAd from "@/components/Adsense/AdsenseMultiplexAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
-import UISelect from "@/components/UIElement/UISelect.vue";
 import agents from "@/agents";
 import { maps } from "@/maps";
 import { nextTick, ref, type Ref, watch } from "vue";
-import UIField from "@/components/UIElement/UIField.vue";
-import UIButtonLabel from "@/components/UIElement/UIButtonLabel.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
+import { UIField, UIButtonLabel, UIButton, UISelect } from "vct-tools-components";
 import { type TeamComp, renderTeamComp } from "./Renderers/teamComp";
 import { type TeamRoster, renderTeamRoster } from "./Renderers/teamRoster";
 
@@ -146,7 +181,7 @@ const teamCompData = ref<TeamComp>({
     { player: "Player 2", agent: "Jett" },
     { player: "Player 3", agent: "Phoenix" },
     { player: "Player 4", agent: "Sage" },
-    { player: "Player 5", agent: "Sova" },
+    { player: "Player 5", agent: "Sova" }
   ]
 });
 const teamRosterData = ref<TeamRoster>({
@@ -203,10 +238,11 @@ const draw = async () => {
   if (mainCanvas.value) {
     const ctx = mainCanvas.value.getContext("2d");
     if (ctx) {
-      canvasHeight.value = {
-        "Team composition": 470,
-        "Team roster": 540
-      }[graphicType.value] || 500;
+      canvasHeight.value =
+        {
+          "Team composition": 470,
+          "Team roster": 540
+        }[graphicType.value] || 500;
 
       await nextTick();
 
@@ -220,7 +256,7 @@ const draw = async () => {
     }
   }
   rendered.value = true;
-}
+};
 
 const loadImgRoster = (i: number) => {
   const input = document.createElement("input");
@@ -232,12 +268,12 @@ const loadImgRoster = (i: number) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         teamRosterData.value.roster[i].image.dataUri = e.target?.result as string;
-      }
+      };
       reader.readAsDataURL(file);
     }
-  }
+  };
   input.click();
-}
+};
 
 const copy = () => {
   if (mainCanvas.value) {
@@ -248,7 +284,7 @@ const copy = () => {
       }
     });
   }
-}
+};
 
 const save = () => {
   if (mainCanvas.value) {
@@ -263,10 +299,14 @@ const save = () => {
       }
     });
   }
-}
+};
 
-watch([graphicType, teamCompData, teamRosterData, mainCanvas], async () => {
-  await nextTick();
-  draw();
-}, { deep: true, immediate: true });
+watch(
+  [graphicType, teamCompData, teamRosterData, mainCanvas],
+  async () => {
+    await nextTick();
+    draw();
+  },
+  { deep: true, immediate: true }
+);
 </script>

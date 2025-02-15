@@ -23,8 +23,13 @@
               <header-small>Map pool selection</header-small>
               Select 7 maps to be used in the map pool.
               <map-pool-selector v-model="mapPool"></map-pool-selector>
-              <div style="display: flex; justify-content: center; margin-top: 1em;">
-                <UILargeButton :disabled="mapPool.length != 7" @click="selectedMaps = true" disabled-label="Select 7 maps">Save maps</UILargeButton>
+              <div style="display: flex; justify-content: center; margin-top: 1em">
+                <UILargeButton
+                  :disabled="mapPool.length != 7"
+                  @click="selectedMaps = true"
+                  disabled-label="Select 7 maps"
+                  >Save maps</UILargeButton
+                >
               </div>
             </div>
             <div class="panel game" v-if="selectedMaps && !finished">
@@ -55,9 +60,13 @@
                 v-model="selectedTeam"
                 v-if="currentStage == stage.SELECT_ORDER"
               ></UISelect>
-              <div style="display: flex; justify-content: center; margin-top: 1em;">
-                <UILargeButton :disabled="!(selectedMap != null || selectedSide != null || selectedTeam != null)"
-                @click="handleClick()" disabled-label="Select a choice">Continue</UILargeButton>
+              <div style="display: flex; justify-content: center; margin-top: 1em">
+                <UILargeButton
+                  :disabled="!(selectedMap != null || selectedSide != null || selectedTeam != null)"
+                  @click="handleClick()"
+                  disabled-label="Select a choice"
+                  >Continue</UILargeButton
+                >
               </div>
             </div>
             <div class="panel" v-if="finished">
@@ -183,8 +192,7 @@
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
-import UISelect from "@/components/UIElement/UISelect.vue";
+import { UIButton, UILargeButton, UISelect } from "vct-tools-components";
 import { BIconCrosshair } from "bootstrap-icons-vue";
 
 import { ref, type Ref } from "vue";
@@ -192,7 +200,6 @@ import { maps, sides } from "@/maps.ts";
 import MapHistoryView from "@/components/MapHistoryView.vue";
 import html2canvas from "html2canvas";
 import AdsenseSidebarAd from "@/components/Adsense/AdsenseSidebarAd.vue";
-import UILargeButton from "@/components/UIElement/UILargeButton.vue";
 
 const externalWindow: Ref<WindowProxy | null> = ref(null);
 

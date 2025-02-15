@@ -20,7 +20,7 @@
       <UIButtonLabel>Series - Maps</UIButtonLabel>
       <div class="flex-h" v-for="(map, index) in model.series.maps" :key="index">
         <UIField v-model="model.series.maps[index]"></UIField>
-        <UIButton style="width: 25%;" @click="model.series.maps.splice(index, 1)">DEL</UIButton>
+        <UIButton style="width: 25%" @click="model.series.maps.splice(index, 1)">DEL</UIButton>
       </div>
       <UIButton @click="model.series.maps.push(`Map Name`)">Add map</UIButton>
       <UIButtonLabel>Series - Name</UIButtonLabel>
@@ -48,8 +48,8 @@
       <UIButtonLabel>Top-right corner sponsors</UIButtonLabel>
       <UISwitch v-model="model.sponsors.sponsorEnabled">Show sponsors</UISwitch>
       <div v-for="(img, index) in model.sponsors.sponsorImgs" :key="index">
-        <div style="display: flex; justify-content: center;">
-          <img :src="img" style="max-height: 70px;" />
+        <div style="display: flex; justify-content: center">
+          <img :src="img" style="max-height: 70px" />
         </div>
         <UIButton @click="model.sponsors.sponsorImgs.splice(index, 1)">DEL</UIButton>
       </div>
@@ -66,10 +66,20 @@
       ></canvas>
       <div class="flex-l"></div>
       <UIButtonLabel>Preview options</UIButtonLabel>
-      <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown">Show game overview</UIButton>
+      <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown"
+        >Show game overview</UIButton
+      >
       <div class="flex-h">
-        <UISelect v-model="previewOptions.triggerCeromonyWinTeam" prefix="Winning team: " :items="[`Attack`, `Defense`]"></UISelect>
-        <UISelect v-model="previewOptions.triggerCeromonyType" prefix="Ceromony: " :items="[`Round Win`, `Clutch`, `Flawless`, `Ace`, `Team Ace`, `Thrifty`]"></UISelect>
+        <UISelect
+          v-model="previewOptions.triggerCeromonyWinTeam"
+          prefix="Winning team: "
+          :items="[`Attack`, `Defense`]"
+        ></UISelect>
+        <UISelect
+          v-model="previewOptions.triggerCeromonyType"
+          prefix="Ceromony: "
+          :items="[`Round Win`, `Clutch`, `Flawless`, `Ace`, `Team Ace`, `Thrifty`]"
+        ></UISelect>
         <UIButton @click="preview_TriggerCeromony()">Trigger ceromony</UIButton>
       </div>
       <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
@@ -127,16 +137,12 @@
 
 <script setup lang="ts">
 import { createDefaultOverlaySettings, type OverlaySettings } from "@/overlayType";
-import UIButton from "./UIElement/UIButton.vue";
-import UIButtonLabel from "./UIElement/UIButtonLabel.vue";
-import UISelect from "./UIElement/UISelect.vue";
-import UISwitch from "./UIElement/UISwitch.vue";
 
 import HavenGameplay from "@/assets/images/haven_gameplay.png";
 
 import { onMounted, ref, type Ref } from "vue";
 import { renderLoop, shownInformation } from "@/renderOverlay";
-import UIField from "./UIElement/UIField.vue";
+import { UIField, UISwitch, UISelect, UIButtonLabel, UIButton } from "vct-tools-components";
 import { ceromonyFilter } from "@/overlayPreParse";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
@@ -164,15 +170,14 @@ onMounted(() => {
 
 const preview_TriggerCeromony = () => {
   shownInformation.roundWin.trigger(
-    ceromonyFilter(
-      previewOptions.value.triggerCeromonyType,
-      model.value
-    ),
-    previewOptions.value.triggerCeromonyWinTeam == "Attack" ? model.value.redTeamName : model.value.blueTeamName,
+    ceromonyFilter(previewOptions.value.triggerCeromonyType, model.value),
+    previewOptions.value.triggerCeromonyWinTeam == "Attack"
+      ? model.value.redTeamName
+      : model.value.blueTeamName,
     previewOptions.value.triggerCeromonyWinTeam,
     1
   );
-}
+};
 
 const getImageDataURI = async () => {
   return new Promise<string>((resolve, reject) => {
@@ -191,25 +196,25 @@ const getImageDataURI = async () => {
               reject("Invalid image file");
             }
           }
-        }
+        };
         reader.readAsDataURL(file);
       } else {
         reject("No file selected");
       }
-    }
+    };
     input.click();
-  })
-}
+  });
+};
 
 const loadBranding = async () => {
   try {
     model.value.series.brandingImg = await getImageDataURI();
   } catch {}
-}
+};
 
 const newSponsor = async () => {
   try {
     model.value.sponsors.sponsorImgs.push(await getImageDataURI());
   } catch {}
-}
+};
 </script>

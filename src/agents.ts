@@ -159,10 +159,297 @@ const roleImages = [
     role: Role.Initiator,
     image: Initiator
   }
-]
+];
 
 // Generated using /scripts/CreateAgent.cjs
-const agents = [{ name: "Gekko", icon: Gekko, role: Role.Initiator, abilities: {"Ability2": { name: "Wingman", icon: Wingman },"Signature": { name: "Dizzy", icon: Dizzy },"Ability1": { name: "Mosh Pit", icon: MoshPit },"Ultimate": { name: "Thrash", icon: Thrash },},},{ name: "Fade", icon: Fade, role: Role.Initiator, abilities: {"Ability2": { name: "Seize", icon: Seize },"Signature": { name: "Haunt", icon: Haunt },"Ability1": { name: "Prowler", icon: Prowler },"Ultimate": { name: "Nightfall", icon: Nightfall },},},{ name: "Breach", icon: Breach, role: Role.Initiator, abilities: {"Ability2": { name: "Flashpoint", icon: Flashpoint },"Signature": { name: "Fault Line", icon: FaultLine },"Ability1": { name: "Aftershock", icon: Aftershock },"Ultimate": { name: "Rolling Thunder", icon: RollingThunder },},},{ name: "Deadlock", icon: Deadlock, role: Role.Sentinel, abilities: {"Ability2": { name: "Sonic Sensor", icon: SonicSensor },"Signature": { name: "Barrier Mesh", icon: BarrierMesh },"Ability1": { name: "GravNet", icon: Gravnet },"Ultimate": { name: "Annihilation", icon: Annihilation },},},{ name: "Tejo", icon: Tejo, role: Role.Initiator, abilities: {"Signature": { name: "Guided Salvo", icon: GuidedSalvo },"Ability2": { name: "Special Delivery", icon: SpecialDelivery },"Ultimate": { name: "Armageddon", icon: Armageddon },"Ability1": { name: "Stealth Drone", icon: StealthDrone },},},{ name: "Raze", icon: Raze, role: Role.Duelist, abilities: {"Ability2": { name: "Blast Pack", icon: BlastPack },"Signature": { name: "Paint Shells", icon: PaintShells },"Ability1": { name: "Boom Bot", icon: BoomBot },"Ultimate": { name: "Showstopper", icon: Showstopper },},},{ name: "Chamber", icon: Chamber, role: Role.Sentinel, abilities: {"Signature": { name: "Rendezvous", icon: Rendezvous },"Ability1": { name: "Trademark", icon: Trademark },"Ability2": { name: "Headhunter", icon: Headhunter },"Ultimate": { name: "Tour De Force", icon: TourDeForce },},},{ name: "KAY/O", icon: KAYO, role: Role.Initiator, abilities: {"Ability1": { name: "FRAG/ment", icon: Fragment },"Ability2": { name: "FLASH/drive", icon: Flashdrive },"Signature": { name: "ZERO/point", icon: Zeropoint },"Ultimate": { name: "NULL/cmd", icon: Nullcmd },},},{ name: "Skye", icon: Skye, role: Role.Initiator, abilities: {"Ability2": { name: "Trailblazer", icon: Trailblazer },"Signature": { name: "Guiding Light", icon: GuidingLight },"Ability1": { name: "Regrowth", icon: Regrowth },"Ultimate": { name: "Seekers", icon: Seekers },},},{ name: "Cypher", icon: Cypher, role: Role.Sentinel, abilities: {"Ability2": { name: "Cyber Cage", icon: CyberCage },"Signature": { name: "Spycam", icon: Spycam },"Ability1": { name: "Trapwire", icon: Trapwire },"Ultimate": { name: "Neural Theft", icon: NeuralTheft },},},{ name: "Sova", icon: Sova, role: Role.Initiator, abilities: {"Ability2": { name: "Shock Bolt", icon: ShockBolt },"Signature": { name: "Recon Bolt", icon: ReconBolt },"Ability1": { name: "Owl Drone", icon: OwlDrone },"Ultimate": { name: "Hunter's Fury", icon: HuntersFury },},},{ name: "Killjoy", icon: Killjoy, role: Role.Sentinel, abilities: {"Ability1": { name: "Nanoswarm", icon: Nanoswarm },"Ability2": { name: "ALARMBOT", icon: Alarmbot },"Signature": { name: "TURRET", icon: Turret },"Ultimate": { name: "Lockdown", icon: Lockdown },},},{ name: "Harbor", icon: Harbor, role: Role.Controller, abilities: {"Ability2": { name: "Cove", icon: Cove },"Ability1": { name: "Cascade", icon: Cascade },"Signature": { name: "High Tide", icon: HighTide },"Ultimate": { name: "Reckoning", icon: Reckoning },},},{ name: "Vyse", icon: Vyse, role: Role.Sentinel, abilities: {"Ability2": { name: "Shear", icon: Shear },"Signature": { name: "Arc Rose", icon: ArcRose },"Ability1": { name: "Razorvine", icon: Razorvine },"Ultimate": { name: "Steel Garden", icon: SteelGarden },},},{ name: "Viper", icon: Viper, role: Role.Controller, abilities: {"Ability2": { name: "Poison Cloud", icon: PoisonCloud },"Signature": { name: "Toxic Screen", icon: ToxicScreen },"Ability1": { name: "Snake Bite", icon: SnakeBite },"Ultimate": { name: "Viper's Pit", icon: VipersPit },},},{ name: "Phoenix", icon: Phoenix, role: Role.Duelist, abilities: {"Ability1": { name: "Blaze", icon: Blaze },"Ability2": { name: "Hot Hands", icon: HotHands },"Signature": { name: "Curveball", icon: Curveball },"Ultimate": { name: "Run it Back", icon: RunItBack },},},{ name: "Astra", icon: Astra, role: Role.Controller, abilities: {"Ability2": { name: "Nova Pulse", icon: NovaPulse },"Signature": { name: "Nebula  / Dissipate", icon: NebulaDissipate },"Ability1": { name: "Gravity Well", icon: GravityWell },"Ultimate": { name: "Astral Form / Cosmic Divide", icon: AstralFormCosmicDivide },},},{ name: "Brimstone", icon: Brimstone, role: Role.Controller, abilities: {"Ability1": { name: "Stim Beacon", icon: StimBeacon },"Ability2": { name: "Incendiary", icon: Incendiary },"Signature": { name: "Sky Smoke", icon: SkySmoke },"Ultimate": { name: "Orbital Strike", icon: OrbitalStrike },},},{ name: "Iso", icon: Iso, role: Role.Duelist, abilities: {"Ability2": { name: "Undercut", icon: Undercut },"Ultimate": { name: "Kill Contract", icon: KillContract },"Signature": { name: "Double Tap", icon: DoubleTap },"Ability1": { name: "Contingency", icon: Contingency },},},{ name: "Clove", icon: Clove, role: Role.Controller, abilities: {"Ability1": { name: "Pick-me-up", icon: Pickmeup },"Signature": { name: "Ruse", icon: Ruse },"Ultimate": { name: "Not Dead Yet", icon: NotDeadYet },"Ability2": { name: "Meddle", icon: Meddle },},},{ name: "Neon", icon: Neon, role: Role.Duelist, abilities: {"Signature": { name: "High Gear", icon: HighGear },"Ability2": { name: "Relay Bolt", icon: RelayBolt },"Ability1": { name: "Fast Lane", icon: FastLane },"Ultimate": { name: "Overdrive", icon: Overdrive },},},{ name: "Yoru", icon: Yoru, role: Role.Duelist, abilities: {"Ability1": { name: "FAKEOUT", icon: Fakeout },"Ability2": { name: "BLINDSIDE", icon: Blindside },"Signature": { name: "GATECRASH", icon: Gatecrash },"Ultimate": { name: "DIMENSIONAL DRIFT", icon: DimensionalDrift },},},{ name: "Sage", icon: Sage, role: Role.Sentinel, abilities: {"Ability2": { name: "Slow Orb", icon: SlowOrb },"Signature": { name: "Healing Orb", icon: HealingOrb },"Ability1": { name: "Barrier Orb", icon: BarrierOrb },"Ultimate": { name: "Resurrection", icon: Resurrection },},},{ name: "Reyna", icon: Reyna, role: Role.Duelist, abilities: {"Ability2": { name: "Devour", icon: Devour },"Signature": { name: "Dismiss", icon: Dismiss },"Ability1": { name: "Leer", icon: Leer },"Ultimate": { name: "Empress", icon: Empress },},},{ name: "Omen", icon: Omen, role: Role.Controller, abilities: {"Ability2": { name: "Paranoia", icon: Paranoia },"Signature": { name: "Dark Cover", icon: DarkCover },"Ability1": { name: "Shrouded Step", icon: ShroudedStep },"Ultimate": { name: "From the Shadows", icon: FromTheShadows },},},{ name: "Jett", icon: Jett, role: Role.Duelist, abilities: {"Ability2": { name: "Updraft", icon: Updraft },"Signature": { name: "Tailwind", icon: Tailwind },"Ability1": { name: "Cloudburst", icon: Cloudburst },"Ultimate": { name: "Blade Storm", icon: BladeStorm },},},];
+const agents = [
+  {
+    name: "Gekko",
+    icon: Gekko,
+    role: Role.Initiator,
+    abilities: {
+      Ability2: { name: "Wingman", icon: Wingman },
+      Signature: { name: "Dizzy", icon: Dizzy },
+      Ability1: { name: "Mosh Pit", icon: MoshPit },
+      Ultimate: { name: "Thrash", icon: Thrash }
+    }
+  },
+  {
+    name: "Fade",
+    icon: Fade,
+    role: Role.Initiator,
+    abilities: {
+      Ability2: { name: "Seize", icon: Seize },
+      Signature: { name: "Haunt", icon: Haunt },
+      Ability1: { name: "Prowler", icon: Prowler },
+      Ultimate: { name: "Nightfall", icon: Nightfall }
+    }
+  },
+  {
+    name: "Breach",
+    icon: Breach,
+    role: Role.Initiator,
+    abilities: {
+      Ability2: { name: "Flashpoint", icon: Flashpoint },
+      Signature: { name: "Fault Line", icon: FaultLine },
+      Ability1: { name: "Aftershock", icon: Aftershock },
+      Ultimate: { name: "Rolling Thunder", icon: RollingThunder }
+    }
+  },
+  {
+    name: "Deadlock",
+    icon: Deadlock,
+    role: Role.Sentinel,
+    abilities: {
+      Ability2: { name: "Sonic Sensor", icon: SonicSensor },
+      Signature: { name: "Barrier Mesh", icon: BarrierMesh },
+      Ability1: { name: "GravNet", icon: Gravnet },
+      Ultimate: { name: "Annihilation", icon: Annihilation }
+    }
+  },
+  {
+    name: "Tejo",
+    icon: Tejo,
+    role: Role.Initiator,
+    abilities: {
+      Signature: { name: "Guided Salvo", icon: GuidedSalvo },
+      Ability2: { name: "Special Delivery", icon: SpecialDelivery },
+      Ultimate: { name: "Armageddon", icon: Armageddon },
+      Ability1: { name: "Stealth Drone", icon: StealthDrone }
+    }
+  },
+  {
+    name: "Raze",
+    icon: Raze,
+    role: Role.Duelist,
+    abilities: {
+      Ability2: { name: "Blast Pack", icon: BlastPack },
+      Signature: { name: "Paint Shells", icon: PaintShells },
+      Ability1: { name: "Boom Bot", icon: BoomBot },
+      Ultimate: { name: "Showstopper", icon: Showstopper }
+    }
+  },
+  {
+    name: "Chamber",
+    icon: Chamber,
+    role: Role.Sentinel,
+    abilities: {
+      Signature: { name: "Rendezvous", icon: Rendezvous },
+      Ability1: { name: "Trademark", icon: Trademark },
+      Ability2: { name: "Headhunter", icon: Headhunter },
+      Ultimate: { name: "Tour De Force", icon: TourDeForce }
+    }
+  },
+  {
+    name: "KAY/O",
+    icon: KAYO,
+    role: Role.Initiator,
+    abilities: {
+      Ability1: { name: "FRAG/ment", icon: Fragment },
+      Ability2: { name: "FLASH/drive", icon: Flashdrive },
+      Signature: { name: "ZERO/point", icon: Zeropoint },
+      Ultimate: { name: "NULL/cmd", icon: Nullcmd }
+    }
+  },
+  {
+    name: "Skye",
+    icon: Skye,
+    role: Role.Initiator,
+    abilities: {
+      Ability2: { name: "Trailblazer", icon: Trailblazer },
+      Signature: { name: "Guiding Light", icon: GuidingLight },
+      Ability1: { name: "Regrowth", icon: Regrowth },
+      Ultimate: { name: "Seekers", icon: Seekers }
+    }
+  },
+  {
+    name: "Cypher",
+    icon: Cypher,
+    role: Role.Sentinel,
+    abilities: {
+      Ability2: { name: "Cyber Cage", icon: CyberCage },
+      Signature: { name: "Spycam", icon: Spycam },
+      Ability1: { name: "Trapwire", icon: Trapwire },
+      Ultimate: { name: "Neural Theft", icon: NeuralTheft }
+    }
+  },
+  {
+    name: "Sova",
+    icon: Sova,
+    role: Role.Initiator,
+    abilities: {
+      Ability2: { name: "Shock Bolt", icon: ShockBolt },
+      Signature: { name: "Recon Bolt", icon: ReconBolt },
+      Ability1: { name: "Owl Drone", icon: OwlDrone },
+      Ultimate: { name: "Hunter's Fury", icon: HuntersFury }
+    }
+  },
+  {
+    name: "Killjoy",
+    icon: Killjoy,
+    role: Role.Sentinel,
+    abilities: {
+      Ability1: { name: "Nanoswarm", icon: Nanoswarm },
+      Ability2: { name: "ALARMBOT", icon: Alarmbot },
+      Signature: { name: "TURRET", icon: Turret },
+      Ultimate: { name: "Lockdown", icon: Lockdown }
+    }
+  },
+  {
+    name: "Harbor",
+    icon: Harbor,
+    role: Role.Controller,
+    abilities: {
+      Ability2: { name: "Cove", icon: Cove },
+      Ability1: { name: "Cascade", icon: Cascade },
+      Signature: { name: "High Tide", icon: HighTide },
+      Ultimate: { name: "Reckoning", icon: Reckoning }
+    }
+  },
+  {
+    name: "Vyse",
+    icon: Vyse,
+    role: Role.Sentinel,
+    abilities: {
+      Ability2: { name: "Shear", icon: Shear },
+      Signature: { name: "Arc Rose", icon: ArcRose },
+      Ability1: { name: "Razorvine", icon: Razorvine },
+      Ultimate: { name: "Steel Garden", icon: SteelGarden }
+    }
+  },
+  {
+    name: "Viper",
+    icon: Viper,
+    role: Role.Controller,
+    abilities: {
+      Ability2: { name: "Poison Cloud", icon: PoisonCloud },
+      Signature: { name: "Toxic Screen", icon: ToxicScreen },
+      Ability1: { name: "Snake Bite", icon: SnakeBite },
+      Ultimate: { name: "Viper's Pit", icon: VipersPit }
+    }
+  },
+  {
+    name: "Phoenix",
+    icon: Phoenix,
+    role: Role.Duelist,
+    abilities: {
+      Ability1: { name: "Blaze", icon: Blaze },
+      Ability2: { name: "Hot Hands", icon: HotHands },
+      Signature: { name: "Curveball", icon: Curveball },
+      Ultimate: { name: "Run it Back", icon: RunItBack }
+    }
+  },
+  {
+    name: "Astra",
+    icon: Astra,
+    role: Role.Controller,
+    abilities: {
+      Ability2: { name: "Nova Pulse", icon: NovaPulse },
+      Signature: { name: "Nebula  / Dissipate", icon: NebulaDissipate },
+      Ability1: { name: "Gravity Well", icon: GravityWell },
+      Ultimate: { name: "Astral Form / Cosmic Divide", icon: AstralFormCosmicDivide }
+    }
+  },
+  {
+    name: "Brimstone",
+    icon: Brimstone,
+    role: Role.Controller,
+    abilities: {
+      Ability1: { name: "Stim Beacon", icon: StimBeacon },
+      Ability2: { name: "Incendiary", icon: Incendiary },
+      Signature: { name: "Sky Smoke", icon: SkySmoke },
+      Ultimate: { name: "Orbital Strike", icon: OrbitalStrike }
+    }
+  },
+  {
+    name: "Iso",
+    icon: Iso,
+    role: Role.Duelist,
+    abilities: {
+      Ability2: { name: "Undercut", icon: Undercut },
+      Ultimate: { name: "Kill Contract", icon: KillContract },
+      Signature: { name: "Double Tap", icon: DoubleTap },
+      Ability1: { name: "Contingency", icon: Contingency }
+    }
+  },
+  {
+    name: "Clove",
+    icon: Clove,
+    role: Role.Controller,
+    abilities: {
+      Ability1: { name: "Pick-me-up", icon: Pickmeup },
+      Signature: { name: "Ruse", icon: Ruse },
+      Ultimate: { name: "Not Dead Yet", icon: NotDeadYet },
+      Ability2: { name: "Meddle", icon: Meddle }
+    }
+  },
+  {
+    name: "Neon",
+    icon: Neon,
+    role: Role.Duelist,
+    abilities: {
+      Signature: { name: "High Gear", icon: HighGear },
+      Ability2: { name: "Relay Bolt", icon: RelayBolt },
+      Ability1: { name: "Fast Lane", icon: FastLane },
+      Ultimate: { name: "Overdrive", icon: Overdrive }
+    }
+  },
+  {
+    name: "Yoru",
+    icon: Yoru,
+    role: Role.Duelist,
+    abilities: {
+      Ability1: { name: "FAKEOUT", icon: Fakeout },
+      Ability2: { name: "BLINDSIDE", icon: Blindside },
+      Signature: { name: "GATECRASH", icon: Gatecrash },
+      Ultimate: { name: "DIMENSIONAL DRIFT", icon: DimensionalDrift }
+    }
+  },
+  {
+    name: "Sage",
+    icon: Sage,
+    role: Role.Sentinel,
+    abilities: {
+      Ability2: { name: "Slow Orb", icon: SlowOrb },
+      Signature: { name: "Healing Orb", icon: HealingOrb },
+      Ability1: { name: "Barrier Orb", icon: BarrierOrb },
+      Ultimate: { name: "Resurrection", icon: Resurrection }
+    }
+  },
+  {
+    name: "Reyna",
+    icon: Reyna,
+    role: Role.Duelist,
+    abilities: {
+      Ability2: { name: "Devour", icon: Devour },
+      Signature: { name: "Dismiss", icon: Dismiss },
+      Ability1: { name: "Leer", icon: Leer },
+      Ultimate: { name: "Empress", icon: Empress }
+    }
+  },
+  {
+    name: "Omen",
+    icon: Omen,
+    role: Role.Controller,
+    abilities: {
+      Ability2: { name: "Paranoia", icon: Paranoia },
+      Signature: { name: "Dark Cover", icon: DarkCover },
+      Ability1: { name: "Shrouded Step", icon: ShroudedStep },
+      Ultimate: { name: "From the Shadows", icon: FromTheShadows }
+    }
+  },
+  {
+    name: "Jett",
+    icon: Jett,
+    role: Role.Duelist,
+    abilities: {
+      Ability2: { name: "Updraft", icon: Updraft },
+      Signature: { name: "Tailwind", icon: Tailwind },
+      Ability1: { name: "Cloudburst", icon: Cloudburst },
+      Ultimate: { name: "Blade Storm", icon: BladeStorm }
+    }
+  }
+];
 
 export default agents;
 export { roleImages, Role };

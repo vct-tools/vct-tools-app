@@ -305,7 +305,6 @@ export function renderOverlay(
   }
 
   if (shownInformation.playerInformation.running) {
-    
   }
 
   // Draw overlay overlay

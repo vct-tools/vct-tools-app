@@ -19,6 +19,7 @@
     "html2canvas": "^1.4.1",
     "nearley": "^2.20.1",
     "ohm-js": "^17.1.0",
+    "vct-tools-components": "github:infinity-atom/vct-tools-components",
     "vue": "^3.5.13"
   },
   "devDependencies": {

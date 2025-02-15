@@ -11,9 +11,9 @@ type TeamRoster = {
       imageType: "File Upload" | "Agent Portrait";
       agent: string;
       dataUri: null | string;
-    },
+    };
     type: "Player" | "Substitute" | "Coach";
-  }[]
+  }[];
 };
 
 const renderTeamRoster = async (teamRosterData: Ref<TeamRoster>, ctx: CanvasRenderingContext2D) => {
@@ -91,6 +91,6 @@ const renderTeamRoster = async (teamRosterData: Ref<TeamRoster>, ctx: CanvasRend
   ctx.font = "15px 'Din Next'";
 
   ctx.fillText("VCTtools.net", 600 / 2, 520 + 15);
-}
+};
 
 export { type TeamRoster, renderTeamRoster };

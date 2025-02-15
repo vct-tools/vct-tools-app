@@ -12,9 +12,7 @@
     <header-big>VCT Tools // {{ $props.pageName }}</header-big>
   </div>
   <div class="tabs-container">
-    <div :class="`tab`" @click="openLink(`/`)">
-      MAIN MENU
-    </div>
+    <div :class="`tab`" @click="openLink(`/`)">MAIN MENU</div>
     <div
       :class="`tab ${$props.pageName == 'Map picker' ? 'selected' : ''}`"
       @click="openLink(`/map_picker`)"
@@ -33,7 +31,10 @@
     >
       LEARN MAPS
     </div>
-    <div :class="`tab ${$props.pageName == 'Create graphics' ? 'selected' : ''}`" @click="openLink(`/graphic_creator`)">
+    <div
+      :class="`tab ${$props.pageName == 'Create graphics' ? 'selected' : ''}`"
+      @click="openLink(`/graphic_creator`)"
+    >
       CREATE GRAPHICS
     </div>
     <div :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`" @click="openLink(`/news`)">
@@ -55,8 +56,7 @@
 import HeaderBig from "@/components/HeaderBig.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import { ref } from "vue";
-import UIButtonLabel from "./UIElement/UIButtonLabel.vue";
-import UIButtonIcon from "./UIElement/UIButtonIcon.vue";
+import { UIButtonLabel, UIButtonIcon } from "vct-tools-components";
 import RiotGames from "@/assets/images/riot_games.png";
 
 import { version } from "vue";

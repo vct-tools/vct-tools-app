@@ -101,9 +101,7 @@
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
-
-import UIField from "@/components/UIElement/UIField.vue";
+import { UIButton, UIField } from "vct-tools-components";
 
 import { ref } from "vue";
 import OverlayOptionsPanel from "@/components/OverlayOptionsPanel.vue";

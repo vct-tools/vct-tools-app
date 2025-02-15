@@ -32,12 +32,12 @@ type SeriesInformation = {
   brandingImg: string | null;
   showBrandingImg: boolean;
   seriesName: string;
-}
+};
 
 type SponsorInformation = {
   sponsorEnabled: boolean;
   sponsorImgs: string[];
-}
+};
 
 type OverlaySettings = {
   playerOverlayFeatures: PlayerOverlayFeatures;

@@ -5,6 +5,6 @@ const loadImg = (url: string): Promise<HTMLImageElement> => {
     img.onload = () => resolve(img);
     img.onerror = (err) => reject(err);
   });
-}
+};
 
 export { loadImg };
