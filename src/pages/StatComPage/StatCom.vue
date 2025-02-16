@@ -671,9 +671,7 @@
 
 <script setup lang="ts">
 import HeaderSmall from "@/components/HeaderSmall.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
-import UIButtonLabel from "@/components/UIElement/UIButtonLabel.vue";
-import UIField from "@/components/UIElement/UIField.vue";
+import { UIButton, UIField } from "vct-tools-components";
 import { ref } from "vue";
 
 const optionsOpen = ref(false);

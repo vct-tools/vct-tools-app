@@ -1,8 +1,8 @@
 <template>
-  <DialogBox header="Account" v-model="accountDialog">
+  <UIDialogBox header="Account" v-model="accountDialog">
     <UIButtonLabel style="color: rgb(255, 70, 70)">YOU ARE NOT LOGGED IN</UIButtonLabel>
     <UIButtonIcon :icon="RiotGames" :disabled="true">Log in with Riot Games</UIButtonIcon>
-  </DialogBox>
+  </UIDialogBox>
 
   <div class="version">Client version: {{ version }} {{ npmV }}</div>
 
@@ -54,9 +54,8 @@
 
 <script setup lang="ts">
 import HeaderBig from "@/components/HeaderBig.vue";
-import DialogBox from "@/components/DialogBox.vue";
 import { ref } from "vue";
-import { UIButtonLabel, UIButtonIcon } from "vct-tools-components";
+import { UIButtonLabel, UIButtonIcon, UIDialogBox } from "vct-tools-components";
 import RiotGames from "@/assets/images/riot_games.png";
 
 import { version } from "vue";
