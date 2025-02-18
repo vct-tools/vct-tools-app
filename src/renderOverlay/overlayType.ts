@@ -94,4 +94,53 @@ function createDefaultOverlaySettings(): OverlaySettings {
   };
 }
 
-export { type OverlaySettings, createDefaultOverlaySettings };
+type AbilityData = {
+  maxUses: number;
+  remainingUses: number;
+};
+
+type Gun = {
+  name: string;
+};
+
+type LoadoutData = {
+  sidearm: Gun | null;
+  firearm: Gun | null;
+  shield: number;
+};
+
+type PlayerData = {
+  name: string;
+  tagline: string;
+  agent: string;
+  health: number;
+  credits: number;
+  abilities: {
+    Ability1: AbilityData;
+    Ability2: AbilityData;
+    Signature: AbilityData;
+    Ultimate: AbilityData;
+  };
+  loadout: LoadoutData;
+  KDA: [number, number, number];
+};
+
+type Round = {
+  roundNumber: number;
+  winner: "red" | "blue";
+  cause: "defuse" | "elimination" | "time" | "detonation";
+};
+
+type GameData = {
+  round: number;
+  phase: string;
+  matchLog: Round[];
+  redScore: number;
+  blueScore: number;
+  redPlayers: PlayerData[];
+  bluePlayers: PlayerData[];
+  redSide: "attack" | "defense";
+  blueSide: "attack" | "defense";
+};
+
+export { type OverlaySettings, createDefaultOverlaySettings, type AbilityData, type Gun, type LoadoutData, type PlayerData, type Round, type GameData };

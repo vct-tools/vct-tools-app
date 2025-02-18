@@ -105,7 +105,7 @@ import { UIButton, UIField } from "vct-tools-components";
 
 import { ref } from "vue";
 import OverlayOptionsPanel from "@/components/OverlayOptionsPanel.vue";
-import { createDefaultOverlaySettings } from "@/overlayType";
+import { createDefaultOverlaySettings } from "@/renderOverlay/overlayType";
 
 const overlayUrl = ref("https://vcttools.net/overlay_source");
 const overlayOptions = ref(createDefaultOverlaySettings());

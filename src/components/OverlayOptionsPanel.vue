@@ -136,14 +136,14 @@
 </style>
 
 <script setup lang="ts">
-import { createDefaultOverlaySettings, type OverlaySettings } from "@/overlayType";
+import { createDefaultOverlaySettings, type GameData, type OverlaySettings } from "@/renderOverlay/overlayType";
 
 import HavenGameplay from "@/assets/images/haven_gameplay.png";
 
 import { onMounted, ref, type Ref } from "vue";
-import { renderLoop, shownInformation } from "@/renderOverlay";
+import { renderLoop, shownInformation } from "@/renderOverlay/renderMain";
 import { UIField, UISwitch, UISelect, UIButtonLabel, UIButton } from "vct-tools-components";
-import { ceromonyFilter } from "@/overlayPreParse";
+import { ceromonyFilter } from "@/renderOverlay/overlayPreParse";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
 const previewOptions = ref({
@@ -159,11 +159,107 @@ const model: Ref<OverlaySettings> = defineModel({
   default: createDefaultOverlaySettings()
 });
 
+const previewGameData = ref<GameData>({
+  round: 4,
+  phase: "combat",
+  matchLog: [
+    {
+      roundNumber: 1,
+      winner: "red",
+      cause: "elimination"
+    },
+    {
+      roundNumber: 2,
+      winner: "blue",
+      cause: "defuse"
+    },
+    {
+      roundNumber: 3,
+      winner: "blue",
+      cause: "elimination"
+    }
+  ],
+  redScore: 1,
+  blueScore: 2,
+  redSide: "attack",
+  blueSide: "defense",
+  redPlayers: [
+    {
+      name: "Player 1",
+      tagline: "bot",
+      agent: "Breach",
+      health: 100,
+      credits: 1200,
+      loadout: {
+        sidearm: null,
+        firearm: {
+          name: "Vandal"
+        },
+        shield: 25
+      },
+      abilities: {
+        Ability1: {
+          maxUses: 1,
+          remainingUses: 1
+        },
+        Ability2: {
+          maxUses: 2,
+          remainingUses: 2
+        },
+        Signature: {
+          maxUses: 1,
+          remainingUses: 0
+        },
+        Ultimate: {
+          maxUses: 9,
+          remainingUses: 6
+        }
+      },
+      KDA: [6, 2, 2]
+    }
+  ],
+  bluePlayers: [
+  {
+      name: "Player 2",
+      tagline: "bot",
+      agent: "Tejo",
+      health: 100,
+      credits: 5000,
+      loadout: {
+        sidearm: null,
+        firearm: {
+          name: "Phantom"
+        },
+        shield: 50
+      },
+      abilities: {
+        Ability1: {
+          maxUses: 1,
+          remainingUses: 0
+        },
+        Ability2: {
+          maxUses: 1,
+          remainingUses: 1
+        },
+        Signature: {
+          maxUses: 1,
+          remainingUses: 0
+        },
+        Ultimate: {
+          maxUses: 8,
+          remainingUses: 2
+        }
+      },
+      KDA: [10, 4, 1]
+    }
+  ]
+})
+
 onMounted(() => {
   if (canvasElement.value) {
     const ctx = canvasElement.value.getContext("2d");
     if (ctx) {
-      renderLoop(null, model, ctx);
+      renderLoop(previewGameData, model, ctx);
     }
   }
 });
