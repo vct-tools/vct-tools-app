@@ -123,6 +123,7 @@ type PlayerData = {
   };
   loadout: LoadoutData;
   KDA: [number, number, number];
+  alive: boolean;
 };
 
 type Round = {

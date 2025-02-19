@@ -136,7 +136,11 @@
 </style>
 
 <script setup lang="ts">
-import { createDefaultOverlaySettings, type GameData, type OverlaySettings } from "@/renderOverlay/overlayType";
+import {
+  createDefaultOverlaySettings,
+  type GameData,
+  type OverlaySettings
+} from "@/renderOverlay/overlayType";
 
 import HavenGameplay from "@/assets/images/haven_gameplay.png";
 
@@ -215,11 +219,12 @@ const previewGameData = ref<GameData>({
           remainingUses: 6
         }
       },
-      KDA: [6, 2, 2]
+      KDA: [6, 2, 2],
+      alive: true
     }
   ],
   bluePlayers: [
-  {
+    {
       name: "Player 2",
       tagline: "bot",
       agent: "Tejo",
@@ -250,10 +255,45 @@ const previewGameData = ref<GameData>({
           remainingUses: 2
         }
       },
-      KDA: [10, 4, 1]
+      KDA: [10, 4, 1],
+      alive: true
+    },
+    {
+      name: "Player 3",
+      tagline: "bot",
+      agent: "Jett",
+      health: 100,
+      credits: 5000,
+      loadout: {
+        sidearm: null,
+        firearm: {
+          name: "Phantom"
+        },
+        shield: 50
+      },
+      abilities: {
+        Ability1: {
+          maxUses: 2,
+          remainingUses: 1
+        },
+        Ability2: {
+          maxUses: 1,
+          remainingUses: 1
+        },
+        Signature: {
+          maxUses: 1,
+          remainingUses: 1
+        },
+        Ultimate: {
+          maxUses: 8,
+          remainingUses: 8
+        }
+      },
+      KDA: [5, 4, 1],
+      alive: true
     }
   ]
-})
+});
 
 onMounted(() => {
   if (canvasElement.value) {

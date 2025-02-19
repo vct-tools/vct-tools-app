@@ -1,4 +1,4 @@
-import type { Ref } from "vue";
+import { type Ref, ref } from "vue";
 import type { OverlaySettings } from "./overlayType";
 import { loadImg } from "@/pages/GraphicCreator/load_img";
 
@@ -12,8 +12,8 @@ import { drawCenteredText } from "./renderUtils";
 import { type GameData } from "./overlayType";
 
 
-const agentImages: Record<string, HTMLImageElement> = {};
-const abilityImages: Record<
+const agentImages: Ref<Record<string, HTMLImageElement>> = ref({});
+const abilityImages: Ref<Record<
   string,
   {
     Ability1: HTMLImageElement;
@@ -21,7 +21,7 @@ const abilityImages: Record<
     Signature: HTMLImageElement;
     Ultimate: HTMLImageElement;
   }
-> = {};
+>> = ref({});
 
 let brandingImage: HTMLImageElement | null = null;
 
@@ -76,6 +76,9 @@ export function renderLoop(
   const frameTime = 1000 / targetFps;
   let lastFrameTime = performance.now();
 
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
   const r = (timestamp: number) => {
     const deltaTime = timestamp - lastFrameTime;
 
@@ -94,12 +97,40 @@ const stalls = {
   roundWin: 0
 };
 
-export function renderOverlay(
+export async function renderOverlay(
   ctx: CanvasRenderingContext2D,
   settings: OverlaySettings,
   gameData: GameData
-): void {
+): Promise<void> {
   ctx.clearRect(0, 0, 1920, 1080);
+
+  const defTeam = gameData.redSide == "defense" ? gameData.redPlayers : gameData.bluePlayers;
+  for (let i = 0; i < defTeam.length; i++) {
+    playerLeft(
+      ctx,
+      25,
+      1080 - (25 + 125 * i),
+      defTeam[i],
+      defTeam[i].alive,
+      settings,
+      agentImages,
+      abilityImages
+    );
+  }
+
+  const atkTeam = gameData.redSide == "attack" ? gameData.redPlayers : gameData.bluePlayers;
+  for (let i = 0; i < atkTeam.length; i++) {
+    playerRight(
+      ctx,
+      1920 - 25,
+      1080 - (25 + 125 * i),
+      atkTeam[i],
+      atkTeam[i].alive,
+      settings,
+      agentImages,
+      abilityImages
+    );
+  }
 
   if (!brandingImage) {
     if (settings.series.showBrandingImg && settings.series.brandingImg) {
@@ -122,11 +153,11 @@ export function renderOverlay(
   roundWinLoop(settings, ctx);
 
   score(ctx, {
-    attackerScore: 4,
-    defenderScore: 5,
-    attackerName: settings.redTeamName,
-    defenderName: settings.blueTeamName,
-    roundNum: 7
+    attackerScore: gameData.redSide == "attack" ? gameData.redScore : gameData.blueScore,
+    defenderScore: gameData.redSide == "defense" ? gameData.redScore : gameData.blueScore,
+    attackerName: gameData.redSide == "attack" ? settings.redTeamName : settings.blueTeamName,
+    defenderName: gameData.redSide == "defense" ? settings.redTeamName : settings.blueTeamName,
+    roundNum: gameData.round
   });
 
   if (shownInformation.playerInformation.shown && !shownInformation.playerInformation.lastShown) {

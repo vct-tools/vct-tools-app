@@ -3,6 +3,7 @@ import { loadImg } from "@/pages/GraphicCreator/load_img";
 import { drawCenteredText, atkC } from "./renderUtils";
 import { type OverlaySettings, type PlayerData } from "./overlayType";
 import { nameFilter } from "./overlayPreParse";
+import { type Ref } from "vue";
 
 export async function playerRight(
   ctx: CanvasRenderingContext2D,
@@ -11,8 +12,8 @@ export async function playerRight(
   player: PlayerData,
   alive: boolean,
   settings: OverlaySettings,
-  agentImages: Record<string, HTMLImageElement>,
-  abilityImages: Record<
+  agentImages: Ref<Record<string, HTMLImageElement>>,
+  abilityImages: Ref<Record<
     string,
     {
       Ability1: HTMLImageElement;
@@ -20,7 +21,7 @@ export async function playerRight(
       Signature: HTMLImageElement;
       Ultimate: HTMLImageElement;
     }
-  >
+  >>
 ): Promise<void> {
   const playerHealth = player.health;
   const ultProgress = [player.abilities.Ultimate.remainingUses, player.abilities.Ultimate.maxUses];
@@ -31,12 +32,12 @@ export async function playerRight(
   if (!agentData) return;
 
   // get agent image
-  if (!agentImages[agent]) {
-    agentImages[agent] = await loadImg(agentData.icon);
+  if (!agentImages.value[agent]) {
+    agentImages.value[agent] = await loadImg(agentData.icon);
   }
 
-  if (!abilityImages[agent]) {
-    abilityImages[agent] = {
+  if (!abilityImages.value[agent]) {
+    abilityImages.value[agent] = {
       Ability1: await loadImg(agentData.abilities.Ability1.icon),
       Ability2: await loadImg(agentData.abilities.Ability2.icon),
       Signature: await loadImg(agentData.abilities.Signature.icon),
@@ -101,7 +102,7 @@ export async function playerRight(
         ctx.fillRect(x - 250 - 30, y - 30, 60, 30);
 
         // Draw ultimate icon
-        ctx.drawImage(abilityImages[agent].Ultimate, x - 250 - 10, y - 25, 20, 20);
+        ctx.drawImage(abilityImages.value[agent].Ultimate, x - 250 - 10, y - 25, 20, 20);
       }
     }
 
@@ -151,15 +152,15 @@ export async function playerRight(
     // Draw abilities
     if (settings.playerOverlayFeatures.playerAbilities) {
       if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilityImages[agent].Ability1, x - 255, y - 30 - 10 - 70 + 35 / 2, 35, 35);
+      ctx.drawImage(abilityImages.value[agent].Ability1, x - 255, y - 30 - 10 - 70 + 35 / 2, 35, 35);
       ctx.filter = "none";
 
       if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilityImages[agent].Ability2, x - 195, y - 30 - 10 - 70 + 35 / 2, 35, 35);
+      ctx.drawImage(abilityImages.value[agent].Ability2, x - 195, y - 30 - 10 - 70 + 35 / 2, 35, 35);
       ctx.filter = "none";
 
       if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilityImages[agent].Signature, x - 135, y - 30 - 10 - 70 + 35 / 2, 35, 35);
+      ctx.drawImage(abilityImages.value[agent].Signature, x - 135, y - 30 - 10 - 70 + 35 / 2, 35, 35);
       ctx.filter = "none";
     }
 
@@ -182,7 +183,7 @@ export async function playerRight(
   if (settings.playerOverlayFeatures.agentImages) {
     ctx.save();
     ctx.scale(-1, 1);
-    ctx.drawImage(agentImages[agent], -x, y - 30 - 10 - 70, 70, 70);
+    ctx.drawImage(agentImages.value[agent], -x, y - 30 - 10 - 70, 70, 70);
     ctx.restore();
   }
   ctx.filter = "none";
