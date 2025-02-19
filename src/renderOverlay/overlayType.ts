@@ -47,6 +47,8 @@ type OverlaySettings = {
   nameType: "Name" | "Name and tagline";
   redTeamName: string;
   blueTeamName: string;
+  redTeamShortName: string;
+  blueTeamShortName: string;
   series: SeriesInformation;
   sponsors: SponsorInformation;
 };
@@ -54,8 +56,10 @@ type OverlaySettings = {
 function createDefaultOverlaySettings(): OverlaySettings {
   return {
     nameType: "Name",
-    redTeamName: "TEAM2",
-    blueTeamName: "TEAM1",
+    redTeamName: "John Porkers",
+    redTeamShortName: "PORK",
+    blueTeamName: "Team 2",
+    blueTeamShortName: "TM2",
     playerOverlayFeatures: {
       playerAbilities: true,
       playerHealth: true,

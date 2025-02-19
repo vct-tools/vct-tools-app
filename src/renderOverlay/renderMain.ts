@@ -10,18 +10,21 @@ import { sponsors } from "./renderSponsors";
 import { seriesMaps } from "./renderSeriesMaps";
 import { drawCenteredText } from "./renderUtils";
 import { type GameData } from "./overlayType";
-
+import { easeInOutExpo } from "./renderUtils";
+import { preRound } from "./renderPreRound";
 
 const agentImages: Ref<Record<string, HTMLImageElement>> = ref({});
-const abilityImages: Ref<Record<
-  string,
-  {
-    Ability1: HTMLImageElement;
-    Ability2: HTMLImageElement;
-    Signature: HTMLImageElement;
-    Ultimate: HTMLImageElement;
-  }
->> = ref({});
+const abilityImages: Ref<
+  Record<
+    string,
+    {
+      Ability1: HTMLImageElement;
+      Ability2: HTMLImageElement;
+      Signature: HTMLImageElement;
+      Ultimate: HTMLImageElement;
+    }
+  >
+> = ref({});
 
 let brandingImage: HTMLImageElement | null = null;
 
@@ -54,15 +57,17 @@ const shownInformation = {
     }
   },
   gameOverview: {
-    shown: false,
-    lastShown: false,
-    running: false,
-    t: 0
-  },
-  playerInformation: {
     shown: true,
     lastShown: true,
     running: false,
+    directionShow: false, // Is the direction of the animation to show or hide, true = show, false = hide
+    t: 0
+  },
+  playerInformation: {
+    shown: false,
+    lastShown: false,
+    running: false,
+    directionShow: false, // Is the direction of the animation to show or hide, true = show, false = hide
     t: 0
   }
 };
@@ -104,32 +109,110 @@ export async function renderOverlay(
 ): Promise<void> {
   ctx.clearRect(0, 0, 1920, 1080);
 
-  const defTeam = gameData.redSide == "defense" ? gameData.redPlayers : gameData.bluePlayers;
-  for (let i = 0; i < defTeam.length; i++) {
-    playerLeft(
-      ctx,
-      25,
-      1080 - (25 + 125 * i),
-      defTeam[i],
-      defTeam[i].alive,
-      settings,
-      agentImages,
-      abilityImages
-    );
+  shownInformation.playerInformation.shown = gameData.phase == "combat";
+  shownInformation.gameOverview.shown = gameData.phase == "buy";
+
+  // Deal with playerInformation showing
+  if (
+    shownInformation.playerInformation.shown == false &&
+    shownInformation.playerInformation.lastShown == true
+  ) {
+    shownInformation.playerInformation.running = true;
+    shownInformation.playerInformation.directionShow = false;
+    shownInformation.playerInformation.t = 0;
+
+    shownInformation.playerInformation.lastShown = false;
+  } else if (
+    shownInformation.playerInformation.shown == true &&
+    shownInformation.playerInformation.lastShown == false
+  ) {
+    shownInformation.playerInformation.running = true;
+    shownInformation.playerInformation.directionShow = true;
+    shownInformation.playerInformation.t = 0;
+
+    shownInformation.playerInformation.lastShown = true;
   }
 
-  const atkTeam = gameData.redSide == "attack" ? gameData.redPlayers : gameData.bluePlayers;
-  for (let i = 0; i < atkTeam.length; i++) {
-    playerRight(
-      ctx,
-      1920 - 25,
-      1080 - (25 + 125 * i),
-      atkTeam[i],
-      atkTeam[i].alive,
-      settings,
-      agentImages,
-      abilityImages
-    );
+  if (shownInformation.playerInformation.running) {
+    shownInformation.playerInformation.t += 5;
+
+    if (shownInformation.playerInformation.t >= 100) {
+      shownInformation.playerInformation.running = false;
+    }
+  }
+
+  if (shownInformation.playerInformation.shown || shownInformation.playerInformation.running) {
+    const yVal = shownInformation.playerInformation.running
+      ? shownInformation.playerInformation.directionShow
+        ? easeInOutExpo(1080, 0, shownInformation.playerInformation.t / 100)
+        : easeInOutExpo(0, 1080, shownInformation.playerInformation.t / 100)
+      : null;
+
+    const defTeam = gameData.redSide == "defense" ? gameData.redPlayers : gameData.bluePlayers;
+    for (let i = 0; i < defTeam.length; i++) {
+      playerLeft(
+        ctx,
+        25,
+        1080 - (25 + 115 * i) + (yVal || 0),
+        defTeam[i],
+        defTeam[i].alive,
+        settings,
+        agentImages,
+        abilityImages
+      );
+    }
+
+    const atkTeam = gameData.redSide == "attack" ? gameData.redPlayers : gameData.bluePlayers;
+    for (let i = 0; i < atkTeam.length; i++) {
+      playerRight(
+        ctx,
+        1920 - 25,
+        1080 - (25 + 115 * i) + (yVal || 0),
+        atkTeam[i],
+        atkTeam[i].alive,
+        settings,
+        agentImages,
+        abilityImages
+      );
+    }
+  }
+
+  // Game overview
+  if (
+    shownInformation.gameOverview.shown == false &&
+    shownInformation.gameOverview.lastShown == true
+  ) {
+    shownInformation.gameOverview.running = true;
+    shownInformation.gameOverview.directionShow = false;
+    shownInformation.gameOverview.t = 0;
+
+    shownInformation.gameOverview.lastShown = false;
+  } else if (
+    shownInformation.gameOverview.shown == true &&
+    shownInformation.gameOverview.lastShown == false
+  ) {
+    shownInformation.gameOverview.running = true;
+    shownInformation.gameOverview.directionShow = true;
+    shownInformation.gameOverview.t = 0;
+
+    shownInformation.gameOverview.lastShown = true;
+  }
+
+  if (shownInformation.gameOverview.running) {
+    shownInformation.gameOverview.t += 5;
+
+    if (shownInformation.gameOverview.t >= 100) {
+      shownInformation.gameOverview.running = false;
+    }
+  }
+
+  if (shownInformation.gameOverview.shown || shownInformation.gameOverview.running) {
+    const yVal = shownInformation.gameOverview.running ? (
+      shownInformation.gameOverview.directionShow ? easeInOutExpo(1080, 0, shownInformation.gameOverview.t / 100) :
+      easeInOutExpo(0, 1080, shownInformation.gameOverview.t / 100)
+    ) : null;
+
+    preRound(ctx, gameData, settings, agentImages, abilityImages, (yVal || 0) + 1080 - 25);
   }
 
   if (!brandingImage) {
@@ -155,18 +238,10 @@ export async function renderOverlay(
   score(ctx, {
     attackerScore: gameData.redSide == "attack" ? gameData.redScore : gameData.blueScore,
     defenderScore: gameData.redSide == "defense" ? gameData.redScore : gameData.blueScore,
-    attackerName: gameData.redSide == "attack" ? settings.redTeamName : settings.blueTeamName,
-    defenderName: gameData.redSide == "defense" ? settings.redTeamName : settings.blueTeamName,
+    attackerName: gameData.redSide == "attack" ? settings.redTeamShortName : settings.blueTeamShortName,
+    defenderName: gameData.redSide == "defense" ? settings.redTeamShortName : settings.blueTeamShortName,
     roundNum: gameData.round
   });
-
-  if (shownInformation.playerInformation.shown && !shownInformation.playerInformation.lastShown) {
-    shownInformation.playerInformation.running = true;
-    shownInformation.playerInformation.t = 0;
-  }
-
-  if (shownInformation.playerInformation.running) {
-  }
 
   // Draw overlay overlay
   if (settings.series.maps.length > 0) {

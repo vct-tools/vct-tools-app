@@ -54,8 +54,8 @@ export function score(
     "VCTTools.net",
     1920 / 2,
     timerHeight + 20,
-    "20px 'Din Next'",
-    `rgba(${color}, 0.5)`,
+    "bold 20px 'Din Next'",
+    `rgba(${color}, 0.7)`,
     "center",
     "middle"
   );

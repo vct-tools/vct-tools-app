@@ -42,9 +42,15 @@
       <UIButtonLabel>Visible name</UIButtonLabel>
       <UISelect v-model="model.nameType" :items="[`Name`, `Name and tagline`]"></UISelect>
       <UIButtonLabel>Blue (starting defender) team name</UIButtonLabel>
-      <UIField v-model="model.blueTeamName"></UIField>
+      <div class="flex-h">
+        <UIField v-model="model.blueTeamName"></UIField>
+        <UIField v-model="model.blueTeamShortName"></UIField>
+      </div>
       <UIButtonLabel>Red (starting attacker) team name</UIButtonLabel>
-      <UIField v-model="model.redTeamName"></UIField>
+      <div class="flex-h">
+        <UIField v-model="model.redTeamName"></UIField>
+        <UIField v-model="model.redTeamShortName"></UIField>
+      </div>
       <UIButtonLabel>Top-right corner sponsors</UIButtonLabel>
       <UISwitch v-model="model.sponsors.sponsorEnabled">Show sponsors</UISwitch>
       <div v-for="(img, index) in model.sponsors.sponsorImgs" :key="index">
@@ -69,6 +75,7 @@
       <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown"
         >Show game overview</UIButton
       >
+      <UISelect v-model="previewGameData.phase" prefix="Phase: " :items="[`buy`, `combat`]"></UISelect>
       <div class="flex-h">
         <UISelect
           v-model="previewOptions.triggerCeromonyWinTeam"
@@ -164,135 +171,49 @@ const model: Ref<OverlaySettings> = defineModel({
 });
 
 const previewGameData = ref<GameData>({
-  round: 4,
-  phase: "combat",
+  round: 22,
   matchLog: [
-    {
-      roundNumber: 1,
-      winner: "red",
-      cause: "elimination"
-    },
-    {
-      roundNumber: 2,
-      winner: "blue",
-      cause: "defuse"
-    },
-    {
-      roundNumber: 3,
-      winner: "blue",
-      cause: "elimination"
-    }
+    { cause: "elimination", roundNumber: 1, winner: "blue" },
+    { cause: "elimination", roundNumber: 2, winner: "blue" },
+    { cause: "elimination", roundNumber: 3, winner: "red" },
+    { cause: "elimination", roundNumber: 4, winner: "red" },
+    { cause: "elimination", roundNumber: 5, winner: "red" },
+    { cause: "elimination", roundNumber: 6, winner: "red" },
+    { cause: "elimination", roundNumber: 7, winner: "red" },
+    { cause: "elimination", roundNumber: 8, winner: "red" },
+    { cause: "defuse", roundNumber: 9, winner: "blue" },
+    { cause: "elimination", roundNumber: 10, winner: "red" },
+    { cause: "defuse", roundNumber: 11, winner: "blue" },
+    { cause: "elimination", roundNumber: 12, winner: "red" },
+    { cause: "elimination", roundNumber: 13, winner: "red" },
+    { cause: "elimination", roundNumber: 14, winner: "blue" },
+    { cause: "defuse", roundNumber: 15, winner: "red" },
+    { cause: "elimination", roundNumber: 16, winner: "blue" },
+    { cause: "elimination", roundNumber: 17, winner: "red" },
+    { cause: "elimination", roundNumber: 18, winner: "blue" },
+    { cause: "elimination", roundNumber: 19, winner: "blue" },
+    { cause: "elimination", roundNumber: 20, winner: "red" },
+    { cause: "elimination", roundNumber: 21, winner: "blue" }
   ],
-  redScore: 1,
-  blueScore: 2,
-  redSide: "attack",
-  blueSide: "defense",
+  phase: "buy",
+  redScore: 12,
+  blueScore: 9,
   redPlayers: [
-    {
-      name: "Player 1",
-      tagline: "bot",
-      agent: "Breach",
-      health: 100,
-      credits: 1200,
-      loadout: {
-        sidearm: null,
-        firearm: {
-          name: "Vandal"
-        },
-        shield: 25
-      },
-      abilities: {
-        Ability1: {
-          maxUses: 1,
-          remainingUses: 1
-        },
-        Ability2: {
-          maxUses: 2,
-          remainingUses: 2
-        },
-        Signature: {
-          maxUses: 1,
-          remainingUses: 0
-        },
-        Ultimate: {
-          maxUses: 9,
-          remainingUses: 6
-        }
-      },
-      KDA: [6, 2, 2],
-      alive: true
-    }
+    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: false},
+    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true}
   ],
   bluePlayers: [
-    {
-      name: "Player 2",
-      tagline: "bot",
-      agent: "Tejo",
-      health: 100,
-      credits: 5000,
-      loadout: {
-        sidearm: null,
-        firearm: {
-          name: "Phantom"
-        },
-        shield: 50
-      },
-      abilities: {
-        Ability1: {
-          maxUses: 1,
-          remainingUses: 0
-        },
-        Ability2: {
-          maxUses: 1,
-          remainingUses: 1
-        },
-        Signature: {
-          maxUses: 1,
-          remainingUses: 0
-        },
-        Ultimate: {
-          maxUses: 8,
-          remainingUses: 2
-        }
-      },
-      KDA: [10, 4, 1],
-      alive: true
-    },
-    {
-      name: "Player 3",
-      tagline: "bot",
-      agent: "Jett",
-      health: 100,
-      credits: 5000,
-      loadout: {
-        sidearm: null,
-        firearm: {
-          name: "Phantom"
-        },
-        shield: 50
-      },
-      abilities: {
-        Ability1: {
-          maxUses: 2,
-          remainingUses: 1
-        },
-        Ability2: {
-          maxUses: 1,
-          remainingUses: 1
-        },
-        Signature: {
-          maxUses: 1,
-          remainingUses: 1
-        },
-        Ultimate: {
-          maxUses: 8,
-          remainingUses: 8
-        }
-      },
-      KDA: [5, 4, 1],
-      alive: true
-    }
-  ]
+    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: false},
+    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: false}
+  ],
+  redSide: "defense",
+  blueSide: "attack"
 });
 
 onMounted(() => {
