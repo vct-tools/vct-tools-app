@@ -171,7 +171,7 @@ const model: Ref<OverlaySettings> = defineModel({
 });
 
 const previewGameData = ref<GameData>({
-  round: 22,
+  round: 17,
   matchLog: [
     { cause: "elimination", roundNumber: 1, winner: "blue" },
     { cause: "elimination", roundNumber: 2, winner: "blue" },
@@ -188,29 +188,24 @@ const previewGameData = ref<GameData>({
     { cause: "elimination", roundNumber: 13, winner: "red" },
     { cause: "elimination", roundNumber: 14, winner: "blue" },
     { cause: "defuse", roundNumber: 15, winner: "red" },
-    { cause: "elimination", roundNumber: 16, winner: "blue" },
-    { cause: "elimination", roundNumber: 17, winner: "red" },
-    { cause: "elimination", roundNumber: 18, winner: "blue" },
-    { cause: "elimination", roundNumber: 19, winner: "blue" },
-    { cause: "elimination", roundNumber: 20, winner: "red" },
-    { cause: "elimination", roundNumber: 21, winner: "blue" }
+    { cause: "elimination", roundNumber: 16, winner: "blue" }
   ],
   phase: "buy",
-  redScore: 12,
-  blueScore: 9,
+  redScore: 10,
+  blueScore: 6,
   redPlayers: [
-    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: false},
-    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true}
+    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 4 }}, KDA: [23, 10, 14], alive: false},
+    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 3 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 2 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
+    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 2 }}, KDA: [23, 10, 14], alive: true}
   ],
   bluePlayers: [
-    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: false},
-    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 1, remainingUses: 1 }}, KDA: [23, 10, 14], alive: false}
+    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 5 }}, KDA: [23, 10, 14], alive: true},
+    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 6 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 9, remainingUses: 7 }}, KDA: [23, 10, 14], alive: true},
+    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 4 }}, KDA: [23, 10, 14], alive: false},
+    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 3 }}, KDA: [23, 10, 14], alive: false}
   ],
   redSide: "defense",
   blueSide: "attack"

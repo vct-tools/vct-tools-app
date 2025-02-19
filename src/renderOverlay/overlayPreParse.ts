@@ -30,3 +30,13 @@ export function nameFilter(name: string, tagline: string, settings: OverlaySetti
   if (settings.nameType == "Name") return name;
   else return name + "#" + tagline;
 }
+
+export function getSide(startingSide: "attack" | "defense", round: number): "attack" | "defense" {
+  if (round <= 12) {
+    return startingSide;
+  } else if (round >= 13 && round <= 24) {
+    return startingSide == "attack" ? "defense" : "attack";
+  } else {
+    return (round % 2 == 1) == (startingSide == "attack") ? "attack" : "defense";
+  }
+}

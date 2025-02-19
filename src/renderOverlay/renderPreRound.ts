@@ -1,4 +1,4 @@
-import type { GameData, OverlaySettings, Round } from "./overlayType";
+import type { GameData, OverlaySettings, PlayerData, Round } from "./overlayType";
 import { drawCenteredText, atkC, defC, bgGradient } from "./renderUtils";
 import { loadImg } from "@/pages/GraphicCreator/load_img";
 import { type Ref } from "vue";
@@ -9,21 +9,23 @@ import AttackEliminationImg from "@/assets/images/roundOutcomes/attack_eliminati
 import DefenseDefuseImg from "@/assets/images/roundOutcomes/defense_defuse.webp";
 import DefenseEliminationImg from "@/assets/images/roundOutcomes/defense_elimination.webp";
 import DefenseTimeImg from "@/assets/images/roundOutcomes/defense_time.webp";
+import SwapSidesImg from "@/assets/images/roundOutcomes/swap_sides.webp";
+import { getSide } from "./overlayPreParse";
 
-const outcomeImages = <
-  {
-    attack_detonation: HTMLImageElement | null;
-    attack_elimination: HTMLImageElement | null;
-    defense_defuse: HTMLImageElement | null;
-    defense_elimination: HTMLImageElement | null;
-    defense_time: HTMLImageElement | null;
-  }
->{
+const outcomeImages: {
+  attack_detonation: HTMLImageElement | null;
+  attack_elimination: HTMLImageElement | null;
+  defense_defuse: HTMLImageElement | null;
+  defense_elimination: HTMLImageElement | null;
+  defense_time: HTMLImageElement | null;
+  swap_sides: HTMLImageElement | null;
+} = {
   attack_detonation: null,
   attack_elimination: null,
   defense_defuse: null,
   defense_elimination: null,
-  defense_time: null
+  defense_time: null,
+  swap_sides: null
 };
 
 (async () => {
@@ -32,6 +34,7 @@ const outcomeImages = <
   outcomeImages.defense_defuse = await loadImg(DefenseDefuseImg);
   outcomeImages.defense_elimination = await loadImg(DefenseEliminationImg);
   outcomeImages.defense_time = await loadImg(DefenseTimeImg);
+  outcomeImages.swap_sides = await loadImg(SwapSidesImg);
 })();
 
 export async function preRound(
@@ -93,7 +96,7 @@ export async function preRound(
 
   // Draw initial box
   const overviewWidth = 1400;
-  const overviewHeight = 600;
+  const overviewHeight = 599 + 40;
   const color = "15, 25, 35";
 
   ctx.beginPath();
@@ -170,9 +173,20 @@ export async function preRound(
       ctx,
       "MATCH OVERVIEW",
       1920 / 2,
-      y - overviewHeight + 40,
+      y - overviewHeight + 40 - 15,
       "25px 'Din Next'",
       "white",
+      "center",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      settings.series.seriesName,
+      1920 / 2,
+      y - overviewHeight + 40 + 15,
+      "15px 'Din Next'",
+      "rgba(255, 255, 255, 0.7)",
       "center",
       "middle"
     );
@@ -238,44 +252,38 @@ export async function preRound(
   let offset = 0;
   const roundsFittable = Math.floor((overviewWidth - 125) / roundSize);
   const rounds: (Round | null)[] = [...gameData.matchLog];
-  rounds.splice(13, 0, null as unknown as Round);
+  if (rounds.length > 12) rounds.splice(12, 0, null as unknown as Round);
   for (const round of rounds.slice(-roundsFittable)) {
     if (
       outcomeImages.attack_detonation == null ||
       outcomeImages.attack_elimination == null ||
       outcomeImages.defense_defuse == null ||
       outcomeImages.defense_elimination == null ||
-      outcomeImages.defense_time == null
+      outcomeImages.defense_time == null ||
+      outcomeImages.swap_sides == null
     )
       break;
 
     try {
       if (round == null) {
-        drawCenteredText(
-          ctx,
-          "SW",
-          1920 / 2 - overviewWidth / 2 + 125 + roundSize / 2 + offset,
-          y - roundSize + roundSize / 2,
-          "20px 'Din Next'",
-          "white",
-          "center",
-          "middle"
-        );
+        ctx.fillStyle = `rgb(${color})`;
+        ctx.fillRect(1920 / 2 - overviewWidth / 2 + 125 + offset, y - roundSize * 2 - 3, roundSize, roundSize * 2 + 3);
+        ctx.fillStyle = `rgb(255, 255, 255, 0.1)`;
+        ctx.fillRect(1920 / 2 - overviewWidth / 2 + 125 + offset, y - roundSize * 2 - 3, roundSize, roundSize * 2 + 3);
 
-        drawCenteredText(
-          ctx,
-          "SW",
-          1920 / 2 - overviewWidth / 2 + 125 + roundSize / 2 + offset,
-          y - roundSize * 2 - 3 + roundSize / 2,
-          "20px 'Din Next'",
-          "white",
-          "center",
-          "middle"
+        ctx.drawImage(
+          outcomeImages.swap_sides,
+          1920 / 2 - overviewWidth / 2 + 125 + 15 + offset,
+          y - roundSize - roundSize / 2 - 3 / 2 + 15,
+          roundSize - 30,
+          roundSize - 30
         );
       } else {
         if (round.winner == "blue") {
           ctx.drawImage(
-            outcomeImages[`${gameData.blueSide}_${round.cause}` as keyof typeof outcomeImages] || outcomeImages.defense_time,
+            outcomeImages[
+              `${getSide("defense", round.roundNumber)}_${round.cause}` as keyof typeof outcomeImages
+            ] || outcomeImages.defense_time,
             1920 / 2 - overviewWidth / 2 + 125 + 15 + offset,
             y - roundSize * 2 - 3 + 15,
             roundSize - 30,
@@ -294,7 +302,9 @@ export async function preRound(
           );
         } else {
           ctx.drawImage(
-            outcomeImages[`${gameData.redSide}_${round.cause}` as keyof typeof outcomeImages] || outcomeImages.defense_time,
+            outcomeImages[
+              `${getSide("attack", round.roundNumber)}_${round.cause}` as keyof typeof outcomeImages
+            ] || outcomeImages.defense_time,
             1920 / 2 - overviewWidth / 2 + 125 + 15 + offset,
             y - roundSize + 15,
             roundSize - 30,
@@ -316,5 +326,120 @@ export async function preRound(
     } catch {}
 
     offset += roundSize;
+  }
+
+  // Draw player information (left)
+  const playerHeight = 76;
+
+  const drawPlayer = (x: number, y: number, player: PlayerData, ctx: CanvasRenderingContext2D) => {
+    if (agentImages.value[player.agent]) {
+      ctx.drawImage(agentImages.value[player.agent], x, y, playerHeight, playerHeight);
+    }
+
+    drawCenteredText(
+      ctx,
+      player.name,
+      x + playerHeight + 10,
+      y + playerHeight / 2 - playerHeight / 4,
+      "bold 20px 'Din Next'",
+      "white",
+      "left",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      `${player.KDA[0]} / ${player.KDA[1]} / ${player.KDA[2]}`,
+      x + playerHeight + 10,
+      y + playerHeight / 2,
+      "20px 'Din Next'",
+      `rgba(255, 255, 255, 0.5)`,
+      "left",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      `$${player.credits}`,
+      x + playerHeight + 10,
+      y + playerHeight / 2 + playerHeight / 4,
+      "20px 'Din Next'",
+      `rgba(255, 255, 255, 0.5)`,
+      "left",
+      "middle"
+    );
+
+    if (abilityImages.value[player.agent]) {
+      const abilities = abilityImages.value[player.agent];
+      ctx.drawImage(abilities.Ability1, x + playerHeight + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.drawImage(abilities.Ability2, x + playerHeight * 2 + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.drawImage(abilities.Signature, x + playerHeight * 3 + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+
+      (() => {
+        const spacing = 12;
+        const pointCount = player.abilities.Ultimate.maxUses;
+        const totalWidth = pointCount * spacing;
+        const location = (x + playerHeight * 2 + playerHeight / 2 + 150) - totalWidth / 2;
+
+        for (let i = 0; i < pointCount; i++) {
+          ctx.fillStyle = player.abilities.Ultimate.remainingUses > i ? "white" : "rgb(97, 97, 97)";
+          ctx.beginPath();
+          ctx.moveTo(location + i * spacing, y - 15 + playerHeight);
+          ctx.lineTo(location + 5 + i * spacing, y - 20 + playerHeight);
+          ctx.lineTo(location + 10 + i * spacing, y - 15 + playerHeight);
+          ctx.lineTo(location + 5 + i * spacing, y - 10 + playerHeight);
+          ctx.closePath();
+          ctx.fill();
+        }
+      })();
+    }
+  }
+
+  {
+    ctx.fillStyle = `rgba(${color}, 0.8)`;
+
+    ctx.fillRect(1920 / 2 - overviewWidth / 2, y - overviewHeight + 80, overviewWidth, 36);
+    [0, 1].forEach((a) => {
+      drawCenteredText(
+        ctx,
+        "NAME / KDA / CREDITS",
+        1920 / 2 - overviewWidth / 2 + 10 + (overviewWidth / 2) * a,
+        y - overviewHeight + 80 + 18,
+        "20px 'Din Next'",
+        "white",
+        "left",
+        "middle"
+      );
+
+      drawCenteredText(
+        ctx,
+        "ABILITIES",
+        1920 / 2 - overviewWidth / 2 + playerHeight * 2 + playerHeight / 2 + 150 + (overviewWidth / 2) * a,
+        y - overviewHeight + 80 + 18,
+        "20px 'Din Next'",
+        "white",
+        "center",
+        "middle"
+      );
+    });
+  }
+
+  for (const player of gameData.redPlayers) {
+    const playerIndex = gameData.redPlayers.indexOf(player);
+    const playerY = y - overviewHeight + playerHeight + playerHeight * playerIndex;
+
+    if (playerIndex % 2 == 0) {
+      ctx.fillStyle = `rgba(${color}, 0.4)`;
+      ctx.fillRect(1920 / 2 - overviewWidth / 2, playerY + 40, overviewWidth, playerHeight);
+    }
+
+    drawPlayer(1920 / 2 - overviewWidth / 2, playerY + 40, player, ctx);
+  }
+
+  for (const player of gameData.bluePlayers) {
+    const playerIndex = gameData.bluePlayers.indexOf(player);
+    const playerY = y - overviewHeight + playerHeight + playerHeight * playerIndex;
+
+    drawPlayer(1920 / 2, playerY + 40, player, ctx);
   }
 }
