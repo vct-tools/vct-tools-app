@@ -55,7 +55,8 @@ export async function preRound(
       }
     >
   >,
-  y: number
+  y: number,
+  brandingImage: HTMLImageElement | null
 ): Promise<void> {
   // Make sure the agent images are loaded
   for (const player of gameData.redPlayers) {
@@ -125,6 +126,30 @@ export async function preRound(
   );
   ctx.fill();
   ctx.closePath();
+
+  if (brandingImage && settings.series.showBrandingImg) {
+    const height = 100;
+    const aspect = brandingImage.width / brandingImage.height;
+    const width = height * aspect;
+
+    const grad = ctx.createLinearGradient(
+      0, y - overviewHeight - height - 60,
+      0, y - overviewHeight
+    );
+
+    grad.addColorStop(0, `rgba(${color}, 0)`);
+    grad.addColorStop(1, `rgba(${color}, 1)`);
+    ctx.fillStyle = grad;
+
+    ctx.fillRect(
+      1920 / 2 - width / 2 - 30,
+      y - overviewHeight - height - 60,
+      width + 60,
+      height + 60,
+    );
+
+    ctx.drawImage(brandingImage, 1920 / 2 - width / 2, y - overviewHeight - height - 30, width, height);
+  }
 
   {
     drawCenteredText(
@@ -412,14 +437,14 @@ export async function preRound(
 
     if (weaponImages[strongestWeapon]) {
       // Render strongest
-      const height = 40;
+      const height = 30;
       const aspect = weaponImages[strongestWeapon].width / weaponImages[strongestWeapon].height;
       const width = height * aspect;
 
       ctx.drawImage(
         weaponImages[strongestWeapon],
-        x + playerHeight * 4 + 150 + 25,
-        y + 13,
+        x + playerHeight * 4 + playerHeight / 2 + 150 + 75 - width / 2,
+        y + playerHeight / 2 - height / 2,
         width,
         height
       )
@@ -435,40 +460,6 @@ export async function preRound(
     ctx.fillStyle = `rgba(${color}, 0.8)`;
 
     ctx.fillRect(1920 / 2 - overviewWidth / 2, y - overviewHeight + 80, overviewWidth, 36);
-    [0, 1].forEach((a) => {
-      drawCenteredText(
-        ctx,
-        "NAME / KDA / CREDITS",
-        1920 / 2 - overviewWidth / 2 + 10 + (overviewWidth / 2) * a,
-        y - overviewHeight + 80 + 18,
-        "20px 'Din Next'",
-        "white",
-        "left",
-        "middle"
-      );
-
-      drawCenteredText(
-        ctx,
-        "ABILITIES",
-        1920 / 2 - overviewWidth / 2 + playerHeight * 2 + playerHeight / 2 + 150 + (overviewWidth / 2) * a,
-        y - overviewHeight + 80 + 18,
-        "20px 'Din Next'",
-        "white",
-        "center",
-        "middle"
-      );
-
-      drawCenteredText(
-        ctx,
-        "LOADOUT",
-        1920 / 2 - overviewWidth / 2 + playerHeight * 4 + playerHeight / 2 + 150 + 75 + (overviewWidth / 2) * a,
-        y - overviewHeight + 80 + 18,
-        "20px 'Din Next'",
-        "white",
-        "center",
-        "middle"
-      );
-    });
   }
 
   for (const player of gameData.redPlayers) {

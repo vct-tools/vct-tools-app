@@ -212,7 +212,7 @@ export async function renderOverlay(
       easeInOutExpo(0, 1080, shownInformation.gameOverview.t / 100)
     ) : null;
 
-    preRound(ctx, gameData, settings, agentImages, abilityImages, (yVal || 0) + 1080 - 25);
+    preRound(ctx, gameData, settings, agentImages, abilityImages, (yVal || 0) + 1080 - 25, brandingImage);
   }
 
   if (!brandingImage) {
