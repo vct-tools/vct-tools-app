@@ -1,8 +1,8 @@
 import type { GameData, OverlaySettings, PlayerData, Round } from "./overlayType";
-import { drawCenteredText, atkC, defC, bgGradient } from "./renderUtils";
+import { drawCenteredText, atkC, defC } from "./renderUtils";
 import { loadImg } from "@/pages/GraphicCreator/load_img";
 import { type Ref } from "vue";
-import { agents } from "vct-tools-components";
+import { agents, weapons } from "vct-tools-components";
 
 import AttackDetonationImg from "@/assets/images/roundOutcomes/attack_detonation.webp";
 import AttackEliminationImg from "@/assets/images/roundOutcomes/attack_elimination.webp";
@@ -36,6 +36,8 @@ const outcomeImages: {
   outcomeImages.defense_time = await loadImg(DefenseTimeImg);
   outcomeImages.swap_sides = await loadImg(SwapSidesImg);
 })();
+
+const weaponImages: Record<string, HTMLImageElement> = {};
 
 export async function preRound(
   ctx: CanvasRenderingContext2D,
@@ -331,7 +333,7 @@ export async function preRound(
   // Draw player information (left)
   const playerHeight = 76;
 
-  const drawPlayer = (x: number, y: number, player: PlayerData, ctx: CanvasRenderingContext2D) => {
+  const drawPlayer = async (x: number, y: number, player: PlayerData, ctx: CanvasRenderingContext2D) => {
     if (agentImages.value[player.agent]) {
       ctx.drawImage(agentImages.value[player.agent], x, y, playerHeight, playerHeight);
     }
@@ -371,9 +373,18 @@ export async function preRound(
 
     if (abilityImages.value[player.agent]) {
       const abilities = abilityImages.value[player.agent];
+
+      if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
       ctx.drawImage(abilities.Ability1, x + playerHeight + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.filter = "none";
+
+      if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
       ctx.drawImage(abilities.Ability2, x + playerHeight * 2 + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.filter = "none";
+
+      if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
       ctx.drawImage(abilities.Signature, x + playerHeight * 3 + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.filter = "none";
 
       (() => {
         const spacing = 12;
@@ -392,6 +403,31 @@ export async function preRound(
           ctx.fill();
         }
       })();
+    }
+
+    // Get strongest weapon
+    let strongestWeapon = "Melee";
+    if (player.loadout.sidearm) strongestWeapon = player.loadout.sidearm.name;
+    if (player.loadout.firearm) strongestWeapon = player.loadout.firearm.name;
+
+    if (weaponImages[strongestWeapon]) {
+      // Render strongest
+      const height = 40;
+      const aspect = weaponImages[strongestWeapon].width / weaponImages[strongestWeapon].height;
+      const width = height * aspect;
+
+      ctx.drawImage(
+        weaponImages[strongestWeapon],
+        x + playerHeight * 4 + 150 + 25,
+        y + 13,
+        width,
+        height
+      )
+    } else {
+      const icon = weapons.find((a) => a.name == strongestWeapon);
+      if (icon) {
+        weaponImages[strongestWeapon] = await loadImg(icon.icon);
+      }
     }
   }
 
@@ -415,6 +451,17 @@ export async function preRound(
         ctx,
         "ABILITIES",
         1920 / 2 - overviewWidth / 2 + playerHeight * 2 + playerHeight / 2 + 150 + (overviewWidth / 2) * a,
+        y - overviewHeight + 80 + 18,
+        "20px 'Din Next'",
+        "white",
+        "center",
+        "middle"
+      );
+
+      drawCenteredText(
+        ctx,
+        "LOADOUT",
+        1920 / 2 - overviewWidth / 2 + playerHeight * 4 + playerHeight / 2 + 150 + 75 + (overviewWidth / 2) * a,
         y - overviewHeight + 80 + 18,
         "20px 'Din Next'",
         "white",

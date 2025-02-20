@@ -142,18 +142,18 @@ export async function renderOverlay(
   }
 
   if (shownInformation.playerInformation.shown || shownInformation.playerInformation.running) {
-    const yVal = shownInformation.playerInformation.running
+    const xVal = shownInformation.playerInformation.running
       ? shownInformation.playerInformation.directionShow
-        ? easeInOutExpo(1080, 0, shownInformation.playerInformation.t / 100)
-        : easeInOutExpo(0, 1080, shownInformation.playerInformation.t / 100)
+        ? easeInOutExpo(500, 0, shownInformation.playerInformation.t / 100)
+        : easeInOutExpo(0, 500, shownInformation.playerInformation.t / 100)
       : null;
 
     const defTeam = gameData.redSide == "defense" ? gameData.redPlayers : gameData.bluePlayers;
     for (let i = 0; i < defTeam.length; i++) {
       playerLeft(
         ctx,
-        25,
-        1080 - (25 + 115 * i) + (yVal || 0),
+        25 - (xVal || 0),
+        1080 - (25 + 115 * i),
         defTeam[i],
         defTeam[i].alive,
         settings,
@@ -166,8 +166,8 @@ export async function renderOverlay(
     for (let i = 0; i < atkTeam.length; i++) {
       playerRight(
         ctx,
-        1920 - 25,
-        1080 - (25 + 115 * i) + (yVal || 0),
+        1920 - 25 + (xVal || 0),
+        1080 - (25 + 115 * i),
         atkTeam[i],
         atkTeam[i].alive,
         settings,
