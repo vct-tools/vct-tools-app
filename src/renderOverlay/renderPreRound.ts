@@ -133,8 +133,10 @@ export async function preRound(
     const width = height * aspect;
 
     const grad = ctx.createLinearGradient(
-      0, y - overviewHeight - height - 60,
-      0, y - overviewHeight
+      0,
+      y - overviewHeight - height - 60,
+      0,
+      y - overviewHeight
     );
 
     grad.addColorStop(0, `rgba(${color}, 0)`);
@@ -145,10 +147,16 @@ export async function preRound(
       1920 / 2 - width / 2 - 30,
       y - overviewHeight - height - 60,
       width + 60,
-      height + 60,
+      height + 60
     );
 
-    ctx.drawImage(brandingImage, 1920 / 2 - width / 2, y - overviewHeight - height - 30, width, height);
+    ctx.drawImage(
+      brandingImage,
+      1920 / 2 - width / 2,
+      y - overviewHeight - height - 30,
+      width,
+      height
+    );
   }
 
   {
@@ -294,9 +302,19 @@ export async function preRound(
     try {
       if (round == null) {
         ctx.fillStyle = `rgb(${color})`;
-        ctx.fillRect(1920 / 2 - overviewWidth / 2 + 125 + offset, y - roundSize * 2 - 3, roundSize, roundSize * 2 + 3);
+        ctx.fillRect(
+          1920 / 2 - overviewWidth / 2 + 125 + offset,
+          y - roundSize * 2 - 3,
+          roundSize,
+          roundSize * 2 + 3
+        );
         ctx.fillStyle = `rgb(255, 255, 255, 0.1)`;
-        ctx.fillRect(1920 / 2 - overviewWidth / 2 + 125 + offset, y - roundSize * 2 - 3, roundSize, roundSize * 2 + 3);
+        ctx.fillRect(
+          1920 / 2 - overviewWidth / 2 + 125 + offset,
+          y - roundSize * 2 - 3,
+          roundSize,
+          roundSize * 2 + 3
+        );
 
         ctx.drawImage(
           outcomeImages.swap_sides,
@@ -358,7 +376,12 @@ export async function preRound(
   // Draw player information (left)
   const playerHeight = 76;
 
-  const drawPlayer = async (x: number, y: number, player: PlayerData, ctx: CanvasRenderingContext2D) => {
+  const drawPlayerLeft = async (
+    x: number,
+    y: number,
+    player: PlayerData,
+    ctx: CanvasRenderingContext2D
+  ) => {
     if (agentImages.value[player.agent]) {
       ctx.drawImage(agentImages.value[player.agent], x, y, playerHeight, playerHeight);
     }
@@ -400,22 +423,40 @@ export async function preRound(
       const abilities = abilityImages.value[player.agent];
 
       if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilities.Ability1, x + playerHeight + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.drawImage(
+        abilities.Ability1,
+        x + playerHeight + 150 + 25,
+        y + 20,
+        playerHeight - 50,
+        playerHeight - 50
+      );
       ctx.filter = "none";
 
       if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilities.Ability2, x + playerHeight * 2 + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.drawImage(
+        abilities.Ability2,
+        x + playerHeight * 2 + 150 + 25,
+        y + 20,
+        playerHeight - 50,
+        playerHeight - 50
+      );
       ctx.filter = "none";
 
       if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilities.Signature, x + playerHeight * 3 + 150 + 25, y + 20, playerHeight - 50, playerHeight - 50);
+      ctx.drawImage(
+        abilities.Signature,
+        x + playerHeight * 3 + 150 + 25,
+        y + 20,
+        playerHeight - 50,
+        playerHeight - 50
+      );
       ctx.filter = "none";
 
       (() => {
         const spacing = 12;
         const pointCount = player.abilities.Ultimate.maxUses;
         const totalWidth = pointCount * spacing;
-        const location = (x + playerHeight * 2 + playerHeight / 2 + 150) - totalWidth / 2;
+        const location = x + playerHeight * 2 + playerHeight / 2 + 150 - totalWidth / 2;
 
         for (let i = 0; i < pointCount; i++) {
           ctx.fillStyle = player.abilities.Ultimate.remainingUses > i ? "white" : "rgb(97, 97, 97)";
@@ -447,19 +488,175 @@ export async function preRound(
         y + playerHeight / 2 - height / 2,
         width,
         height
-      )
+      );
     } else {
       const icon = weapons.find((a) => a.name == strongestWeapon);
       if (icon) {
         weaponImages[strongestWeapon] = await loadImg(icon.icon);
       }
     }
-  }
+  };
+
+  const drawPlayerRight = async (
+    x: number,
+    y: number,
+    player: PlayerData,
+    ctx: CanvasRenderingContext2D
+  ) => {
+    if (agentImages.value[player.agent]) {
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.drawImage(
+        agentImages.value[player.agent],
+        -(x + overviewWidth / 2),
+        y,
+        playerHeight,
+        playerHeight
+      );
+      ctx.restore();
+    }
+
+    drawCenteredText(
+      ctx,
+      player.name,
+      x + overviewWidth / 2 - playerHeight - 10,
+      y + playerHeight / 2 - playerHeight / 4,
+      "bold 20px 'Din Next'",
+      "white",
+      "right",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      `${player.KDA[0]} / ${player.KDA[1]} / ${player.KDA[2]}`,
+      x + overviewWidth / 2 - playerHeight - 10,
+      y + playerHeight / 2,
+      "20px 'Din Next'",
+      `rgba(255, 255, 255, 0.5)`,
+      "right",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      `$${player.credits}`,
+      x + overviewWidth / 2 - playerHeight - 10,
+      y + playerHeight / 2 + playerHeight / 4,
+      "20px 'Din Next'",
+      `rgba(255, 255, 255, 0.5)`,
+      "right",
+      "middle"
+    );
+
+    if (abilityImages.value[player.agent]) {
+      const abilities = abilityImages.value[player.agent];
+
+      if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
+      ctx.drawImage(
+        abilities.Ability1,
+        x + overviewWidth / 2 - playerHeight * 3 - 200,
+        y + 20,
+        playerHeight - 50,
+        playerHeight - 50
+      );
+      ctx.filter = "none";
+
+      if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
+      ctx.drawImage(
+        abilities.Ability2,
+        x + overviewWidth / 2 - playerHeight * 2 - 200,
+        y + 20,
+        playerHeight - 50,
+        playerHeight - 50
+      );
+      ctx.filter = "none";
+
+      if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
+      ctx.drawImage(
+        abilities.Signature,
+        x + overviewWidth / 2 - playerHeight - 200,
+        y + 20,
+        playerHeight - 50,
+        playerHeight - 50
+      );
+      ctx.filter = "none";
+
+      (() => {
+        const spacing = 12;
+        const pointCount = player.abilities.Ultimate.maxUses;
+        const totalWidth = pointCount * spacing;
+        const location =
+          x + overviewWidth / 2 - playerHeight * 2 - playerHeight / 2 - 150 - totalWidth / 2;
+
+        for (let i = 0; i < pointCount; i++) {
+          ctx.fillStyle = player.abilities.Ultimate.remainingUses > i ? "white" : "rgb(97, 97, 97)";
+          ctx.beginPath();
+          ctx.moveTo(location + i * spacing, y - 15 + playerHeight);
+          ctx.lineTo(location + 5 + i * spacing, y - 20 + playerHeight);
+          ctx.lineTo(location + 10 + i * spacing, y - 15 + playerHeight);
+          ctx.lineTo(location + 5 + i * spacing, y - 10 + playerHeight);
+          ctx.closePath();
+          ctx.fill();
+        }
+      })();
+    }
+
+    // Get strongest weapon
+    let strongestWeapon = "Melee";
+    if (player.loadout.sidearm) strongestWeapon = player.loadout.sidearm.name;
+    if (player.loadout.firearm) strongestWeapon = player.loadout.firearm.name;
+
+    if (weaponImages[strongestWeapon]) {
+      // Render strongest
+      const height = 30;
+      const aspect = weaponImages[strongestWeapon].width / weaponImages[strongestWeapon].height;
+      const width = height * aspect;
+
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.drawImage(
+        weaponImages[strongestWeapon],
+        -(x + overviewWidth / 2 - playerHeight * 4 - playerHeight / 2 - 150 - 75 + width / 2),
+        y + playerHeight / 2 - height / 2,
+        width,
+        height
+      );
+      ctx.restore();
+    } else {
+      const icon = weapons.find((a) => a.name == strongestWeapon);
+      if (icon) {
+        weaponImages[strongestWeapon] = await loadImg(icon.icon);
+      }
+    }
+  };
 
   {
     ctx.fillStyle = `rgba(${color}, 0.8)`;
 
     ctx.fillRect(1920 / 2 - overviewWidth / 2, y - overviewHeight + 80, overviewWidth, 36);
+
+    drawCenteredText(
+      ctx,
+      `LOADOUT VALUE: $${calculateLoadoutValue(gameData.redPlayers)}`,
+      1920 / 2 - overviewWidth / 2 + 10,
+      y - overviewHeight + 80 + 18,
+      "20px 'Din Next'",
+      `rgba(${gameData.redSide == "attack" ? atkC : defC}, 1)`,
+      "left",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      `LOADOUT VALUE: $${calculateLoadoutValue(gameData.bluePlayers)}`,
+      1920 / 2 + overviewWidth / 2 - 10,
+      y - overviewHeight + 80 + 18,
+      "20px 'Din Next'",
+      `rgba(${gameData.blueSide == "attack" ? atkC : defC}, 1)`,
+      "right",
+      "middle"
+    );
   }
 
   for (const player of gameData.redPlayers) {
@@ -471,13 +668,31 @@ export async function preRound(
       ctx.fillRect(1920 / 2 - overviewWidth / 2, playerY + 40, overviewWidth, playerHeight);
     }
 
-    drawPlayer(1920 / 2 - overviewWidth / 2, playerY + 40, player, ctx);
+    drawPlayerLeft(1920 / 2 - overviewWidth / 2, playerY + 40, player, ctx);
   }
 
   for (const player of gameData.bluePlayers) {
     const playerIndex = gameData.bluePlayers.indexOf(player);
     const playerY = y - overviewHeight + playerHeight + playerHeight * playerIndex;
 
-    drawPlayer(1920 / 2, playerY + 40, player, ctx);
+    drawPlayerRight(1920 / 2, playerY + 40, player, ctx);
   }
+
+  ctx.fillStyle = `rgb(${color})`;
+  ctx.fillRect(1920 / 2 - 2, y - overviewHeight + 80, 5, overviewHeight - 70 - 3 - 70 - 80);
+}
+
+function calculateLoadoutValue(players: PlayerData[]) {
+  const getPrice = (weapon: string) => {
+    const weaponData = weapons.find((w) => w.name == weapon);
+    if (!weaponData) return 0;
+    return weaponData.credits;
+  };
+
+  let value = 0;
+  for (const player of players) {
+    if (player.loadout.sidearm) value += getPrice(player.loadout.sidearm.name);
+    if (player.loadout.firearm) value += getPrice(player.loadout.firearm.name);
+  }
+  return value;
 }

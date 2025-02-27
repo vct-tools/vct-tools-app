@@ -208,7 +208,10 @@ const previewGameData = ref<GameData>({
     { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 0 }, Ultimate: { maxUses: 6, remainingUses: 3 }}, KDA: [23, 10, 14], alive: false}
   ],
   redSide: "defense",
-  blueSide: "attack"
+  blueSide: "attack",
+  live: {
+    spikePlanted: false
+  }
 });
 
 onMounted(() => {

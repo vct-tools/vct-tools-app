@@ -146,6 +146,9 @@ type GameData = {
   bluePlayers: PlayerData[];
   redSide: "attack" | "defense";
   blueSide: "attack" | "defense";
+  live: {
+    spikePlanted: boolean;
+  }
 };
 
 export { type OverlaySettings, createDefaultOverlaySettings, type AbilityData, type Gun, type LoadoutData, type PlayerData, type Round, type GameData };

@@ -2,6 +2,8 @@ import { type Ref, ref } from "vue";
 import type { OverlaySettings } from "./overlayType";
 import { loadImg } from "@/pages/GraphicCreator/load_img";
 
+import spikeImageURL from "@/assets/images/Spike.webp";
+
 import { roundWin } from "./renderCeromony";
 import { score } from "./renderScore";
 import { playerLeft } from "./renderPlayerLeft";
@@ -25,6 +27,8 @@ const abilityImages: Ref<
     }
   >
 > = ref({});
+let spikeImage: HTMLImageElement | null = null;
+(async () => { spikeImage = await loadImg(spikeImageURL) })();
 
 let brandingImage: HTMLImageElement | null = null;
 
@@ -231,6 +235,16 @@ export async function renderOverlay(
         brandingImage = img;
       });
     }
+  }
+
+  if (gameData.phase == "combat") {
+    // Draw spike
+    if (!gameData.live.spikePlanted && spikeImage) {
+      ctx.drawImage(spikeImage, 1920 / 2 - 25, 125, 50, 50);
+    }
+
+    // const onLeft = gameData.redSide == "attack";
+    // TODO - Draw spike side
   }
 
   roundWinLoop(settings, ctx);
