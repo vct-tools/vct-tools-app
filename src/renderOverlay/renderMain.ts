@@ -265,6 +265,7 @@ export async function renderOverlay(
     }
   }
 
+  shownInformation.roundWin.i.data.roundNum = gameData.round;
   roundWinLoop(settings, ctx);
 
   score(ctx, {
