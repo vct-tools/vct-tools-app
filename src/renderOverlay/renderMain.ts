@@ -243,18 +243,38 @@ export async function renderOverlay(
       ctx.drawImage(spikeImage, 1920 / 2 - 25, 125, 50, 50);
     }
 
-    // const onLeft = gameData.redSide == "attack";
-    // TODO - Draw spike side
+    const onLeft = gameData.redSide == "attack";
+    const triangleSize = 15;
+
+    if (onLeft) {
+      ctx.beginPath();
+      ctx.moveTo(1920 / 2 - 50, 150 - triangleSize / 2);
+      ctx.lineTo(1920 / 2 - 50 - triangleSize, 150);
+      ctx.lineTo(1920 / 2 - 50, 150 + triangleSize / 2);
+      ctx.fillStyle = "white";
+      ctx.fill();
+      ctx.closePath();
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(1920 / 2 + 50, 150 - triangleSize / 2);
+      ctx.lineTo(1920 / 2 + 50 + triangleSize, 150);
+      ctx.lineTo(1920 / 2 + 50, 150 + triangleSize / 2);
+      ctx.fillStyle = "white";
+      ctx.fill();
+      ctx.closePath();
+    }
   }
 
   roundWinLoop(settings, ctx);
 
   score(ctx, {
-    attackerScore: gameData.redSide == "attack" ? gameData.redScore : gameData.blueScore,
-    defenderScore: gameData.redSide == "defense" ? gameData.redScore : gameData.blueScore,
-    attackerName: gameData.redSide == "attack" ? settings.redTeamShortName : settings.blueTeamShortName,
-    defenderName: gameData.redSide == "defense" ? settings.redTeamShortName : settings.blueTeamShortName,
-    roundNum: gameData.round
+    redScore: gameData.redScore,
+    blueScore: gameData.blueScore,
+    redName: settings.redTeamShortName,
+    blueName: settings.blueTeamShortName,
+    roundNum: gameData.round,
+    redSide: gameData.redSide,
+    blueSide: gameData.blueSide
   });
 
   // Draw overlay overlay

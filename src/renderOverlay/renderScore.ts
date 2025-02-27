@@ -3,11 +3,13 @@ import { drawCenteredText, atkC, defC } from "./renderUtils";
 export function score(
   ctx: CanvasRenderingContext2D,
   gameData: {
-    attackerScore: number;
-    defenderScore: number;
-    attackerName: string;
-    defenderName: string;
+    redScore: number;
+    blueScore: number;
+    redName: string;
+    blueName: string;
     roundNum: number;
+    redSide: string;
+    blueSide: string;
   }
 ): void {
   const color = "15, 25, 35";
@@ -21,7 +23,7 @@ export function score(
   ctx.beginPath();
   ctx.moveTo(1920 / 2 - timerWidth / 2 - 1, timerHeight);
   ctx.lineTo(1920 / 2 - timerWidth / 2 - width, timerHeight);
-  ctx.lineTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 2, 0);
+  ctx.lineTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 4, 0);
   ctx.lineTo(1920 / 2 - timerWidth / 2 - 1, 0);
   ctx.fillStyle = `rgb(${color})`;
   ctx.fill();
@@ -31,7 +33,7 @@ export function score(
   ctx.beginPath();
   ctx.moveTo(1920 / 2 + timerWidth / 2 + 1, timerHeight);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + width, timerHeight);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 2, 0);
+  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 4, 0);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + 1, 0);
   ctx.fillStyle = `rgb(${color})`;
   ctx.fill();
@@ -39,10 +41,10 @@ export function score(
 
   // Draw outline around both
   ctx.beginPath();
-  ctx.moveTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 2 - 10, -5);
+  ctx.moveTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 4 - 8, -5);
   ctx.lineTo(1920 / 2 - timerWidth / 2 - width - 5, timerHeight + 6);
   ctx.lineTo(1920 / 2 + timerWidth / 2 + width + 5, timerHeight + 6);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 2 + 10, -5);
+  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 4 + 8, -5);
   ctx.strokeStyle = `rgb(${color})`;
   ctx.lineWidth = 4;
   ctx.stroke();
@@ -60,10 +62,10 @@ export function score(
     "middle"
   );
 
-  // Attacker score and name
+  // Red score and name
   drawCenteredText(
     ctx,
-    gameData.attackerName.toUpperCase(),
+    gameData.redName.toUpperCase(),
     1920 / 2 - timerWidth / 2 - 20,
     timerHeight / 2 + 10,
     "42px Tungsten",
@@ -74,7 +76,7 @@ export function score(
 
   drawCenteredText(
     ctx,
-    "ATK",
+    gameData.redSide == "defense" ? "DEF" : "ATK",
     1920 / 2 - timerWidth / 2 - 20,
     timerHeight / 2 - 20,
     "20px 'Din Next'",
@@ -85,11 +87,11 @@ export function score(
 
   drawCenteredText(
     ctx,
-    gameData.attackerScore.toString(),
+    gameData.redScore.toString(),
     1920 / 2 - timerWidth / 5 - width,
     timerHeight / 2 + 10,
     "42px Tungsten",
-    `rgb(${atkC})`,
+    `rgb(${gameData.redSide == "defense" ? defC : atkC})`,
     "center",
     "middle"
   );
@@ -106,10 +108,10 @@ export function score(
     "middle"
   );
 
-  // Defender score and name
+  // Blue score and name
   drawCenteredText(
     ctx,
-    gameData.defenderName.toUpperCase(),
+    gameData.blueName.toUpperCase(),
     1920 / 2 + timerWidth / 2 + 20,
     timerHeight / 2 + 10,
     "42px Tungsten",
@@ -120,7 +122,7 @@ export function score(
 
   drawCenteredText(
     ctx,
-    "DEF",
+    gameData.blueSide == "defense" ? "DEF" : "ATK",
     1920 / 2 + timerWidth / 2 + 20,
     timerHeight / 2 - 20,
     "20px 'Din Next'",
@@ -131,11 +133,11 @@ export function score(
 
   drawCenteredText(
     ctx,
-    gameData.defenderScore.toString(),
+    gameData.blueScore.toString(),
     1920 / 2 + timerWidth / 5 + width,
     timerHeight / 2 + 10,
     "42px Tungsten",
-    `rgb(${defC})`,
+    `rgb(${gameData.blueSide == "defense" ? defC : atkC})`,
     "center",
     "middle"
   );
