@@ -56,8 +56,8 @@ type OverlaySettings = {
 function createDefaultOverlaySettings(): OverlaySettings {
   return {
     nameType: "Name",
-    redTeamName: "John Porkers",
-    redTeamShortName: "PORK",
+    redTeamName: "Team 1",
+    redTeamShortName: "TM1",
     blueTeamName: "Team 2",
     blueTeamShortName: "TM2",
     playerOverlayFeatures: {
