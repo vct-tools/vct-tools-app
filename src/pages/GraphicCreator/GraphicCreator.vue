@@ -21,7 +21,7 @@
             <UISelect
               prefix="Graphic Type: "
               :items="[`Team composition`, `Team roster`]"
-              v-model="graphicType"
+              v-model="graphicType as string"
             ></UISelect>
           </div>
           <div class="panel" v-if="graphicType == `Team composition`">
@@ -29,13 +29,13 @@
             <UISelect
               prefix="Map: "
               :items="maps.map((a) => a.name)"
-              v-model="teamCompData.map"
+              v-model="teamCompData.map as string"
             ></UISelect>
             <div v-for="(p, i) in teamCompData.comp" :key="i" style="display: flex; gap: 2px">
               <UISelect
                 prefix="Agent: "
                 :items="[`(Remove player)`, `(Show as unknown)`, ...agents.map((a) => a.name)]"
-                v-model="teamCompData.comp[i].agent"
+                v-model="teamCompData.comp[i].agent as string"
                 style="width: 50%"
               ></UISelect>
               <UIField
@@ -71,17 +71,17 @@
             <div class="fg" v-for="(member, i) in teamRosterData.roster" :key="i">
               <UIField v-model="teamRosterData.roster[i].name"></UIField>
               <UISelect
-                v-model="teamRosterData.roster[i].image.imageType"
+                v-model="teamRosterData.roster[i].image.imageType as string"
                 :items="[`File Upload`, `Agent Portrait`]"
               ></UISelect>
               <UISelect
-                v-model="teamRosterData.roster[i].image.agent"
+                v-model="teamRosterData.roster[i].image.agent as string"
                 :items="agents.map((a) => a.name)"
                 v-if="teamRosterData.roster[i].image.imageType == `Agent Portrait`"
               ></UISelect>
               <UIButton v-else @click="loadImgRoster(i)">Select image...</UIButton>
               <UISelect
-                v-model="teamRosterData.roster[i].type"
+                v-model="teamRosterData.roster[i].type as string"
                 :items="[`Player`, `Substitute`, `Coach`]"
               ></UISelect>
               <UIButton @click="teamRosterData.roster.splice(i, 1)">Delete</UIButton>

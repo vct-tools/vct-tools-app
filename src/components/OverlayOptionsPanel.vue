@@ -40,17 +40,19 @@
         >Round outcome banner</UISwitch
       >
       <UIButtonLabel>Visible name</UIButtonLabel>
-      <UISelect v-model="model.nameType" :items="[`Name`, `Name and tagline`]"></UISelect>
+      <UISelect v-model="model.nameType as string" :items="[`Name`, `Name and tagline`]"></UISelect>
       <UIButtonLabel>Blue (starting defender) team name</UIButtonLabel>
       <div class="flex-h">
         <UIField v-model="model.blueTeamName"></UIField>
         <UIField v-model="model.blueTeamShortName"></UIField>
       </div>
+      <UISwitch v-model="model.blueTeamHideShortName">Truncate "{{ model.blueTeamShortName }}" from usernames</UISwitch>
       <UIButtonLabel>Red (starting attacker) team name</UIButtonLabel>
       <div class="flex-h">
         <UIField v-model="model.redTeamName"></UIField>
         <UIField v-model="model.redTeamShortName"></UIField>
       </div>
+      <UISwitch v-model="model.redTeamHideShortName">Truncate "{{ model.redTeamShortName }}" from usernames</UISwitch>
       <UIButtonLabel>Top-right corner sponsors</UIButtonLabel>
       <UISwitch v-model="model.sponsors.sponsorEnabled">Show sponsors</UISwitch>
       <div v-for="(img, index) in model.sponsors.sponsorImgs" :key="index">
@@ -75,15 +77,16 @@
       <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown"
         >Show game overview</UIButton
       >
-      <UISelect v-model="previewGameData.phase" prefix="Phase: " :items="[`buy`, `combat`]"></UISelect>
+      <UISelect v-model="previewGameData.phase as string" prefix="Phase: " :items="[`buy`, `combat`]"></UISelect>
+      <UISwitch v-model="previewGameData.live.spikePlanted">Spike planted</UISwitch>
       <div class="flex-h">
         <UISelect
-          v-model="previewOptions.triggerCeromonyWinTeam"
+          v-model="previewOptions.triggerCeromonyWinTeam as string"
           prefix="Winning team: "
           :items="[`Attack`, `Defense`]"
         ></UISelect>
         <UISelect
-          v-model="previewOptions.triggerCeromonyType"
+          v-model="previewOptions.triggerCeromonyType as string"
           prefix="Ceromony: "
           :items="[`Round Win`, `Clutch`, `Flawless`, `Ace`, `Team Ace`, `Thrifty`]"
         ></UISelect>
@@ -155,6 +158,7 @@ import { onMounted, ref, type Ref } from "vue";
 import { renderLoop, shownInformation } from "@/renderOverlay/renderMain";
 import { UIField, UISwitch, UISelect, UIButtonLabel, UIButton } from "vct-tools-components";
 import { ceromonyFilter } from "@/renderOverlay/overlayPreParse";
+import { demoGameData } from "@/renderOverlay/demoGameData";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
 const previewOptions = ref({
@@ -170,49 +174,7 @@ const model: Ref<OverlaySettings> = defineModel({
   default: createDefaultOverlaySettings()
 });
 
-const previewGameData = ref<GameData>({
-  round: 17,
-  matchLog: [
-    { cause: "elimination", roundNumber: 1, winner: "blue" },
-    { cause: "elimination", roundNumber: 2, winner: "blue" },
-    { cause: "elimination", roundNumber: 3, winner: "red" },
-    { cause: "elimination", roundNumber: 4, winner: "red" },
-    { cause: "elimination", roundNumber: 5, winner: "red" },
-    { cause: "elimination", roundNumber: 6, winner: "red" },
-    { cause: "elimination", roundNumber: 7, winner: "red" },
-    { cause: "elimination", roundNumber: 8, winner: "red" },
-    { cause: "defuse", roundNumber: 9, winner: "blue" },
-    { cause: "elimination", roundNumber: 10, winner: "red" },
-    { cause: "defuse", roundNumber: 11, winner: "blue" },
-    { cause: "elimination", roundNumber: 12, winner: "red" },
-    { cause: "elimination", roundNumber: 13, winner: "red" },
-    { cause: "elimination", roundNumber: 14, winner: "blue" },
-    { cause: "defuse", roundNumber: 15, winner: "red" },
-    { cause: "elimination", roundNumber: 16, winner: "blue" }
-  ],
-  phase: "buy",
-  redScore: 10,
-  blueScore: 6,
-  redPlayers: [
-    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 0 }, Ultimate: { maxUses: 6, remainingUses: 4 }}, KDA: [23, 10, 14], alive: false},
-    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 3 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 0 }, Signature: { maxUses: 1, remainingUses: 0 }, Ultimate: { maxUses: 6, remainingUses: 2 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: null, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 1 }}, KDA: [23, 10, 14], alive: true},
-    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 0 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 2 }}, KDA: [23, 10, 14], alive: true}
-  ],
-  bluePlayers: [
-    { name: "SEN TwelveZ", tagline: "Pro", agent: "Fade", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 5 }}, KDA: [23, 10, 14], alive: true},
-    { name: "pingu", tagline: "w2e", agent: "Cypher", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 6 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Penzツ", tagline: "mvmnt", agent: "Neon", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 0 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 9, remainingUses: 7 }}, KDA: [23, 10, 14], alive: true},
-    { name: "Ducklord", tagline: "1276", agent: "Astra", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 1 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 1 }, Ultimate: { maxUses: 6, remainingUses: 4 }}, KDA: [23, 10, 14], alive: false},
-    { name: "infinityatom", tagline: "qwert", agent: "Reyna", health: 100, loadout: { sidearm: { name: "Classic"}, firearm: { name: "Vandal" }, shield: 50}, credits: 4600, abilities: { Ability1: { maxUses: 1, remainingUses: 0 }, Ability2: { maxUses: 1, remainingUses: 1 }, Signature: { maxUses: 1, remainingUses: 0 }, Ultimate: { maxUses: 6, remainingUses: 3 }}, KDA: [23, 10, 14], alive: false}
-  ],
-  redSide: "defense",
-  blueSide: "attack",
-  live: {
-    spikePlanted: false
-  }
-});
+const previewGameData = ref<GameData>({...demoGameData});
 
 onMounted(() => {
   if (canvasElement.value) {

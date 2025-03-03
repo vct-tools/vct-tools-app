@@ -27,8 +27,24 @@ export function ceromonyFilter(ceromony: string, settings: OverlaySettings) {
 }
 
 export function nameFilter(name: string, tagline: string, settings: OverlaySettings) {
-  if (settings.nameType == "Name") return name;
-  else return name + "#" + tagline;
+  let nT = "";
+
+  if (settings.nameType == "Name") nT = name;
+  else nT = name + "#" + tagline;
+
+  if (settings.redTeamHideShortName) {
+    if (nT.startsWith(settings.redTeamShortName)) {
+      nT = nT.substring(4);
+    }
+  }
+
+  if (settings.blueTeamHideShortName) {
+    if (nT.startsWith(settings.blueTeamShortName)) {
+      nT = nT.substring(4);
+    }
+  }
+
+  return nT;
 }
 
 export function getSide(startingSide: "attack" | "defense", round: number): "attack" | "defense" {

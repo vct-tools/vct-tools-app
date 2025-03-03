@@ -49,3 +49,7 @@ export function animationDelay(min: number, max: number, animationProgress: numb
 
   return (animationProgress - min) / (max - min);
 }
+
+export function lerp(v0: number, v1: number, x: number): number {
+  return v0 * (1 - x) + v1 * x;
+}

@@ -24,14 +24,14 @@
                 <UISelect
                   prefix="Lives: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-                  v-model="difficulty.lives"
+                  v-model="difficulty.lives as number"
                 ></UISelect>
               </div>
               <div style="flex: 1">
                 <UISelect
                   prefix="Hints: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-                  v-model="difficulty.hints"
+                  v-model="difficulty.hints as number"
                 ></UISelect>
               </div>
             </div>

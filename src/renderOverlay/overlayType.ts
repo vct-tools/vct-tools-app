@@ -46,6 +46,8 @@ type OverlaySettings = {
   roundOutcomeBanner: RoundOutcomeBanner;
   nameType: "Name" | "Name and tagline";
   redTeamName: string;
+  redTeamHideShortName: boolean;
+  blueTeamHideShortName: boolean;
   blueTeamName: string;
   redTeamShortName: string;
   blueTeamShortName: string;
@@ -56,8 +58,10 @@ type OverlaySettings = {
 function createDefaultOverlaySettings(): OverlaySettings {
   return {
     nameType: "Name",
-    redTeamName: "John Porkers",
-    redTeamShortName: "PORK",
+    redTeamHideShortName: false,
+    redTeamName: "Team 1",
+    redTeamShortName: "TM1",
+    blueTeamHideShortName: false,
     blueTeamName: "Team 2",
     blueTeamShortName: "TM2",
     playerOverlayFeatures: {
@@ -133,6 +137,8 @@ type PlayerData = {
 type Round = {
   roundNumber: number;
   winner: "red" | "blue";
+  redSide: "attack" | "defense";
+  blueSide: "attack" | "defense";
   cause: "defuse" | "elimination" | "time" | "detonation";
 };
 

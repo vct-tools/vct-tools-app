@@ -1,6 +1,6 @@
 import { agents } from "vct-tools-components";
 import { loadImg } from "@/pages/GraphicCreator/load_img";
-import { drawCenteredText, defC } from "./renderUtils";
+import { drawCenteredText, defC, atkC } from "./renderUtils";
 import { type OverlaySettings, type PlayerData } from "./overlayType";
 import { nameFilter } from "./overlayPreParse";
 import { type Ref } from "vue";
@@ -21,7 +21,8 @@ export async function playerLeft(
       Signature: HTMLImageElement;
       Ultimate: HTMLImageElement;
     }
-  >>
+  >>,
+  side: "attack" | "defense"
 ): Promise<void> {
   const playerHealth = player.health;
   const ultProgress = [player.abilities.Ultimate.remainingUses, player.abilities.Ultimate.maxUses];
@@ -46,7 +47,7 @@ export async function playerLeft(
   }
 
   ctx.filter = alive ? "" : "grayscale(1)";
-  ctx.fillStyle = `rgba(${defC}, 0.5)`;
+  ctx.fillStyle = `rgba(${side == "defense" ? defC : atkC}, 0.5)`;
   ctx.beginPath();
   ctx.roundRect(x, y - 30, alive ? 400 : 300, 30, [0, 0, 10, 10]);
   ctx.fill();
@@ -56,7 +57,7 @@ export async function playerLeft(
   ctx.fillRect(x, y - 30 - 10, alive ? 400 : 300, 10);
 
   if (alive) {
-    ctx.fillStyle = `rgba(${defC}, 1)`;
+    ctx.fillStyle = `rgba(${side == "defense" ? defC : atkC}, 1)`;
     ctx.fillRect(x, y - 30 - 10, playerHealth * 4, 10);
   }
 
@@ -98,7 +99,7 @@ export async function playerLeft(
           }
         })();
       } else {
-        ctx.fillStyle = `rgba(${defC}, 0.6)`;
+        ctx.fillStyle = `rgba(${side == "defense" ? defC : atkC}, 0.6)`;
         ctx.fillRect(x + 250 - 30, y - 30, 60, 30);
 
         // Draw ultimate icon

@@ -1,143 +1,168 @@
+import type { GameData, OverlaySettings } from "./overlayType";
 import { drawCenteredText, atkC, defC } from "./renderUtils";
 
 export function score(
   ctx: CanvasRenderingContext2D,
-  gameData: {
-    redScore: number;
-    blueScore: number;
-    redName: string;
-    blueName: string;
-    roundNum: number;
-    redSide: string;
-    blueSide: string;
-  }
+  gameData: GameData,
+  settings: OverlaySettings
 ): void {
   const color = "15, 25, 35";
   const timerWidth = 140;
   const timerHeight = 72;
 
-  const width = 200;
-  ctx.filter = "none";
-
-  // Draw left
-  ctx.beginPath();
-  ctx.moveTo(1920 / 2 - timerWidth / 2 - 1, timerHeight);
-  ctx.lineTo(1920 / 2 - timerWidth / 2 - width, timerHeight);
-  ctx.lineTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 4, 0);
-  ctx.lineTo(1920 / 2 - timerWidth / 2 - 1, 0);
+  // Draw triangles on either side of the timer
   ctx.fillStyle = `rgb(${color})`;
+  ctx.beginPath();
+  ctx.moveTo(1920 / 2 - timerWidth / 2, timerHeight);
+  ctx.lineTo(1920 / 2 - timerWidth / 2, 0);
+  ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6, 0);
   ctx.fill();
   ctx.closePath();
 
-  // Draw right
-  ctx.beginPath();
-  ctx.moveTo(1920 / 2 + timerWidth / 2 + 1, timerHeight);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + width, timerHeight);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 4, 0);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + 1, 0);
   ctx.fillStyle = `rgb(${color})`;
+  ctx.beginPath();
+  ctx.moveTo(1920 / 2 + timerWidth / 2, timerHeight);
+  ctx.lineTo(1920 / 2 + timerWidth / 2, 0);
+  ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6, 0);
   ctx.fill();
   ctx.closePath();
 
-  // Draw outline around both
+  ctx.fillStyle = `rgb(${color})`;
   ctx.beginPath();
-  ctx.moveTo(1920 / 2 - timerWidth / 2 - width - timerHeight / 4 - 8, -5);
-  ctx.lineTo(1920 / 2 - timerWidth / 2 - width - 5, timerHeight + 6);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + 5, timerHeight + 6);
-  ctx.lineTo(1920 / 2 + timerWidth / 2 + width + timerHeight / 4 + 8, -5);
-  ctx.strokeStyle = `rgb(${color})`;
-  ctx.lineWidth = 4;
-  ctx.stroke();
+  ctx.moveTo(1920 / 2 - timerWidth / 2, timerHeight);
+  ctx.lineTo(1920 / 2 - timerWidth / 2 + timerHeight / 12, timerHeight + 20);
+  ctx.lineTo(1920 / 2 + timerWidth / 2 - timerHeight / 12, timerHeight + 20);
+  ctx.lineTo(1920 / 2 + timerWidth / 2, timerHeight);
+  ctx.fill();
   ctx.closePath();
 
-  // Draw branding
+  const teamWidth = 200;
+
+  // Draw the red team
+  {
+    ctx.strokeStyle = `rgb(${color})`;
+    ctx.fillStyle = `rgba(${gameData.redSide == "attack" ? atkC : defC}, 0.65)`;
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3, 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - 15, timerHeight / 2 + 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3, timerHeight + 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth, timerHeight + 10);
+    ctx.lineTo(
+      1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth - 12,
+      timerHeight / 2 + 10
+    );
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth, 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3, 10);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.fillStyle = `rgb(${color})`;
+    ctx.beginPath();
+    ctx.moveTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth / 3, 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth / 3, timerHeight + 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth, timerHeight + 10);
+    ctx.lineTo(
+      1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth - 12,
+      timerHeight / 2 + 10
+    );
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth, 10);
+    ctx.fill();
+    ctx.closePath();
+
+    // Draw the score
+    drawCenteredText(
+      ctx,
+      `${gameData.redScore}`,
+      1920 / 2 - timerWidth / 2 - timerWidth / 6 - (teamWidth / 3) / 2,
+      timerHeight / 2 + 10,
+      "50px Tungsten",
+      "white",
+      "center",
+      "middle"
+    );
+
+    // Draw team name
+    drawCenteredText(
+      ctx,
+      settings.redTeamShortName.toUpperCase(),
+      1920 / 2 - timerWidth / 2 - timerWidth / 6 - teamWidth / 3 - (teamWidth - teamWidth / 3) / 2 - 3,
+      timerHeight / 2 + 10,
+      "50px Tungsten",
+      "white",
+      "center",
+      "middle"
+    );
+  }
+
+  // Draw the blue team
+  {
+    ctx.strokeStyle = `rgb(${color})`;
+    ctx.fillStyle = `rgba(${gameData.blueSide == "attack" ? atkC : defC}, 0.65)`;
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3, 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + 15, timerHeight / 2 + 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3, timerHeight + 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth, timerHeight + 10);
+    ctx.lineTo(
+      1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth + 12,
+      timerHeight / 2 + 10
+    );
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth, 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3, 10);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.fillStyle = `rgb(${color})`;
+    ctx.beginPath();
+    ctx.moveTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth / 3, 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth / 3, timerHeight + 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth, timerHeight + 10);
+    ctx.lineTo(
+      1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth + 12,
+      timerHeight / 2 + 10
+    );
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth, 10);
+    ctx.fill();
+    ctx.closePath();
+
+    // Draw the score
+    drawCenteredText(
+      ctx,
+      `${gameData.blueScore}`,
+      1920 / 2 + timerWidth / 2 + timerWidth / 6 + (teamWidth / 3) / 2,
+      timerHeight / 2 + 10,
+      "50px Tungsten",
+      "white",
+      "center",
+      "middle"
+    );
+
+    // Draw team name
+    drawCenteredText(
+      ctx,
+      settings.blueTeamShortName.toUpperCase(),
+      1920 / 2 + timerWidth / 2 + timerWidth / 6 + teamWidth / 3 + (teamWidth - teamWidth / 3) / 2 + 3,
+      timerHeight / 2 + 10,
+      "50px Tungsten",
+      "white",
+      "center",
+      "middle"
+    );
+  }
+
   drawCenteredText(
     ctx,
-    "VCTTools.net",
+    `ROUND ${gameData.round}`,
     1920 / 2,
-    timerHeight + 20,
-    "bold 20px 'Din Next'",
-    `rgba(${color}, 0.7)`,
-    "center",
-    "middle"
-  );
-
-  // Red score and name
-  drawCenteredText(
-    ctx,
-    gameData.redName.toUpperCase(),
-    1920 / 2 - timerWidth / 2 - 20,
-    timerHeight / 2 + 10,
-    "42px Tungsten",
-    "white",
-    "right",
-    "middle"
-  );
-
-  drawCenteredText(
-    ctx,
-    gameData.redSide == "defense" ? "DEF" : "ATK",
-    1920 / 2 - timerWidth / 2 - 20,
-    timerHeight / 2 - 20,
+    15,
     "20px 'Din Next'",
     "white",
-    "right",
-    "middle"
-  );
-
-  drawCenteredText(
-    ctx,
-    gameData.redScore.toString(),
-    1920 / 2 - timerWidth / 5 - width,
-    timerHeight / 2 + 10,
-    "42px Tungsten",
-    `rgb(${gameData.redSide == "defense" ? defC : atkC})`,
-    "center",
-    "middle"
-  );
-
-  // Time
-  drawCenteredText(
-    ctx,
-    `ROUND ${gameData.roundNum}`,
-    1920 / 2,
-    timerHeight / 2 - 20,
-    "20px 'Din Next'",
-    "white",
-    "center",
-    "middle"
-  );
-
-  // Blue score and name
-  drawCenteredText(
-    ctx,
-    gameData.blueName.toUpperCase(),
-    1920 / 2 + timerWidth / 2 + 20,
-    timerHeight / 2 + 10,
-    "42px Tungsten",
-    "white",
-    "left",
-    "middle"
-  );
-
-  drawCenteredText(
-    ctx,
-    gameData.blueSide == "defense" ? "DEF" : "ATK",
-    1920 / 2 + timerWidth / 2 + 20,
-    timerHeight / 2 - 20,
-    "20px 'Din Next'",
-    "white",
-    "left",
-    "middle"
-  );
-
-  drawCenteredText(
-    ctx,
-    gameData.blueScore.toString(),
-    1920 / 2 + timerWidth / 5 + width,
-    timerHeight / 2 + 10,
-    "42px Tungsten",
-    `rgb(${gameData.blueSide == "defense" ? defC : atkC})`,
     "center",
     "middle"
   );

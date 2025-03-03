@@ -45,19 +45,19 @@
               <UISelect
                 :items="mapPool"
                 prefix="Map: "
-                v-model="selectedMap"
+                v-model="selectedMap as string"
                 v-if="currentStage == stage.BAN || currentStage == stage.PICK"
               ></UISelect>
               <UISelect
                 :items="[`Attack`, `Defense`]"
                 prefix="Side: "
-                v-model="selectedSide"
+                v-model="selectedSide as string"
                 v-if="currentStage == stage.SIDE"
               ></UISelect>
               <UISelect
                 :items="[`Team 1`, `Team 2`]"
                 prefix="Team: "
-                v-model="selectedTeam"
+                v-model="selectedTeam as string"
                 v-if="currentStage == stage.SELECT_ORDER"
               ></UISelect>
               <div style="display: flex; justify-content: center; margin-top: 1em">

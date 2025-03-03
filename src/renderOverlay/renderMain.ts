@@ -12,7 +12,7 @@ import { sponsors } from "./renderSponsors";
 import { seriesMaps } from "./renderSeriesMaps";
 import { drawCenteredText } from "./renderUtils";
 import { type GameData } from "./overlayType";
-import { easeInOutExpo } from "./renderUtils";
+import { easeInOutExpo, lerp } from "./renderUtils";
 import { preRound } from "./renderPreRound";
 
 const agentImages: Ref<Record<string, HTMLImageElement>> = ref({});
@@ -72,6 +72,13 @@ const shownInformation = {
     lastShown: false,
     running: false,
     directionShow: false, // Is the direction of the animation to show or hide, true = show, false = hide
+    t: 0
+  },
+  spike: {
+    planted: false,
+    lastPlanted: false,
+    running: false,
+    directionShow: false, // Is the direction of the animation to unplant or plant, true = plant, false = unplant
     t: 0
   }
 };
@@ -152,33 +159,54 @@ export async function renderOverlay(
         : easeInOutExpo(0, 500, shownInformation.playerInformation.t / 100)
       : null;
 
-    const defTeam = gameData.redSide == "defense" ? gameData.redPlayers : gameData.bluePlayers;
-    for (let i = 0; i < defTeam.length; i++) {
+    for (let i = 0; i < gameData.redPlayers.length; i++) {
       playerLeft(
         ctx,
         25 - (xVal || 0),
         1080 - (25 + 115 * i),
-        defTeam[i],
-        defTeam[i].alive,
+        gameData.redPlayers[i],
+        gameData.redPlayers[i].alive,
         settings,
         agentImages,
-        abilityImages
+        abilityImages,
+        gameData.redSide
       );
     }
 
-    const atkTeam = gameData.redSide == "attack" ? gameData.redPlayers : gameData.bluePlayers;
-    for (let i = 0; i < atkTeam.length; i++) {
+    for (let i = 0; i < gameData.bluePlayers.length; i++) {
       playerRight(
         ctx,
         1920 - 25 + (xVal || 0),
         1080 - (25 + 115 * i),
-        atkTeam[i],
-        atkTeam[i].alive,
+        gameData.bluePlayers[i],
+        gameData.bluePlayers[i].alive,
         settings,
         agentImages,
-        abilityImages
+        abilityImages,
+        gameData.blueSide
       );
     }
+
+    // Draw watermark
+    const watermarkText = "Overlay by VCTTools.net";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.beginPath();
+    ctx.font = "20px 'Din Next'";
+    const w = ctx.measureText(watermarkText).width;
+    ctx.roundRect(1920 - 25 + (xVal || 0) - (w + 10), 1080 - (25 + 115 * (gameData.bluePlayers.length + 1)) + (115 - 30), (w + 10), 30, [10, 10, 10, 10]);
+    ctx.fill();
+    ctx.closePath();
+
+    drawCenteredText(
+      ctx,
+      watermarkText,
+      1920 - 25 + (xVal || 0) - 5,
+      1080 - (25 + 115 * (gameData.bluePlayers.length + 1)) + (115 - 15),
+      "20px 'Din Next'",
+      "rgb(255, 255, 255, 0.2)",
+      "right",
+      "middle"
+    );
   }
 
   // Game overview
@@ -237,10 +265,48 @@ export async function renderOverlay(
     }
   }
 
+  score(ctx, gameData, settings);
+
+  // Spike animation
+  shownInformation.spike.planted = gameData.live.spikePlanted;
+
+  if (shownInformation.spike.planted == false && shownInformation.spike.lastPlanted == true) {
+    shownInformation.spike.running = true;
+    shownInformation.spike.directionShow = false;
+    shownInformation.spike.t = 100; // Start from 100 when unplanting
+
+    shownInformation.spike.lastPlanted = false;
+  } else if (shownInformation.spike.planted == true && shownInformation.spike.lastPlanted == false) {
+    shownInformation.spike.running = true;
+    shownInformation.spike.directionShow = true;
+    shownInformation.spike.t = 0; // Start from 0 when planting
+
+    shownInformation.spike.lastPlanted = true;
+  }
+
+  if (shownInformation.spike.running) {
+    if (shownInformation.spike.directionShow) {
+      shownInformation.spike.t = Math.min(shownInformation.spike.t + 5, 100);
+    } else {
+      shownInformation.spike.t = Math.max(shownInformation.spike.t - 5, 0);
+    }
+
+    if (shownInformation.spike.t === 100 || shownInformation.spike.t === 0) {
+      shownInformation.spike.running = false;
+    }
+  }
+
   if (gameData.phase == "combat") {
+    const spikeY = lerp(100, 30, shownInformation.spike.t / 100);
+    const triangleY = 125;
     // Draw spike
-    if (!gameData.live.spikePlanted && spikeImage) {
-      ctx.drawImage(spikeImage, 1920 / 2 - 25, 125, 50, 50);
+    if (gameData.live.spikePlanted) {
+      ctx.fillStyle = "rgb(15, 25, 35)";
+      ctx.fillRect(1920 / 2 - 140 / 2, 25, 140, 72 - 25);
+    }
+
+    if (spikeImage) {
+      ctx.drawImage(spikeImage, 1920 / 2 - 25, spikeY, 50, 50);
     }
 
     const onLeft = gameData.redSide == "attack";
@@ -248,17 +314,17 @@ export async function renderOverlay(
 
     if (onLeft) {
       ctx.beginPath();
-      ctx.moveTo(1920 / 2 - 50, 150 - triangleSize / 2);
-      ctx.lineTo(1920 / 2 - 50 - triangleSize, 150);
-      ctx.lineTo(1920 / 2 - 50, 150 + triangleSize / 2);
+      ctx.moveTo(1920 / 2 - 50, triangleY - triangleSize / 2);
+      ctx.lineTo(1920 / 2 - 50 - triangleSize, triangleY);
+      ctx.lineTo(1920 / 2 - 50, triangleY + triangleSize / 2);
       ctx.fillStyle = "white";
       ctx.fill();
       ctx.closePath();
     } else {
       ctx.beginPath();
-      ctx.moveTo(1920 / 2 + 50, 150 - triangleSize / 2);
-      ctx.lineTo(1920 / 2 + 50 + triangleSize, 150);
-      ctx.lineTo(1920 / 2 + 50, 150 + triangleSize / 2);
+      ctx.moveTo(1920 / 2 + 50, triangleY - triangleSize / 2);
+      ctx.lineTo(1920 / 2 + 50 + triangleSize, triangleY);
+      ctx.lineTo(1920 / 2 + 50, triangleY + triangleSize / 2);
       ctx.fillStyle = "white";
       ctx.fill();
       ctx.closePath();
@@ -267,16 +333,6 @@ export async function renderOverlay(
 
   shownInformation.roundWin.i.data.roundNum = gameData.round;
   roundWinLoop(settings, ctx);
-
-  score(ctx, {
-    redScore: gameData.redScore,
-    blueScore: gameData.blueScore,
-    redName: settings.redTeamShortName,
-    blueName: settings.blueTeamShortName,
-    roundNum: gameData.round,
-    redSide: gameData.redSide,
-    blueSide: gameData.blueSide
-  });
 
   // Draw overlay overlay
   if (settings.series.maps.length > 0) {
