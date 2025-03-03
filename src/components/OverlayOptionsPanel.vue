@@ -72,7 +72,6 @@
         :style="`background-image: url(${HavenGameplay})`"
         ref="canvasElement"
       ></canvas>
-      <div class="flex-l"></div>
       <UIButtonLabel>Preview options</UIButtonLabel>
       <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown"
         >Show game overview</UIButton

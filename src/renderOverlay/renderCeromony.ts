@@ -56,7 +56,7 @@ export function roundWin(
       "middle"
     );
 
-    ctx.font = `${easeInOutExpo(150, 100, animationDelay(0.2, 0.9, animationProgress))}px 'Tungsten'`;
+    ctx.font = `${easeInOutExpo(150, settings.series.showBrandingImg ? 100 : 125, animationDelay(0.2, 0.9, animationProgress))}px 'Tungsten'`;
 
     if (settings.series.showBrandingImg && brandingImage) {
       // Calculate image size
@@ -92,7 +92,7 @@ export function roundWin(
         (settings.series.showBrandingImg
           ? easeInOutExpo(50, 40, animationDelay(0.2, 0.9, animationProgress))
           : 0),
-      `${easeInOutExpo(150, 100, animationDelay(0.2, 0.9, animationProgress))}px 'Tungsten'`,
+      `${easeInOutExpo(150, settings.series.showBrandingImg ? 100 : 125, animationDelay(0.2, 0.9, animationProgress))}px 'Tungsten'`,
       `rgb(${headerC})`,
       "left",
       "middle"
