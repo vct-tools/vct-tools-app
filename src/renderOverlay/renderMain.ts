@@ -28,9 +28,12 @@ const abilityImages: Ref<
   >
 > = ref({});
 let spikeImage: HTMLImageElement | null = null;
+const teamLogos: { red: HTMLImageElement | null; blue: HTMLImageElement | null } = { red: null, blue: null };
+
 (async () => { spikeImage = await loadImg(spikeImageURL) })();
 
 let brandingImage: HTMLImageElement | null = null;
+let ceromonyBackgroundImage: HTMLImageElement | null = null;
 
 const sponsorImages: HTMLImageElement[] = [];
 
@@ -265,7 +268,55 @@ export async function renderOverlay(
     }
   }
 
-  score(ctx, gameData, settings);
+  if (!teamLogos.red) {
+    if (settings.redTeamLogo) {
+      loadImg(settings.redTeamLogo).then((img) => {
+        teamLogos.red = img;
+      });
+    } else {
+      teamLogos.red = null;
+    }
+  } else {
+    if (settings.redTeamLogo && settings.redTeamLogo != teamLogos.red.src) {
+      loadImg(settings.redTeamLogo).then((img) => {
+        teamLogos.red = img;
+      });
+    }
+  }
+
+  if (!teamLogos.blue) {
+    if (settings.blueTeamLogo) {
+      loadImg(settings.blueTeamLogo).then((img) => {
+        teamLogos.blue = img;
+      });
+    } else {
+      teamLogos.blue = null;
+    }
+  } else {
+    if (settings.blueTeamLogo && settings.blueTeamLogo != teamLogos.blue.src) {
+      loadImg(settings.blueTeamLogo).then((img) => {
+        teamLogos.blue = img;
+      });
+    }
+  }
+
+  if (!ceromonyBackgroundImage) {
+    if (settings.roundOutcomeBanner.background) {
+      loadImg(settings.roundOutcomeBanner.background).then((img) => {
+        ceromonyBackgroundImage = img;
+      });
+    } else {
+      ceromonyBackgroundImage = null;
+    }
+  } else {
+    if (settings.roundOutcomeBanner.background && settings.redTeamLogo != ceromonyBackgroundImage.src) {
+      loadImg(settings.roundOutcomeBanner.background).then((img) => {
+        ceromonyBackgroundImage = img;
+      });
+    }
+  }
+
+  score(ctx, gameData, settings, teamLogos);
 
   // Spike animation
   shownInformation.spike.planted = gameData.live.spikePlanted;
@@ -332,7 +383,7 @@ export async function renderOverlay(
   }
 
   shownInformation.roundWin.i.data.roundNum = gameData.round;
-  roundWinLoop(settings, ctx);
+  roundWinLoop(settings, ctx, gameData);
 
   // Draw overlay overlay
   if (settings.series.maps.length > 0) {
@@ -378,7 +429,7 @@ export async function renderOverlay(
   }
 }
 
-function roundWinLoop(settings: OverlaySettings, ctx: CanvasRenderingContext2D): void {
+function roundWinLoop(settings: OverlaySettings, ctx: CanvasRenderingContext2D, gameData: GameData): void {
   if (shownInformation.roundWin.i.running) {
     if (settings.otherOverlayFeatures.roundOutcomeBanner) {
       roundWin(
@@ -389,7 +440,10 @@ function roundWinLoop(settings: OverlaySettings, ctx: CanvasRenderingContext2D):
         shownInformation.roundWin.i.data.roundNum,
         shownInformation.roundWin.i.t / 100,
         settings,
-        brandingImage
+        brandingImage,
+        teamLogos,
+        gameData,
+        ceromonyBackgroundImage
       );
 
       if (shownInformation.roundWin.i.t == 90) {

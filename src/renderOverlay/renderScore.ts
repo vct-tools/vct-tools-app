@@ -4,7 +4,8 @@ import { drawCenteredText, atkC, defC } from "./renderUtils";
 export function score(
   ctx: CanvasRenderingContext2D,
   gameData: GameData,
-  settings: OverlaySettings
+  settings: OverlaySettings,
+  teamLogos: { red: HTMLImageElement | null; blue: HTMLImageElement | null }
 ): void {
   const color = "15, 25, 35";
   const timerWidth = 140;
@@ -36,7 +37,8 @@ export function score(
   ctx.fill();
   ctx.closePath();
 
-  const teamWidth = 200;
+  const teamWidth = settings.showTeamLogos ? 250 : 200;
+  const scoreWidth = 66;
 
   // Draw the red team
   {
@@ -61,8 +63,8 @@ export function score(
 
     ctx.fillStyle = `rgb(${color})`;
     ctx.beginPath();
-    ctx.moveTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth / 3, 10);
-    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth / 3, timerHeight + 10);
+    ctx.moveTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - scoreWidth, 10);
+    ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - scoreWidth, timerHeight + 10);
     ctx.lineTo(1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth, timerHeight + 10);
     ctx.lineTo(
       1920 / 2 - timerWidth / 2 - timerWidth / 6 - 3 - teamWidth - 12,
@@ -76,7 +78,7 @@ export function score(
     drawCenteredText(
       ctx,
       `${gameData.redScore}`,
-      1920 / 2 - timerWidth / 2 - timerWidth / 6 - (teamWidth / 3) / 2,
+      1920 / 2 - timerWidth / 2 - timerWidth / 6 - (scoreWidth) / 2,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
@@ -88,13 +90,26 @@ export function score(
     drawCenteredText(
       ctx,
       settings.redTeamShortName.toUpperCase(),
-      1920 / 2 - timerWidth / 2 - timerWidth / 6 - teamWidth / 3 - (teamWidth - teamWidth / 3) / 2 - 3,
+      settings.showTeamLogos ? 1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) / 3 - 3 : 1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) / 2 - 3,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
       "center",
       "middle"
     );
+
+    // Draw the team logo
+    if (settings.showTeamLogos && teamLogos.red) {
+      const logoSize = timerHeight - 20;
+
+      ctx.drawImage(
+        teamLogos.red,
+        1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) + (teamWidth - scoreWidth) / 4 - 3 - logoSize / 2,
+        timerHeight / 2 + 10 - logoSize / 2,
+        logoSize,
+        logoSize
+      );
+    }
   }
 
   // Draw the blue team
@@ -120,8 +135,8 @@ export function score(
 
     ctx.fillStyle = `rgb(${color})`;
     ctx.beginPath();
-    ctx.moveTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth / 3, 10);
-    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth / 3, timerHeight + 10);
+    ctx.moveTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + scoreWidth, 10);
+    ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + scoreWidth, timerHeight + 10);
     ctx.lineTo(1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth, timerHeight + 10);
     ctx.lineTo(
       1920 / 2 + timerWidth / 2 + timerWidth / 6 + 3 + teamWidth + 12,
@@ -135,7 +150,7 @@ export function score(
     drawCenteredText(
       ctx,
       `${gameData.blueScore}`,
-      1920 / 2 + timerWidth / 2 + timerWidth / 6 + (teamWidth / 3) / 2,
+      1920 / 2 + timerWidth / 2 + timerWidth / 6 + (scoreWidth) / 2,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
@@ -147,13 +162,26 @@ export function score(
     drawCenteredText(
       ctx,
       settings.blueTeamShortName.toUpperCase(),
-      1920 / 2 + timerWidth / 2 + timerWidth / 6 + teamWidth / 3 + (teamWidth - teamWidth / 3) / 2 + 3,
+      settings.showTeamLogos ? 1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) / 3 + 3 : 1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) / 2 + 3,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
       "center",
       "middle"
     );
+
+    // Draw the team logo
+    if (settings.showTeamLogos && teamLogos.blue) {
+      const logoSize = timerHeight - 20;
+
+      ctx.drawImage(
+        teamLogos.blue,
+        1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) - (teamWidth - scoreWidth) / 4 + 3 - logoSize / 2,
+        timerHeight / 2 + 10 - logoSize / 2,
+        logoSize,
+        logoSize
+      );
+    }
   }
 
   drawCenteredText(

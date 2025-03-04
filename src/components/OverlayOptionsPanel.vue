@@ -1,12 +1,15 @@
 <template>
   <div class="main flex-h">
-    <div class="flex-v flex-qh p">
+    <div class="flex-v flex-hh p">
       <UIButtonLabel>Round outcome banner</UIButtonLabel>
       <UISwitch v-model="model.roundOutcomeBanner.clutch">Clutch</UISwitch>
       <UISwitch v-model="model.roundOutcomeBanner.flawless">Flawless</UISwitch>
       <UISwitch v-model="model.roundOutcomeBanner.ace">Ace</UISwitch>
       <UISwitch v-model="model.roundOutcomeBanner.teamAce">Team Ace</UISwitch>
       <UISwitch v-model="model.roundOutcomeBanner.thrifty">Thrifty</UISwitch>
+      <UIButtonLabel>Round outcome banner - Background</UIButtonLabel>
+      <UISwitch v-model="model.roundOutcomeBanner.useBackground">Custom background</UISwitch>
+      <UIButton @click="loadBackground()">Select background image (1000x250px)</UIButton>
       <UIButtonLabel>Game overview visible</UIButtonLabel>
       <UISwitch v-model="model.gameOverviewVisible.KDA">K/D/A</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.loadout">Loadout & credits</UISwitch>
@@ -25,8 +28,6 @@
       <UIButton @click="model.series.maps.push(`Map Name`)">Add map</UIButton>
       <UIButtonLabel>Series - Name</UIButtonLabel>
       <UIField v-model="model.series.seriesName"></UIField>
-    </div>
-    <div class="flex-v flex-qh p">
       <UIButtonLabel>Player overlay features</UIButtonLabel>
       <UISwitch v-model="model.playerOverlayFeatures.playerAbilities">Player abilities</UISwitch>
       <UISwitch v-model="model.playerOverlayFeatures.playerHealth">Player health</UISwitch>
@@ -46,29 +47,33 @@
         <UIField v-model="model.redTeamName"></UIField>
         <UIField v-model="model.redTeamShortName"></UIField>
       </div>
-      <UISwitch v-model="model.redTeamHideShortName">Truncate "{{ model.redTeamShortName }}" from usernames</UISwitch>
+      <UISwitch v-model="model.redTeamHideShortName"
+        >Truncate "{{ model.redTeamShortName }}" from usernames</UISwitch
+      >
       <UIButtonLabel>Blue (starting defender) team name</UIButtonLabel>
       <div class="flex-h">
         <UIField v-model="model.blueTeamName"></UIField>
         <UIField v-model="model.blueTeamShortName"></UIField>
       </div>
-      <UISwitch v-model="model.blueTeamHideShortName">Truncate "{{ model.blueTeamShortName }}" from usernames</UISwitch>
-      <UIButtonLabel>Team Logos</UIButtonLabel>
+      <UISwitch v-model="model.blueTeamHideShortName"
+        >Truncate "{{ model.blueTeamShortName }}" from usernames</UISwitch
+      >
+      <UIButtonLabel>Team logos</UIButtonLabel>
       <UISwitch v-model="model.showTeamLogos">Show team logos</UISwitch>
       <div class="flex-h">
         <div class="flex-hh">
-          <UIButtonLabel>Red</UIButtonLabel>
+          <UIButtonLabel>Red logo</UIButtonLabel>
           <div class="lc" v-if="model.redTeamLogo">
-            <img :src="model.redTeamLogo" height="100" width="100">
+            <img :src="model.redTeamLogo" height="100" width="100" />
           </div>
-          <UIButton @click="loadRedLogo()">Upload...</UIButton>
+          <UIButton @click="loadRedLogo()">Upload... (1:1)</UIButton>
         </div>
         <div class="flex-hh">
-          <UIButtonLabel>Blue</UIButtonLabel>
+          <UIButtonLabel>Blue logo</UIButtonLabel>
           <div class="lc" v-if="model.blueTeamLogo">
-            <img :src="model.blueTeamLogo" height="100" width="100">
+            <img :src="model.blueTeamLogo" height="100" width="100" />
           </div>
-          <UIButton @click="loadBlueLogo()">Upload...</UIButton>
+          <UIButton @click="loadBlueLogo()">Upload... (1:1)</UIButton>
         </div>
       </div>
       <UIButtonLabel>Top-right corner sponsors</UIButtonLabel>
@@ -81,22 +86,29 @@
       </div>
       <UIButton @click="newSponsor()">Add sponsor</UIButton>
     </div>
-    <div class="flex-v flex-hh p">
-      <UIButtonLabel>Preview</UIButtonLabel>
-      <canvas
-        width="1920"
-        height="1080"
-        class="canvas"
-        :style="`background-image: url(${HavenGameplay})`"
-        ref="canvasElement"
-      ></canvas>
-      <UIButtonLabel>Preview options</UIButtonLabel>
-      <UIButton @click="shownInformation.gameOverview.shown = !shownInformation.gameOverview.shown"
-        >Show game overview</UIButton
-      >
-      <UISelect v-model="previewGameData.phase as string" prefix="Phase: " :items="[`buy`, `combat`]"></UISelect>
-      <UISwitch v-model="previewGameData.live.spikePlanted">Spike planted</UISwitch>
-      <div class="flex-h">
+    <div class="flex-v p">
+      <div style="position: sticky; top: 0px;">
+        <UIButtonLabel>Preview</UIButtonLabel>
+        <canvas
+          width="1920"
+          height="1080"
+          class="canvas"
+          :style="`background-image: url(${HavenGameplay});`"
+          ref="canvasElement"
+        ></canvas>
+      </div>
+    </div>
+    <div class="flex-v flex-qh p">
+      <div style="position: sticky; top: 0px;">
+        <UIButtonLabel>Preview options</UIButtonLabel>
+        <UISelect
+          v-model="previewGameData.phase as string"
+          prefix="Phase: "
+          :items="[`buy`, `combat`]"
+        ></UISelect>
+        <UISwitch v-model="previewGameData.live.spikePlanted">Spike planted</UISwitch>
+
+        <UIButtonLabel>Ceromony</UIButtonLabel>
         <UISelect
           v-model="previewOptions.triggerCeromonyWinTeam as string"
           prefix="Winning team: "
@@ -108,8 +120,9 @@
           :items="[`Round Win`, `Clutch`, `Flawless`, `Ace`, `Team Ace`, `Thrifty`]"
         ></UISelect>
         <UIButton @click="preview_TriggerCeromony()">Trigger ceromony</UIButton>
+        <UIButtonLabel>Display</UIButtonLabel>
+        <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
       </div>
-      <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
     </div>
   </div>
 </template>
@@ -196,7 +209,7 @@ const model: Ref<OverlaySettings> = defineModel({
   default: createDefaultOverlaySettings()
 });
 
-const previewGameData = ref<GameData>({...demoGameData});
+const previewGameData = ref<GameData>({ ...demoGameData });
 
 onMounted(() => {
   if (canvasElement.value) {
@@ -260,6 +273,12 @@ const loadBlueLogo = async () => {
 const loadRedLogo = async () => {
   try {
     model.value.redTeamLogo = await getImageDataURI();
+  } catch {}
+};
+
+const loadBackground = async () => {
+  try {
+    model.value.roundOutcomeBanner.background = await getImageDataURI();
   } catch {}
 };
 

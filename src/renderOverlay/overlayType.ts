@@ -25,6 +25,8 @@ type RoundOutcomeBanner = {
   ace: boolean;
   teamAce: boolean;
   thrifty: boolean;
+  background: string | null;
+  useBackground: boolean;
 };
 
 type SeriesInformation = {
@@ -93,7 +95,9 @@ function createDefaultOverlaySettings(): OverlaySettings {
       flawless: true,
       ace: true,
       teamAce: true,
-      thrifty: true
+      thrifty: true,
+      background: null,
+      useBackground: false
     },
     series: {
       maps: ["Ascent (TEAM1)", "Bind (TEAM2)", "Fracture (DECIDER)"],
