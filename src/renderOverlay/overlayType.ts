@@ -51,6 +51,9 @@ type OverlaySettings = {
   blueTeamName: string;
   redTeamShortName: string;
   blueTeamShortName: string;
+  redTeamLogo: string | null;
+  blueTeamLogo: string | null;
+  showTeamLogos: boolean;
   series: SeriesInformation;
   sponsors: SponsorInformation;
 };
@@ -61,9 +64,12 @@ function createDefaultOverlaySettings(): OverlaySettings {
     redTeamHideShortName: false,
     redTeamName: "Team 1",
     redTeamShortName: "TM1",
+    redTeamLogo: null,
     blueTeamHideShortName: false,
     blueTeamName: "Team 2",
     blueTeamShortName: "TM2",
+    blueTeamLogo: null,
+    showTeamLogos: false,
     playerOverlayFeatures: {
       playerAbilities: true,
       playerHealth: true,

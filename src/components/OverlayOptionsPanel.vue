@@ -41,18 +41,36 @@
       >
       <UIButtonLabel>Visible name</UIButtonLabel>
       <UISelect v-model="model.nameType as string" :items="[`Name`, `Name and tagline`]"></UISelect>
-      <UIButtonLabel>Blue (starting defender) team name</UIButtonLabel>
-      <div class="flex-h">
-        <UIField v-model="model.blueTeamName"></UIField>
-        <UIField v-model="model.blueTeamShortName"></UIField>
-      </div>
-      <UISwitch v-model="model.blueTeamHideShortName">Truncate "{{ model.blueTeamShortName }}" from usernames</UISwitch>
       <UIButtonLabel>Red (starting attacker) team name</UIButtonLabel>
       <div class="flex-h">
         <UIField v-model="model.redTeamName"></UIField>
         <UIField v-model="model.redTeamShortName"></UIField>
       </div>
       <UISwitch v-model="model.redTeamHideShortName">Truncate "{{ model.redTeamShortName }}" from usernames</UISwitch>
+      <UIButtonLabel>Blue (starting defender) team name</UIButtonLabel>
+      <div class="flex-h">
+        <UIField v-model="model.blueTeamName"></UIField>
+        <UIField v-model="model.blueTeamShortName"></UIField>
+      </div>
+      <UISwitch v-model="model.blueTeamHideShortName">Truncate "{{ model.blueTeamShortName }}" from usernames</UISwitch>
+      <UIButtonLabel>Team Logos</UIButtonLabel>
+      <UISwitch v-model="model.showTeamLogos">Show team logos</UISwitch>
+      <div class="flex-h">
+        <div class="flex-hh">
+          <UIButtonLabel>Red</UIButtonLabel>
+          <div class="lc" v-if="model.redTeamLogo">
+            <img :src="model.redTeamLogo" height="100" width="100">
+          </div>
+          <UIButton @click="loadRedLogo()">Upload...</UIButton>
+        </div>
+        <div class="flex-hh">
+          <UIButtonLabel>Blue</UIButtonLabel>
+          <div class="lc" v-if="model.blueTeamLogo">
+            <img :src="model.blueTeamLogo" height="100" width="100">
+          </div>
+          <UIButton @click="loadBlueLogo()">Upload...</UIButton>
+        </div>
+      </div>
       <UIButtonLabel>Top-right corner sponsors</UIButtonLabel>
       <UISwitch v-model="model.sponsors.sponsorEnabled">Show sponsors</UISwitch>
       <div v-for="(img, index) in model.sponsors.sponsorImgs" :key="index">
@@ -133,6 +151,11 @@
 
   background-position: center;
   background-size: contain;
+}
+
+.lc {
+  display: flex;
+  justify-content: center;
 }
 </style>
 
@@ -225,6 +248,18 @@ const getImageDataURI = async () => {
 const loadBranding = async () => {
   try {
     model.value.series.brandingImg = await getImageDataURI();
+  } catch {}
+};
+
+const loadBlueLogo = async () => {
+  try {
+    model.value.blueTeamLogo = await getImageDataURI();
+  } catch {}
+};
+
+const loadRedLogo = async () => {
+  try {
+    model.value.redTeamLogo = await getImageDataURI();
   } catch {}
 };
 

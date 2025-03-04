@@ -37,7 +37,7 @@ export function roundWin(
 
   if (animationProgress >= 0.1) {
     ctx.fillRect(1920 / 2 - width / 2, locationY - height / 2, width, height);
-    ctx.fillStyle = `rgba(${atkC})`;
+    ctx.fillStyle = `rgba(${atkC}, ${easeInOutExpo(0, 1, animationDelay(0.5, 0.9, animationProgress))})`;
     ctx.fillRect(
       1920 / 2 - width / 2 + width / 2 - roundInfoWidth / 2,
       locationY - height / 2 - roundInfoHeight / 2,
@@ -51,7 +51,7 @@ export function roundWin(
       1920 / 2 - width / 2 + width / 2,
       locationY - height / 2,
       "40px 'Din Next'",
-      "white",
+      `rgba(255, 255, 255, ${easeInOutExpo(0, 1, animationDelay(0.5, 0.9, animationProgress))})`,
       "center",
       "middle"
     );
@@ -108,9 +108,9 @@ export function roundWin(
         width / 2 -
         10 +
         easeInOutExpo(0, width + 20, animationDelay(0, 0.2, animationProgress)),
-      locationY - height / 2 - roundInfoHeight / 2 - 10,
+      locationY - height / 2 - 10,
       width + 20 - easeInOutExpo(0, width + 20, animationDelay(0, 0.2, animationProgress)),
-      height + roundInfoHeight + 20
+      height + 20
     );
   }
 
