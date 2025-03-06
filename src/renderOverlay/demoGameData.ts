@@ -87,7 +87,7 @@ export const demoGameData: GameData = {
     {
       name: "TM2 playernm",
       tagline: "ijkl",
-      agent: "Fade",
+      agent: "Waylay",
       health: 0,
       alive: false,
       KDA: [20, 17, 12],
@@ -169,7 +169,7 @@ export const demoGameData: GameData = {
     {
       name: "TM1 playerer",
       tagline: "efgh",
-      agent: "Viper",
+      agent: "Waylay",
       health: 100,
       alive: true,
       KDA: [23, 16, 12],
