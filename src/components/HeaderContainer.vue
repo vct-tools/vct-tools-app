@@ -4,7 +4,7 @@
     <UIButtonIcon :icon="RiotGames" :disabled="true">Log in with Riot Games</UIButtonIcon>
   </UIDialogBox>
 
-  <div class="version">Client version: {{ version }} {{ npmV }}</div>
+  <div class="version">Client version: vue{{ version }} vcttools{{ npmV }}</div>
 
   <SmallResWarning></SmallResWarning>
 

@@ -85,6 +85,11 @@
         <UIButton @click="model.sponsors.sponsorImgs.splice(index, 1)">DEL</UIButton>
       </div>
       <UIButton @click="newSponsor()">Add sponsor</UIButton>
+      <UIButtonLabel>Accent color (any CSS color)</UIButtonLabel>
+      <div class="flex-h">
+        <UIField v-model="model.accentColor" style="margin-bottom: -1px;"></UIField>
+        <div :style="`width: 50%; background-color: ${model.accentColor}`"></div>
+      </div>
     </div>
     <div class="flex-v p">
       <div style="position: sticky; top: 0px;">
@@ -93,9 +98,10 @@
           width="1920"
           height="1080"
           class="canvas"
-          :style="`background-image: url(${HavenGameplay});`"
+          :style="`background-image: url(${HavenGameplay}); margin-bottom: 10px`"
           ref="canvasElement"
         ></canvas>
+        <AdsenseMultiplexAd></AdsenseMultiplexAd>
       </div>
     </div>
     <div class="flex-v flex-qh p">
@@ -122,6 +128,10 @@
         <UIButton @click="preview_TriggerCeromony()">Trigger ceromony</UIButton>
         <UIButtonLabel>Display</UIButtonLabel>
         <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
+        <div style="width: 100%; text-align: center; margin-top: 5px; color: #f34453; border: 1px solid #6b7476; padding: 5px;">
+          <BIconExclamationTriangle></BIconExclamationTriangle><br>
+          <span style="font-size: 9pt;">Offset edges may be visible in the preview due to downscaled resolution. For best results, use a 1080p monitor.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -194,6 +204,8 @@ import { renderLoop, shownInformation } from "@/renderOverlay/renderMain";
 import { UIField, UISwitch, UISelect, UIButtonLabel, UIButton } from "vct-tools-components";
 import { ceromonyFilter } from "@/renderOverlay/overlayPreParse";
 import { demoGameData } from "@/renderOverlay/demoGameData";
+import { BIconExclamationTriangle } from "bootstrap-icons-vue";
+import AdsenseMultiplexAd from "./Adsense/AdsenseMultiplexAd.vue";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
 const previewOptions = ref({

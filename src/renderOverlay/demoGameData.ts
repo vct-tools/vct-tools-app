@@ -2,7 +2,7 @@ import type { GameData } from "./overlayType";
 
 export const demoGameData: GameData = {
   round: 26,
-  phase: "combat",
+  phase: "buy",
 
   blueSide: "defense",
   redSide: "attack",

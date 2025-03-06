@@ -10,7 +10,8 @@ import DefenseDefuseImg from "@/assets/images/roundOutcomes/defense_defuse.webp"
 import DefenseEliminationImg from "@/assets/images/roundOutcomes/defense_elimination.webp";
 import DefenseTimeImg from "@/assets/images/roundOutcomes/defense_time.webp";
 import SwapSidesImg from "@/assets/images/roundOutcomes/swap_sides.webp";
-import { getSide } from "./overlayPreParse";
+import { renderTeamLeft } from "./preRound/teamLeft";
+import { renderTeamRight as renderTeamRight } from "./preRound/teamRight";
 
 const outcomeImages: {
   attack_detonation: HTMLImageElement | null;
@@ -56,7 +57,7 @@ export async function preRound(
     >
   >,
   y: number,
-  brandingImage: HTMLImageElement | null
+  teamLogos: { red: HTMLImageElement | null; blue: HTMLImageElement | null }
 ): Promise<void> {
   // Make sure the agent images are loaded
   for (const player of gameData.redPlayers) {
@@ -97,197 +98,158 @@ export async function preRound(
     }
   }
 
-  // Draw initial box
-  const overviewWidth = 1400;
-  const overviewHeight = 599 + 40;
+  renderTeamLeft(ctx, gameData, settings, y, agentImages, abilityImages, weaponImages);
+  renderTeamRight(ctx, gameData, settings, y, agentImages, abilityImages, weaponImages);
+  const playerHeight = 80;
+
   const color = "15, 25, 35";
+  ctx.fillStyle = `rgba(${color}, 0.95)`;
+  ctx.fillRect(25, y - playerHeight * 5 - 50 - 25 - 100, 1920 - 50, 100);
 
-  ctx.beginPath();
-  ctx.fillStyle = `rgba(${color}, 0.8)`;
-  ctx.roundRect(
-    1920 / 2 - overviewWidth / 2,
-    y - overviewHeight,
-    overviewWidth,
-    overviewHeight,
-    [10, 10, 10, 10]
-  );
-  ctx.fill();
-  ctx.closePath();
+  if (settings.showTeamLogos) {
+    ctx.fillStyle = `rgba(${color}, 1)`;
+    ctx.fillRect(25, y - playerHeight * 5 - 50 - 25 - 100, 100, 100);
+    ctx.fillStyle = gameData.redSide == "attack" ? `rgb(${atkC})` : `rgb(${defC})`;
+    ctx.fillRect(25 + 100 - 2, y - playerHeight * 5 - 50 - 25 - 100, 4, 100);
 
-  // Draw team data
-  ctx.beginPath();
-  ctx.fillStyle = `rgba(${color}, 1)`;
-  ctx.roundRect(
-    1920 / 2 - overviewWidth / 2,
-    y - overviewHeight,
-    overviewWidth,
-    80,
-    [10, 10, 0, 0]
-  );
-  ctx.fill();
-  ctx.closePath();
+    ctx.fillStyle = `rgba(${color}, 1)`;
+    ctx.fillRect(1920 - 25 - 100, y - playerHeight * 5 - 50 - 25 - 100, 100, 100);
+    ctx.fillStyle = gameData.blueSide == "attack" ? `rgb(${atkC})` : `rgb(${defC})`;
+    ctx.fillRect(1920 - 25 - 100 - 2, y - playerHeight * 5 - 50 - 25 - 100, 4, 100);
 
-  if (brandingImage && settings.series.showBrandingImg) {
-    const height = 100;
-    const aspect = brandingImage.width / brandingImage.height;
-    const width = height * aspect;
+    if (teamLogos.red)
+      ctx.drawImage(teamLogos.red, 25 + 10, y - playerHeight * 5 - 50 - 25 - 100 + 10, 80, 80);
 
-    const grad = ctx.createLinearGradient(
-      0,
-      y - overviewHeight - height - 60,
-      0,
-      y - overviewHeight
-    );
-
-    grad.addColorStop(0, `rgba(${color}, 0)`);
-    grad.addColorStop(1, `rgba(${color}, 1)`);
-    ctx.fillStyle = grad;
-
-    ctx.fillRect(
-      1920 / 2 - width / 2 - 30,
-      y - overviewHeight - height - 60,
-      width + 60,
-      height + 60
-    );
-
-    ctx.drawImage(
-      brandingImage,
-      1920 / 2 - width / 2,
-      y - overviewHeight - height - 30,
-      width,
-      height
-    );
+    if (teamLogos.blue)
+      ctx.drawImage(
+        teamLogos.blue,
+        1920 - 25 - 100 + 10,
+        y - playerHeight * 5 - 50 - 25 - 100 + 10,
+        80,
+        80
+      );
   }
 
-  {
-    drawCenteredText(
-      ctx,
-      settings.redTeamName.toUpperCase(),
-      1920 / 2 - overviewWidth / 2 + 100,
-      y - overviewHeight + 40,
-      "60px Tungsten",
-      "white",
-      "left",
-      "middle"
-    );
+  drawCenteredText(
+    ctx,
+    settings.redTeamName.toUpperCase(),
+    25 + (settings.showTeamLogos ? 100 : 0) + 25,
+    y - playerHeight * 5 - 50 - 25 - 100 + 40,
+    "50px 'Tungsten'",
+    "white",
+    "left",
+    "middle"
+  );
 
-    drawCenteredText(
-      ctx,
-      gameData.redScore.toString(),
-      1920 / 2 - overviewWidth / 2 + 50,
-      y - overviewHeight + 40,
-      "60px Tungsten",
-      `rgba(${gameData.redSide == "attack" ? atkC : defC}, 1)`,
-      "center",
-      "middle"
-    );
+  drawCenteredText(
+    ctx,
+    `LOADOUT VALUE: $${calculateLoadoutValue(gameData.redPlayers)}`,
+    25 + (settings.showTeamLogos ? 100 : 0) + 25,
+    y - playerHeight * 5 - 50 - 25 - 100 + 75,
+    "25px 'Din Next'",
+    "gray",
+    "left",
+    "middle"
+  );
 
-    drawCenteredText(
-      ctx,
-      settings.blueTeamName.toUpperCase(),
-      1920 / 2 + overviewWidth / 2 - 100,
-      y - overviewHeight + 40,
-      "60px Tungsten",
-      "white",
-      "right",
-      "middle"
-    );
+  drawCenteredText(
+    ctx,
+    settings.blueTeamName.toUpperCase(),
+    1920 - 25 - (settings.showTeamLogos ? 100 : 0) - 25,
+    y - playerHeight * 5 - 50 - 25 - 100 + 40,
+    "50px 'Tungsten'",
+    "white",
+    "right",
+    "middle"
+  );
 
-    drawCenteredText(
-      ctx,
-      gameData.blueScore.toString(),
-      1920 / 2 + overviewWidth / 2 - 50,
-      y - overviewHeight + 40,
-      "60px Tungsten",
-      `rgba(${gameData.blueSide == "attack" ? atkC : defC}, 1)`,
-      "center",
-      "middle"
-    );
+  drawCenteredText(
+    ctx,
+    `LOADOUT VALUE: $${calculateLoadoutValue(gameData.bluePlayers)}`,
+    1920 - 25 - (settings.showTeamLogos ? 100 : 0) - 25,
+    y - playerHeight * 5 - 50 - 25 - 100 + 75,
+    "25px 'Din Next'",
+    "gray",
+    "right",
+    "middle"
+  );
 
-    drawCenteredText(
-      ctx,
-      "MATCH OVERVIEW",
-      1920 / 2,
-      y - overviewHeight + 40 - 15,
-      "25px 'Din Next'",
-      "white",
-      "center",
-      "middle"
-    );
+  ctx.fillStyle = `rgba(255, 255, 255, 0.01)`;
+  ctx.fillRect(25 + 550, y - playerHeight * 5 - 50 - 25 - 100, (910 - 550) * 2 + 50, 100);
 
+  ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(25 + 550, y - playerHeight * 5 - 50 - 25 - 100 + 50);
+  ctx.lineTo(25 + 550 + (910 - 550) * 2 + 50, y - playerHeight * 5 - 50 - 25 - 100 + 50);
+  ctx.moveTo(25 + 550 + 50, y - playerHeight * 5 - 50 - 25 - 100);
+  ctx.lineTo(25 + 550 + 50, y - playerHeight * 5 - 50 - 25);
+  ctx.stroke();
+
+  if (settings.showTeamLogos) {
+    if (teamLogos.red)
+      ctx.drawImage(teamLogos.red, 25 + 550 + 5, y - playerHeight * 5 - 50 - 25 - 100 + 5, 40, 40);
+    if (teamLogos.blue)
+      ctx.drawImage(teamLogos.blue, 25 + 550 + 5, y - playerHeight * 5 - 50 - 25 - 50 + 5, 40, 40);
+  } else {
     drawCenteredText(
       ctx,
-      settings.series.seriesName,
-      1920 / 2,
-      y - overviewHeight + 40 + 15,
+      settings.redTeamShortName.toUpperCase(),
+      25 + 550 + 25,
+      y - playerHeight * 5 - 50 - 25 - 100 + 25,
       "15px 'Din Next'",
-      "rgba(255, 255, 255, 0.7)",
+      "white",
+      "center",
+      "middle"
+    );
+
+    drawCenteredText(
+      ctx,
+      settings.blueTeamShortName.toUpperCase(),
+      25 + 550 + 25,
+      y - playerHeight * 5 - 50 - 25 - 100 + 75,
+      "15px 'Din Next'",
+      "white",
       "center",
       "middle"
     );
   }
 
-  // Draw rounds
-  const roundSize = 70;
+  // Draw the rounds
+  const roundWidth = 50;
 
-  ctx.beginPath();
-  ctx.fillStyle = `rgba(${color}, 0.4)`;
-  ctx.roundRect(
-    1920 / 2 - overviewWidth / 2,
-    y - roundSize,
-    overviewWidth,
-    roundSize,
-    [0, 0, 10, 10]
-  );
-  ctx.fill();
-  ctx.closePath();
-  ctx.fillRect(1920 / 2 - overviewWidth / 2, y - roundSize * 2 - 3, overviewWidth, roundSize);
+  const roundsFittable = Math.floor(((910 - 550) * 2 + 50) / roundWidth) - 1;
 
-  ctx.beginPath();
-  ctx.fillStyle = `rgba(${color}, 1)`;
-  ctx.roundRect(
-    1920 / 2 - overviewWidth / 2 + 125,
-    y - roundSize,
-    overviewWidth - 125,
-    roundSize,
-    [0, 0, 10, 0]
-  );
-  ctx.fill();
-  ctx.closePath();
+  // IN THE ROUNDS VARIABLE
+  // Round - a round
+  // number - a control
+  // -> 1 = swap sides
+  // -> 2 = overtime
+
+  ctx.fillStyle = `#1f2830`;
   ctx.fillRect(
-    1920 / 2 - overviewWidth / 2 + 125,
-    y - roundSize * 2 - 3,
-    overviewWidth - 125,
-    roundSize
+    25 + 550 + 50 + roundWidth * roundsFittable,
+    y - playerHeight * 5 - 50 - 25 - 100,
+    25,
+    roundWidth * 2
   );
 
-  // Team names
   drawCenteredText(
     ctx,
-    settings.redTeamShortName.toUpperCase(),
-    1920 / 2 - overviewWidth / 2 + 125 / 2,
-    y - roundSize / 2,
-    "50px Tungsten",
+    ">",
+    25 + 550 + 50 + roundWidth * roundsFittable + 25 / 2,
+    y - playerHeight * 5 - 50 - 25 - 100 + roundWidth,
+    "20px 'Din Next'",
     "white",
     "center",
     "middle"
   );
 
-  drawCenteredText(
-    ctx,
-    settings.blueTeamShortName.toUpperCase(),
-    1920 / 2 - overviewWidth / 2 + 125 / 2,
-    y - roundSize - roundSize / 2 - 3,
-    "50px Tungsten",
-    "white",
-    "center",
-    "middle"
-  );
+  const rounds = [...gameData.matchLog] as (Round | number)[];
+  if (rounds.length > 12) rounds.splice(12, 0, 1);
+  if (rounds.length > 25) rounds.splice(25, 0, 2);
 
   let offset = 0;
-  const roundsFittable = Math.floor((overviewWidth - 125) / roundSize);
-  const rounds: (Round | null)[] = [...gameData.matchLog];
-  if (rounds.length > 12) rounds.splice(12, 0, null as unknown as Round);
   for (const round of rounds.slice(-roundsFittable)) {
     if (
       outcomeImages.attack_detonation == null ||
@@ -300,69 +262,75 @@ export async function preRound(
       break;
 
     try {
-      if (round == null) {
-        ctx.fillStyle = `rgb(${color})`;
+      if (typeof round == "number") {
+        ctx.fillStyle = `#1f2830`;
         ctx.fillRect(
-          1920 / 2 - overviewWidth / 2 + 125 + offset,
-          y - roundSize * 2 - 3,
-          roundSize,
-          roundSize * 2 + 3
-        );
-        ctx.fillStyle = `rgb(255, 255, 255, 0.1)`;
-        ctx.fillRect(
-          1920 / 2 - overviewWidth / 2 + 125 + offset,
-          y - roundSize * 2 - 3,
-          roundSize,
-          roundSize * 2 + 3
+          25 + 550 + 50 + offset,
+          y - playerHeight * 5 - 50 - 25 - 100,
+          roundWidth,
+          roundWidth * 2
         );
 
-        ctx.drawImage(
-          outcomeImages.swap_sides,
-          1920 / 2 - overviewWidth / 2 + 125 + 15 + offset,
-          y - roundSize - roundSize / 2 - 3 / 2 + 15,
-          roundSize - 30,
-          roundSize - 30
-        );
-      } else {
-        if (round.winner == "blue") {
+        if (round == 1) {
           ctx.drawImage(
-            outcomeImages[
-              `${getSide("defense", round.roundNumber)}_${round.cause}` as keyof typeof outcomeImages
-            ] || outcomeImages.defense_time,
-            1920 / 2 - overviewWidth / 2 + 125 + 15 + offset,
-            y - roundSize * 2 - 3 + 15,
-            roundSize - 30,
-            roundSize - 30
-          );
+            outcomeImages.swap_sides,
+            25 + 550 + 50 + offset + 10,
+            y - playerHeight * 5 - 50 - 25 - 100 + roundWidth / 2 + 10,
+            roundWidth - 20,
+            roundWidth - 20
+          )
+        }
 
+        if (round == 2) {
           drawCenteredText(
             ctx,
-            round.roundNumber.toString(),
-            1920 / 2 - overviewWidth / 2 + 125 + roundSize / 2 + offset,
-            y - roundSize + roundSize / 2,
+            "OT",
+            25 + 550 + 50 + offset + roundWidth / 2,
+            y - playerHeight * 5 - 50 - 25 - 100 + roundWidth,
             "20px 'Din Next'",
             "white",
             "center",
             "middle"
           );
-        } else {
+        }
+      } else {
+        if (round.winner == "red") {
           ctx.drawImage(
-            outcomeImages[
-              `${getSide("attack", round.roundNumber)}_${round.cause}` as keyof typeof outcomeImages
-            ] || outcomeImages.defense_time,
-            1920 / 2 - overviewWidth / 2 + 125 + 15 + offset,
-            y - roundSize + 15,
-            roundSize - 30,
-            roundSize - 30
+            outcomeImages[`${round.redSide}_${round.cause}` as keyof typeof outcomeImages] ||
+              outcomeImages.defense_time,
+            25 + 550 + 50 + offset + 10,
+            y - playerHeight * 5 - 50 - 25 - 100 + 10,
+            roundWidth - 20,
+            roundWidth - 20
           );
 
           drawCenteredText(
             ctx,
             round.roundNumber.toString(),
-            1920 / 2 - overviewWidth / 2 + 125 + roundSize / 2 + offset,
-            y - roundSize * 2 - 3 + roundSize / 2,
-            "20px 'Din Next'",
-            "white",
+            25 + 550 + 50 + offset + roundWidth / 2,
+            y - playerHeight * 5 - 25 - 100 + roundWidth / 2,
+            "16px 'Din Next'",
+            "gray",
+            "center",
+            "middle"
+          );
+        } else {
+          ctx.drawImage(
+            outcomeImages[`${round.blueSide}_${round.cause}` as keyof typeof outcomeImages] ||
+              outcomeImages.defense_time,
+            25 + 550 + 50 + offset + 10,
+            y - playerHeight * 5 - 25 - 100 + 10,
+            roundWidth - 20,
+            roundWidth - 20
+          );
+
+          drawCenteredText(
+            ctx,
+            round.roundNumber.toString(),
+            25 + 550 + 50 + offset + roundWidth / 2,
+            y - playerHeight * 5 - 25 - 50 - 100 + roundWidth / 2,
+            "16px 'Din Next'",
+            "gray",
             "center",
             "middle"
           );
@@ -370,316 +338,8 @@ export async function preRound(
       }
     } catch {}
 
-    offset += roundSize;
+    offset += roundWidth;
   }
-
-  // Draw player information (left)
-  const playerHeight = 76;
-
-  const drawPlayerLeft = async (
-    x: number,
-    y: number,
-    player: PlayerData,
-    ctx: CanvasRenderingContext2D
-  ) => {
-    if (agentImages.value[player.agent]) {
-      ctx.drawImage(agentImages.value[player.agent], x, y, playerHeight, playerHeight);
-    }
-
-    drawCenteredText(
-      ctx,
-      player.name,
-      x + playerHeight + 10,
-      y + playerHeight / 2 - playerHeight / 4,
-      "bold 20px 'Din Next'",
-      "white",
-      "left",
-      "middle"
-    );
-
-    drawCenteredText(
-      ctx,
-      `${player.KDA[0]} / ${player.KDA[1]} / ${player.KDA[2]}`,
-      x + playerHeight + 10,
-      y + playerHeight / 2,
-      "20px 'Din Next'",
-      `rgba(255, 255, 255, 0.5)`,
-      "left",
-      "middle"
-    );
-
-    drawCenteredText(
-      ctx,
-      `$${player.credits}`,
-      x + playerHeight + 10,
-      y + playerHeight / 2 + playerHeight / 4,
-      "20px 'Din Next'",
-      `rgba(255, 255, 255, 0.5)`,
-      "left",
-      "middle"
-    );
-
-    if (abilityImages.value[player.agent]) {
-      const abilities = abilityImages.value[player.agent];
-
-      if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(
-        abilities.Ability1,
-        x + playerHeight + 150 + 25,
-        y + 20,
-        playerHeight - 50,
-        playerHeight - 50
-      );
-      ctx.filter = "none";
-
-      if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(
-        abilities.Ability2,
-        x + playerHeight * 2 + 150 + 25,
-        y + 20,
-        playerHeight - 50,
-        playerHeight - 50
-      );
-      ctx.filter = "none";
-
-      if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(
-        abilities.Signature,
-        x + playerHeight * 3 + 150 + 25,
-        y + 20,
-        playerHeight - 50,
-        playerHeight - 50
-      );
-      ctx.filter = "none";
-
-      (() => {
-        const spacing = 12;
-        const pointCount = player.abilities.Ultimate.maxUses;
-        const totalWidth = pointCount * spacing;
-        const location = x + playerHeight * 2 + playerHeight / 2 + 150 - totalWidth / 2;
-
-        for (let i = 0; i < pointCount; i++) {
-          ctx.fillStyle = player.abilities.Ultimate.remainingUses > i ? "white" : "rgb(97, 97, 97)";
-          ctx.beginPath();
-          ctx.moveTo(location + i * spacing, y - 15 + playerHeight);
-          ctx.lineTo(location + 5 + i * spacing, y - 20 + playerHeight);
-          ctx.lineTo(location + 10 + i * spacing, y - 15 + playerHeight);
-          ctx.lineTo(location + 5 + i * spacing, y - 10 + playerHeight);
-          ctx.closePath();
-          ctx.fill();
-        }
-      })();
-    }
-
-    // Get strongest weapon
-    let strongestWeapon = "Melee";
-    if (player.loadout.sidearm) strongestWeapon = player.loadout.sidearm.name;
-    if (player.loadout.firearm) strongestWeapon = player.loadout.firearm.name;
-
-    if (weaponImages[strongestWeapon]) {
-      // Render strongest
-      const height = 30;
-      const aspect = weaponImages[strongestWeapon].width / weaponImages[strongestWeapon].height;
-      const width = height * aspect;
-
-      ctx.drawImage(
-        weaponImages[strongestWeapon],
-        x + playerHeight * 4 + playerHeight / 2 + 150 + 75 - width / 2,
-        y + playerHeight / 2 - height / 2,
-        width,
-        height
-      );
-    } else {
-      const icon = weapons.find((a) => a.name == strongestWeapon);
-      if (icon) {
-        weaponImages[strongestWeapon] = await loadImg(icon.icon);
-      }
-    }
-  };
-
-  const drawPlayerRight = async (
-    x: number,
-    y: number,
-    player: PlayerData,
-    ctx: CanvasRenderingContext2D
-  ) => {
-    if (agentImages.value[player.agent]) {
-      ctx.save();
-      ctx.scale(-1, 1);
-      ctx.drawImage(
-        agentImages.value[player.agent],
-        -(x + overviewWidth / 2),
-        y,
-        playerHeight,
-        playerHeight
-      );
-      ctx.restore();
-    }
-
-    drawCenteredText(
-      ctx,
-      player.name,
-      x + overviewWidth / 2 - playerHeight - 10,
-      y + playerHeight / 2 - playerHeight / 4,
-      "bold 20px 'Din Next'",
-      "white",
-      "right",
-      "middle"
-    );
-
-    drawCenteredText(
-      ctx,
-      `${player.KDA[0]} / ${player.KDA[1]} / ${player.KDA[2]}`,
-      x + overviewWidth / 2 - playerHeight - 10,
-      y + playerHeight / 2,
-      "20px 'Din Next'",
-      `rgba(255, 255, 255, 0.5)`,
-      "right",
-      "middle"
-    );
-
-    drawCenteredText(
-      ctx,
-      `$${player.credits}`,
-      x + overviewWidth / 2 - playerHeight - 10,
-      y + playerHeight / 2 + playerHeight / 4,
-      "20px 'Din Next'",
-      `rgba(255, 255, 255, 0.5)`,
-      "right",
-      "middle"
-    );
-
-    if (abilityImages.value[player.agent]) {
-      const abilities = abilityImages.value[player.agent];
-
-      if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(
-        abilities.Ability1,
-        x + overviewWidth / 2 - playerHeight * 3 - 200,
-        y + 20,
-        playerHeight - 50,
-        playerHeight - 50
-      );
-      ctx.filter = "none";
-
-      if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(
-        abilities.Ability2,
-        x + overviewWidth / 2 - playerHeight * 2 - 200,
-        y + 20,
-        playerHeight - 50,
-        playerHeight - 50
-      );
-      ctx.filter = "none";
-
-      if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(
-        abilities.Signature,
-        x + overviewWidth / 2 - playerHeight - 200,
-        y + 20,
-        playerHeight - 50,
-        playerHeight - 50
-      );
-      ctx.filter = "none";
-
-      (() => {
-        const spacing = 12;
-        const pointCount = player.abilities.Ultimate.maxUses;
-        const totalWidth = pointCount * spacing;
-        const location =
-          x + overviewWidth / 2 - playerHeight * 2 - playerHeight / 2 - 150 - totalWidth / 2;
-
-        for (let i = 0; i < pointCount; i++) {
-          ctx.fillStyle = player.abilities.Ultimate.remainingUses > i ? "white" : "rgb(97, 97, 97)";
-          ctx.beginPath();
-          ctx.moveTo(location + i * spacing, y - 15 + playerHeight);
-          ctx.lineTo(location + 5 + i * spacing, y - 20 + playerHeight);
-          ctx.lineTo(location + 10 + i * spacing, y - 15 + playerHeight);
-          ctx.lineTo(location + 5 + i * spacing, y - 10 + playerHeight);
-          ctx.closePath();
-          ctx.fill();
-        }
-      })();
-    }
-
-    // Get strongest weapon
-    let strongestWeapon = "Melee";
-    if (player.loadout.sidearm) strongestWeapon = player.loadout.sidearm.name;
-    if (player.loadout.firearm) strongestWeapon = player.loadout.firearm.name;
-
-    if (weaponImages[strongestWeapon]) {
-      // Render strongest
-      const height = 30;
-      const aspect = weaponImages[strongestWeapon].width / weaponImages[strongestWeapon].height;
-      const width = height * aspect;
-
-      ctx.save();
-      ctx.scale(-1, 1);
-      ctx.drawImage(
-        weaponImages[strongestWeapon],
-        -(x + overviewWidth / 2 - playerHeight * 4 - playerHeight / 2 - 150 - 75 + width / 2),
-        y + playerHeight / 2 - height / 2,
-        width,
-        height
-      );
-      ctx.restore();
-    } else {
-      const icon = weapons.find((a) => a.name == strongestWeapon);
-      if (icon) {
-        weaponImages[strongestWeapon] = await loadImg(icon.icon);
-      }
-    }
-  };
-
-  {
-    ctx.fillStyle = `rgba(${color}, 0.8)`;
-
-    ctx.fillRect(1920 / 2 - overviewWidth / 2, y - overviewHeight + 80, overviewWidth, 36);
-
-    drawCenteredText(
-      ctx,
-      `LOADOUT VALUE: $${calculateLoadoutValue(gameData.redPlayers)}`,
-      1920 / 2 - overviewWidth / 2 + 10,
-      y - overviewHeight + 80 + 18,
-      "20px 'Din Next'",
-      `rgba(${gameData.redSide == "attack" ? atkC : defC}, 1)`,
-      "left",
-      "middle"
-    );
-
-    drawCenteredText(
-      ctx,
-      `LOADOUT VALUE: $${calculateLoadoutValue(gameData.bluePlayers)}`,
-      1920 / 2 + overviewWidth / 2 - 10,
-      y - overviewHeight + 80 + 18,
-      "20px 'Din Next'",
-      `rgba(${gameData.blueSide == "attack" ? atkC : defC}, 1)`,
-      "right",
-      "middle"
-    );
-  }
-
-  for (const player of gameData.redPlayers) {
-    const playerIndex = gameData.redPlayers.indexOf(player);
-    const playerY = y - overviewHeight + playerHeight + playerHeight * playerIndex;
-
-    if (playerIndex % 2 == 0) {
-      ctx.fillStyle = `rgba(${color}, 0.4)`;
-      ctx.fillRect(1920 / 2 - overviewWidth / 2, playerY + 40, overviewWidth, playerHeight);
-    }
-
-    drawPlayerLeft(1920 / 2 - overviewWidth / 2, playerY + 40, player, ctx);
-  }
-
-  for (const player of gameData.bluePlayers) {
-    const playerIndex = gameData.bluePlayers.indexOf(player);
-    const playerY = y - overviewHeight + playerHeight + playerHeight * playerIndex;
-
-    drawPlayerRight(1920 / 2, playerY + 40, player, ctx);
-  }
-
-  ctx.fillStyle = `rgb(${color})`;
-  ctx.fillRect(1920 / 2 - 2, y - overviewHeight + 80, 5, overviewHeight - 70 - 3 - 70 - 80);
 }
 
 function calculateLoadoutValue(players: PlayerData[]) {

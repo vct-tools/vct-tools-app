@@ -5,7 +5,6 @@ import {
   drawCenteredText,
   atkC,
   defC,
-  accent,
   headerC
 } from "./renderUtils";
 import { type GameData, type OverlaySettings } from "./overlayType";
@@ -132,7 +131,7 @@ export function roundWin(
 
   // Animation big box
   if (animationProgress <= 0.4) {
-    ctx.fillStyle = `rgb(${accent})`;
+    ctx.fillStyle = settings.accentColor;
 
     if (animationProgress < 0.2) {
       const offsetWidth = easeInOutExpo(250, 10, animationDelay(0, 0.2, animationProgress));

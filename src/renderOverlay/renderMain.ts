@@ -247,7 +247,7 @@ export async function renderOverlay(
       easeInOutExpo(0, 1080, shownInformation.gameOverview.t / 100)
     ) : null;
 
-    preRound(ctx, gameData, settings, agentImages, abilityImages, (yVal || 0) + 1080 - 25, brandingImage);
+    preRound(ctx, gameData, settings, agentImages, abilityImages, (yVal || 0) + 1080 - 25, teamLogos);
   }
 
   if (!brandingImage) {
@@ -390,23 +390,25 @@ export async function renderOverlay(
     seriesMaps(ctx, settings);
   }
 
-  const gradient = ctx.createLinearGradient(0, 0, 500, 0);
-  gradient.addColorStop(0, `rgba(0, 0, 0, 1)`);
-  gradient.addColorStop(1, `rgba(0, 0, 0, 0)`);
-  ctx.fillStyle = gradient;
+  if (settings.series.seriesName.trim() != "") {
+    const gradient = ctx.createLinearGradient(0, 0, 500, 0);
+    gradient.addColorStop(0, `rgba(0, 0, 0, 1)`);
+    gradient.addColorStop(1, `rgba(0, 0, 0, 0)`);
+    ctx.fillStyle = gradient;
 
-  ctx.fillRect(0, 25, 500, 25);
+    ctx.fillRect(0, 25, 500, 25);
 
-  drawCenteredText(
-    ctx,
-    settings.series.seriesName,
-    5,
-    12.5 + 25,
-    "20px 'Din Next'",
-    "white",
-    "left",
-    "middle"
-  );
+    drawCenteredText(
+      ctx,
+      settings.series.seriesName,
+      5,
+      12.5 + 25,
+      "20px 'Din Next'",
+      "white",
+      "left",
+      "middle"
+    );
+  }
 
   if (settings.sponsors.sponsorEnabled) {
     if (settings.sponsors.sponsorImgs.length > 0) {

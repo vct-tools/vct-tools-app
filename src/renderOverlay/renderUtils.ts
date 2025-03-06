@@ -1,7 +1,6 @@
 export const atkC = "243, 68, 83";
 export const defC = "50, 175, 138";
 export const headerC = "224, 235, 185";
-export const accent = "134, 191, 42";
 
 export function bgGradient(ctx: CanvasRenderingContext2D): void {
   const gradient = ctx.createRadialGradient(1920 / 2, 1080 / 2, 20, 1920 / 2, 1080 / 2, 1080);

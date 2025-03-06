@@ -58,6 +58,7 @@ type OverlaySettings = {
   showTeamLogos: boolean;
   series: SeriesInformation;
   sponsors: SponsorInformation;
+  accentColor: string;
 };
 
 function createDefaultOverlaySettings(): OverlaySettings {
@@ -108,7 +109,8 @@ function createDefaultOverlaySettings(): OverlaySettings {
     sponsors: {
       sponsorEnabled: false,
       sponsorImgs: []
-    }
+    },
+    accentColor: "rgb(134, 191, 42)"
   };
 }
 
