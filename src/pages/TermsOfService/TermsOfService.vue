@@ -6,7 +6,11 @@
         <HeaderSmall>VCT Tools Terms of Service</HeaderSmall>
         <p>Version 1, Last Updated: 07/02/2025</p>
 
-        <p>Welcome to VCT Tools ("VCT Tools", "we", "us", or "our"). By accessing the vcttools.net website ("Website", or "Services"), you agree to comply with and be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use our Services.</p>
+        <p>
+          Welcome to VCT Tools ("VCT Tools", "we", "us", or "our"). By accessing the vcttools.net
+          website ("Website", or "Services"), you agree to comply with and be bound by these Terms
+          of Service ("Terms"). If you do not agree to these Terms, you may not use our Services.
+        </p>
 
         <HeaderSmall>Table of Contents</HeaderSmall>
         <ol>
@@ -29,8 +33,14 @@
 
         <HeaderSmall>1. Acceptance of Terms</HeaderSmall>
         <ul>
-          <li>These terms constitute a legally binding agreement between you ("User", "you", or "your") and VCT Tools ("VCT Tools", "we", "us", or "our").</li>
-          <li>If you are using the Services on behalf of a business or legal entity, you represent that you have the authority to bind that entity to these Terms.</li>
+          <li>
+            These terms constitute a legally binding agreement between you ("User", "you", or
+            "your") and VCT Tools ("VCT Tools", "we", "us", or "our").
+          </li>
+          <li>
+            If you are using the Services on behalf of a business or legal entity, you represent
+            that you have the authority to bind that entity to these Terms.
+          </li>
         </ul>
 
         <HeaderSmall>2. Use of Services</HeaderSmall>
@@ -43,7 +53,9 @@
         <HeaderSmall>2.2 Account Registration</HeaderSmall>
         <ul>
           <li>To access certain features, you must sign in using Riot Sign On ("RSO").</li>
-          <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+          <li>
+            You are responsible for maintaining the confidentiality of your account credentials.
+          </li>
         </ul>
 
         <HeaderSmall>2.3 Acceptable Use</HeaderSmall>
@@ -59,54 +71,101 @@
 
         <HeaderSmall>3. Data Collection and Privacy</HeaderSmall>
         <ul>
-          <li>Our Privacy Policy (<a href="https://vcttools.net/privacy">https://vcttools.net/privacy</a>) governs how we collect, use, and protect your data.</li>
-          <li>By using the services, you acknowledge and consent to our data collection practices.</li>
+          <li>
+            Our Privacy Policy (<a href="https://vcttools.net/privacy"
+              >https://vcttools.net/privacy</a
+            >) governs how we collect, use, and protect your data.
+          </li>
+          <li>
+            By using the services, you acknowledge and consent to our data collection practices.
+          </li>
         </ul>
 
         <HeaderSmall>4. Service Availability and Modifications</HeaderSmall>
         <ul>
-          <li>We reserve the right to modify, suspend, or discontinue the Services at any time without notice.</li>
-          <li>We are not liable for any disruptions, losses, or damages resulting from service downtime.</li>
+          <li>
+            We reserve the right to modify, suspend, or discontinue the Services at any time without
+            notice.
+          </li>
+          <li>
+            We are not liable for any disruptions, losses, or damages resulting from service
+            downtime.
+          </li>
         </ul>
 
         <HeaderSmall>5. Intellectual Property</HeaderSmall>
         <ul>
-          <li>The Services were created under Riot Games' "Legal Jibber Jabber" policy (<a href="https://www.riotgames.com/en/legal">https://www.riotgames.com/en/legal</a>) using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.</li>
-          <li>All original content created by VCT Tools, including but not limited to software code, user interface design, and analytics tools, remains the exclusive property of VCT Tools.</li>
-          <li>If users submit any content through the Services, they retain ownership but grant VCT Tools a non-exclusive, worldwide, royalty-free license to use, modify, and display such content for the operation of the Services.</li>
+          <li>
+            The Services were created under Riot Games' "Legal Jibber Jabber" policy (<a
+              href="https://www.riotgames.com/en/legal"
+              >https://www.riotgames.com/en/legal</a
+            >) using assets owned by Riot Games. Riot Games does not endorse or sponsor this
+            project.
+          </li>
+          <li>
+            All original content created by VCT Tools, including but not limited to software code,
+            user interface design, and analytics tools, remains the exclusive property of VCT Tools.
+          </li>
+          <li>
+            If users submit any content through the Services, they retain ownership but grant VCT
+            Tools a non-exclusive, worldwide, royalty-free license to use, modify, and display such
+            content for the operation of the Services.
+          </li>
         </ul>
 
         <HeaderSmall>6. Termination</HeaderSmall>
         <ul>
-          <li>We reserve the right to suspend or terminate your access to the Services if you violate these Terms.</li>
+          <li>
+            We reserve the right to suspend or terminate your access to the Services if you violate
+            these Terms.
+          </li>
           <li>Upon termination, you lose access to your account and stored data.</li>
         </ul>
 
         <HeaderSmall>7. Disclaimers and Limitation of Liability</HeaderSmall>
         <ul>
-          <li>The Services are provided "as is" and "as available" without warranties of any kind.</li>
-          <li>We are not responsible for any damages, data loss, or security breaches arising from your use of the Services.</li>
-          <li>We do not guarantee the accuracy or availability of third-party data (e.g., Riot Games API data).</li>
+          <li>
+            The Services are provided "as is" and "as available" without warranties of any kind.
+          </li>
+          <li>
+            We are not responsible for any damages, data loss, or security breaches arising from
+            your use of the Services.
+          </li>
+          <li>
+            We do not guarantee the accuracy or availability of third-party data (e.g., Riot Games
+            API data).
+          </li>
         </ul>
 
         <HeaderSmall>8. Governing Law and Dispute Resolution</HeaderSmall>
         <ul>
           <li>These Terms are governed by the laws of Queensland, Australia.</li>
-          <li>Any disputes shall be resolved through arbitration or courts in Brisbane, Australia.</li>
+          <li>
+            Any disputes shall be resolved through arbitration or courts in Brisbane, Australia.
+          </li>
         </ul>
 
         <HeaderSmall>9. Updates to Terms</HeaderSmall>
         <ul>
-          <li>We may update these Terms at any time. The latest version will always be available on our website.</li>
+          <li>
+            We may update these Terms at any time. The latest version will always be available on
+            our website.
+          </li>
           <li>If changes are significant, we will notify users via email or a website notice.</li>
         </ul>
 
         <HeaderSmall>10. Contact Information</HeaderSmall>
         <ul>
-          <li>For questions or concerns regarding these Terms, contact us at <a href="mailto:contact@vcttools.net">contact@vcttools.net</a>.</li>
+          <li>
+            For questions or concerns regarding these Terms, contact us at
+            <a href="mailto:contact@vcttools.net">contact@vcttools.net</a>.
+          </li>
         </ul>
 
-        <p>By using VCT Tools, you acknowledge that you have read, understood, and agreed to these Terms of Service.</p>
+        <p>
+          By using VCT Tools, you acknowledge that you have read, understood, and agreed to these
+          Terms of Service.
+        </p>
       </div>
     </header-container>
   </div>

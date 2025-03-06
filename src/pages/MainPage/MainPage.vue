@@ -2,12 +2,12 @@
   <SmallResWarning></SmallResWarning>
 
   <video autoplay loop muted playsinline class="mainVideo">
-    <source :src="HomeScreenVideo" type="video/webm">
+    <source :src="HomeScreenVideo" type="video/webm" />
   </video>
 
   <div class="leftbar">
     <div class="branding">
-      <img :src="LargeLogo" draggable="false">
+      <img :src="LargeLogo" draggable="false" />
     </div>
     <div class="btn" @click="openUrl(`/map_picker`)">Map picker</div>
     <div class="btn" @click="openUrl(`/overlay_control`)">Overlay</div>
@@ -16,30 +16,42 @@
   </div>
 
   <div class="rightbar">
-    <div class="panel" style="flex: 1 1 0;">
+    <div class="panel" style="flex: 1 1 0">
       <div class="title">ABOUT VCT TOOLS</div>
-      <div class="content" style="flex: 1 1 0;">
-        Welcome to VCT Tools! We host apps that make tournaments easier for organizers, or players too!<br>
-        <br>
-        For tournament organizers: <a href="/map_picker">Map Picker</a> &bull; <a href="/overlay_control">Stream Overlays</a><br>
-        For players: <a href="/learn_maps">Learn Maps</a> &bull; <a href="/graphic_creator">Create Graphics</a><br>
-        <br>
+      <div class="content" style="flex: 1 1 0">
+        Welcome to VCT Tools! We host apps that make tournaments easier for organizers, or players
+        too!<br />
+        <br />
+        For tournament organizers: <a href="/map_picker">Map Picker</a> &bull;
+        <a href="/overlay_control">Stream Overlays</a><br />
+        For players: <a href="/learn_maps">Learn Maps</a> &bull;
+        <a href="/graphic_creator">Create Graphics</a><br />
+        <br />
         If you want to contact us, email contact@vcttools.net.
-        <br><br>
-        If you like what we do, consider donating through <a href="https://buymeacoffee.com/infinityatom">Buy me a Coffee</a>.
-        <br><br>
-        <div style="text-align: center;"><BIconExclamationTriangle></BIconExclamationTriangle></div>
+        <br /><br />
+        If you like what we do, consider donating through
+        <a href="https://buymeacoffee.com/infinityatom">Buy me a Coffee</a>. <br /><br />
+        <div style="text-align: center"><BIconExclamationTriangle></BIconExclamationTriangle></div>
         VCT Tools is in no way partnered or affiliated with the VALORANT Champions Tour.
       </div>
       <div class="content">
-        <UIButtonIcon :icon="GithubMark" @click="openUrl(`https://github.com/infinity-atom/vct-tools`)">Source Code - Client</UIButtonIcon>
-        <UIButtonIcon :icon="GithubMark" @click="openUrl(`https://github.com/infinity-atom/vct-tools-api`)">Source Code - API</UIButtonIcon>
+        <UIButtonIcon
+          :icon="GithubMark"
+          @click="openUrl(`https://github.com/infinity-atom/vct-tools`)"
+          >Source Code - Client</UIButtonIcon
+        >
+        <UIButtonIcon
+          :icon="GithubMark"
+          @click="openUrl(`https://github.com/infinity-atom/vct-tools-api`)"
+          >Source Code - API</UIButtonIcon
+        >
       </div>
     </div>
     <div class="panel selectable" @click="openUrl(`/news`)">
       <div class="title">LATEST NEWS</div>
       <div class="content" v-if="latestNews[0]">
-        <b>{{ latestNews[1] }}</b><br>
+        <b>{{ latestNews[1] }}</b
+        ><br />
         {{ latestNews[2] }}
       </div>
       <div class="content" v-else>
@@ -50,7 +62,8 @@
       <div class="title">LEGAL</div>
       <div class="content">
         The background media on this page is owned by Riot Games.
-        <br><br><a href="/privacy">Privacy Policy</a> &bull; <a href="/terms_of_service">Terms of Service</a>
+        <br /><br /><a href="/privacy">Privacy Policy</a> &bull;
+        <a href="/terms_of_service">Terms of Service</a>
       </div>
     </div>
   </div>
@@ -151,7 +164,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
-  left: -.5em;
+  left: -0.5em;
 
   width: 10px;
   height: 10px;
@@ -181,8 +194,7 @@
 
 <script setup lang="ts">
 import HomeScreenVideo from "@/assets/homescreen_10_02.webm";
-import UIButtonIcon from "@/components/UIElement/UIButtonIcon.vue";
-import UIThrobber from "@/components/UIElement/UIThrobber.vue";
+import { UIButtonIcon, UIThrobber } from "vct-tools-components";
 import LargeLogo from "@/assets/images/logo-large.png";
 
 import GithubMark from "@/assets/images/github-mark-white.png";
@@ -195,14 +207,10 @@ const latestNews = ref([false, "", ""]);
 
 (async () => {
   const a = (await (await fetch("https://api.vcttools.net/v1/news/latest")).json()).data[0];
-  latestNews.value = [
-    true,
-    a.title,
-    a.preview
-  ];
+  latestNews.value = [true, a.title, a.preview];
 })();
 
 const openUrl = (url: string) => {
   window.open(url, "_self");
-}
+};
 </script>

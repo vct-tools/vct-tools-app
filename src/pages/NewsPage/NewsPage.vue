@@ -191,8 +191,7 @@
 
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
-import UIThrobber from "@/components/UIElement/UIThrobber.vue";
+import { UIButton, UIThrobber } from "vct-tools-components";
 import { BIconXCircleFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
 

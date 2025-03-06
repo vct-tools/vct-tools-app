@@ -4,19 +4,8 @@
       <div class="content-body">
         <div class="content-body-content">
           <div class="panel-1">
-            <header-small>Customize overlay</header-small>
             <div class="panel-content">
               <OverlayOptionsPanel v-model="overlayOptions"></OverlayOptionsPanel>
-            </div>
-          </div>
-          <div class="panel-2">
-            <header-small>Get overlay URL</header-small>
-            <div class="panel-content">
-              <div class="urlbar">
-                <UIField v-model="overlayUrl"></UIField>
-                <UIButton class="btn" disabled>Regenerate</UIButton>
-                <UIButton class="btn">Copy</UIButton>
-              </div>
             </div>
           </div>
         </div>
@@ -100,15 +89,10 @@
 
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
-import HeaderSmall from "@/components/HeaderSmall.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
-
-import UIField from "@/components/UIElement/UIField.vue";
 
 import { ref } from "vue";
 import OverlayOptionsPanel from "@/components/OverlayOptionsPanel.vue";
-import { createDefaultOverlaySettings } from "@/overlayType";
+import { createDefaultOverlaySettings } from "@/renderOverlay/overlayType";
 
-const overlayUrl = ref("https://vcttools.net/overlay_source");
 const overlayOptions = ref(createDefaultOverlaySettings());
 </script>

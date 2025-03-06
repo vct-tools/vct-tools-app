@@ -24,14 +24,14 @@
                 <UISelect
                   prefix="Lives: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-                  v-model="difficulty.lives"
+                  v-model="difficulty.lives as number"
                 ></UISelect>
               </div>
               <div style="flex: 1">
                 <UISelect
                   prefix="Hints: "
                   :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-                  v-model="difficulty.hints"
+                  v-model="difficulty.hints as number"
                 ></UISelect>
               </div>
             </div>
@@ -141,11 +141,7 @@ import AdsenseMultiplexAd from "@/components/Adsense/AdsenseMultiplexAd.vue";
 import HeaderContainer from "@/components/HeaderContainer.vue";
 import HeaderSmall from "@/components/HeaderSmall.vue";
 import MapPoolSelector from "@/components/MapPoolSelector.vue";
-import UIButton from "@/components/UIElement/UIButton.vue";
-import UILargeButton from "@/components/UIElement/UILargeButton.vue";
-import UISelect from "@/components/UIElement/UISelect.vue";
-import UISwitch from "@/components/UIElement/UISwitch.vue";
-import { maps } from "@/maps";
+import { UIButton, UILargeButton, UISelect, UISwitch, maps } from "vct-tools-components";
 import { BIconHeartFill, BIconQuestionDiamondFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
 
@@ -214,7 +210,7 @@ const delayPlay = () => {
       play(false);
       canClick.value = true;
     }
-  }
+  };
 
   if (!d) {
     a();

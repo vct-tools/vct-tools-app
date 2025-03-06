@@ -1,7 +1,5 @@
-import { maps } from "@/maps";
 import NoAgentImg from "@/assets/images/Unknown.webp";
-import { roleImages } from "@/agents";
-import agents from "@/agents";
+import { roleImages, agents, maps } from "vct-tools-components";
 import type { Ref } from "vue";
 import { loadImg } from "../load_img";
 
@@ -10,10 +8,14 @@ type TeamComp = {
   comp: {
     player: string;
     agent: string;
-  }[]
-}
+  }[];
+};
 
-const renderTeamComp = async (teamCompData: Ref<TeamComp>, ctx: CanvasRenderingContext2D, mainCanvas: HTMLCanvasElement) => {
+const renderTeamComp = async (
+  teamCompData: Ref<TeamComp>,
+  ctx: CanvasRenderingContext2D,
+  mainCanvas: HTMLCanvasElement
+) => {
   const map = maps.find((a) => a.name == teamCompData.value.map);
   if (map) {
     ctx.drawImage(await loadImg(map.image), 0, -150, 600, 394); // 394px aspect ratio 16:9
@@ -28,11 +30,7 @@ const renderTeamComp = async (teamCompData: Ref<TeamComp>, ctx: CanvasRenderingC
   ctx.fillText("TEAM COMPOSITION", mainCanvas.width / 2, 50);
   ctx.font = "25px 'Din Next'";
   ctx.fillStyle = "white";
-  ctx.fillText(
-    `Playing on ${teamCompData.value.map.toUpperCase()}`,
-    mainCanvas.width / 2,
-    80
-  );
+  ctx.fillText(`Playing on ${teamCompData.value.map.toUpperCase()}`, mainCanvas.width / 2, 80);
 
   let offsetY = 100;
   let alt = false;

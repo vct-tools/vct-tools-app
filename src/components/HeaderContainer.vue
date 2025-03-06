@@ -1,10 +1,10 @@
 <template>
-  <DialogBox header="Account" v-model="accountDialog">
+  <UIDialogBox header="Account" v-model="accountDialog">
     <UIButtonLabel style="color: rgb(255, 70, 70)">YOU ARE NOT LOGGED IN</UIButtonLabel>
     <UIButtonIcon :icon="RiotGames" :disabled="true">Log in with Riot Games</UIButtonIcon>
-  </DialogBox>
+  </UIDialogBox>
 
-  <div class="version">Client version: {{ version }} {{ npmV }}</div>
+  <div class="version">Client version: vue{{ version }} vcttools{{ npmV }}</div>
 
   <SmallResWarning></SmallResWarning>
 
@@ -12,9 +12,7 @@
     <header-big>VCT Tools // {{ $props.pageName }}</header-big>
   </div>
   <div class="tabs-container">
-    <div :class="`tab`" @click="openLink(`/`)">
-      MAIN MENU
-    </div>
+    <div :class="`tab`" @click="openLink(`/`)">MAIN MENU</div>
     <div
       :class="`tab ${$props.pageName == 'Map picker' ? 'selected' : ''}`"
       @click="openLink(`/map_picker`)"
@@ -33,7 +31,10 @@
     >
       LEARN MAPS
     </div>
-    <div :class="`tab ${$props.pageName == 'Create graphics' ? 'selected' : ''}`" @click="openLink(`/graphic_creator`)">
+    <div
+      :class="`tab ${$props.pageName == 'Create graphics' ? 'selected' : ''}`"
+      @click="openLink(`/graphic_creator`)"
+    >
       CREATE GRAPHICS
     </div>
     <div :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`" @click="openLink(`/news`)">
@@ -53,10 +54,8 @@
 
 <script setup lang="ts">
 import HeaderBig from "@/components/HeaderBig.vue";
-import DialogBox from "@/components/DialogBox.vue";
 import { ref } from "vue";
-import UIButtonLabel from "./UIElement/UIButtonLabel.vue";
-import UIButtonIcon from "./UIElement/UIButtonIcon.vue";
+import { UIButtonLabel, UIButtonIcon, UIDialogBox } from "vct-tools-components";
 import RiotGames from "@/assets/images/riot_games.png";
 
 import { version } from "vue";
