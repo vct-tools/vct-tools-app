@@ -4,13 +4,6 @@
     <UIButtonIcon :icon="RiotGames" :disabled="true">Log in with Riot Games</UIButtonIcon>
   </UIDialogBox>
 
-  <UIDialogBox header="Status Update">
-    <div style="text-align: center;">
-      Server maintenance is being performed.
-      Services affected: Email, API.
-    </div>
-  </UIDialogBox>
-
   <div class="version">Client version: vue{{ version }} vcttools{{ npmV }}</div>
 
   <SmallResWarning></SmallResWarning>
