@@ -28,9 +28,14 @@ const abilityImages: Ref<
   >
 > = ref({});
 let spikeImage: HTMLImageElement | null = null;
-const teamLogos: { red: HTMLImageElement | null; blue: HTMLImageElement | null } = { red: null, blue: null };
+const teamLogos: { red: HTMLImageElement | null; blue: HTMLImageElement | null } = {
+  red: null,
+  blue: null
+};
 
-(async () => { spikeImage = await loadImg(spikeImageURL) })();
+(async () => {
+  spikeImage = await loadImg(spikeImageURL);
+})();
 
 let brandingImage: HTMLImageElement | null = null;
 let ceromonyBackgroundImage: HTMLImageElement | null = null;
@@ -196,7 +201,13 @@ export async function renderOverlay(
     ctx.beginPath();
     ctx.font = "20px 'Din Next'";
     const w = ctx.measureText(watermarkText).width;
-    ctx.roundRect(1920 - 25 + (xVal || 0) - (w + 10), 1080 - (25 + 115 * (gameData.bluePlayers.length + 1)) + (115 - 30), (w + 10), 30, [10, 10, 10, 10]);
+    ctx.roundRect(
+      1920 - 25 + (xVal || 0) - (w + 10),
+      1080 - (25 + 115 * (gameData.bluePlayers.length + 1)) + (115 - 30),
+      w + 10,
+      30,
+      [10, 10, 10, 10]
+    );
     ctx.fill();
     ctx.closePath();
 
@@ -242,12 +253,21 @@ export async function renderOverlay(
   }
 
   if (shownInformation.gameOverview.shown || shownInformation.gameOverview.running) {
-    const yVal = shownInformation.gameOverview.running ? (
-      shownInformation.gameOverview.directionShow ? easeInOutExpo(1080, 0, shownInformation.gameOverview.t / 100) :
-      easeInOutExpo(0, 1080, shownInformation.gameOverview.t / 100)
-    ) : null;
+    const yVal = shownInformation.gameOverview.running
+      ? shownInformation.gameOverview.directionShow
+        ? easeInOutExpo(1080, 0, shownInformation.gameOverview.t / 100)
+        : easeInOutExpo(0, 1080, shownInformation.gameOverview.t / 100)
+      : null;
 
-    preRound(ctx, gameData, settings, agentImages, abilityImages, (yVal || 0) + 1080 - 25, teamLogos);
+    preRound(
+      ctx,
+      gameData,
+      settings,
+      agentImages,
+      abilityImages,
+      (yVal || 0) + 1080 - 25,
+      teamLogos
+    );
   }
 
   if (!brandingImage) {
@@ -309,7 +329,10 @@ export async function renderOverlay(
       ceromonyBackgroundImage = null;
     }
   } else {
-    if (settings.roundOutcomeBanner.background && settings.redTeamLogo != ceromonyBackgroundImage.src) {
+    if (
+      settings.roundOutcomeBanner.background &&
+      settings.redTeamLogo != ceromonyBackgroundImage.src
+    ) {
       loadImg(settings.roundOutcomeBanner.background).then((img) => {
         ceromonyBackgroundImage = img;
       });
@@ -327,7 +350,10 @@ export async function renderOverlay(
     shownInformation.spike.t = 100; // Start from 100 when unplanting
 
     shownInformation.spike.lastPlanted = false;
-  } else if (shownInformation.spike.planted == true && shownInformation.spike.lastPlanted == false) {
+  } else if (
+    shownInformation.spike.planted == true &&
+    shownInformation.spike.lastPlanted == false
+  ) {
     shownInformation.spike.running = true;
     shownInformation.spike.directionShow = true;
     shownInformation.spike.t = 0; // Start from 0 when planting
@@ -431,7 +457,11 @@ export async function renderOverlay(
   }
 }
 
-function roundWinLoop(settings: OverlaySettings, ctx: CanvasRenderingContext2D, gameData: GameData): void {
+function roundWinLoop(
+  settings: OverlaySettings,
+  ctx: CanvasRenderingContext2D,
+  gameData: GameData
+): void {
   if (shownInformation.roundWin.i.running) {
     if (settings.otherOverlayFeatures.roundOutcomeBanner) {
       roundWin(

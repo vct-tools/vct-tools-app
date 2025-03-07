@@ -13,15 +13,17 @@ export async function playerLeft(
   alive: boolean,
   settings: OverlaySettings,
   agentImages: Ref<Record<string, HTMLImageElement>>,
-  abilityImages: Ref<Record<
-    string,
-    {
-      Ability1: HTMLImageElement;
-      Ability2: HTMLImageElement;
-      Signature: HTMLImageElement;
-      Ultimate: HTMLImageElement;
-    }
-  >>,
+  abilityImages: Ref<
+    Record<
+      string,
+      {
+        Ability1: HTMLImageElement;
+        Ability2: HTMLImageElement;
+        Signature: HTMLImageElement;
+        Ultimate: HTMLImageElement;
+      }
+    >
+  >,
   side: "attack" | "defense"
 ): Promise<void> {
   const playerHealth = player.health;
@@ -153,15 +155,33 @@ export async function playerLeft(
     // Draw abilities
     if (settings.playerOverlayFeatures.playerAbilities) {
       if (player.abilities.Ability1.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilityImages.value[agent].Ability1, x + 100, y - 30 - 10 - 70 + 35 / 2, 35, 35);
+      ctx.drawImage(
+        abilityImages.value[agent].Ability1,
+        x + 100,
+        y - 30 - 10 - 70 + 35 / 2,
+        35,
+        35
+      );
       ctx.filter = "none";
 
       if (player.abilities.Ability2.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilityImages.value[agent].Ability2, x + 160, y - 30 - 10 - 70 + 35 / 2, 35, 35);
+      ctx.drawImage(
+        abilityImages.value[agent].Ability2,
+        x + 160,
+        y - 30 - 10 - 70 + 35 / 2,
+        35,
+        35
+      );
       ctx.filter = "none";
 
       if (player.abilities.Signature.remainingUses == 0) ctx.filter = "opacity(0.3)";
-      ctx.drawImage(abilityImages.value[agent].Signature, x + 220, y - 30 - 10 - 70 + 35 / 2, 35, 35);
+      ctx.drawImage(
+        abilityImages.value[agent].Signature,
+        x + 220,
+        y - 30 - 10 - 70 + 35 / 2,
+        35,
+        35
+      );
       ctx.filter = "none";
     }
 

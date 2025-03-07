@@ -78,7 +78,7 @@ export function score(
     drawCenteredText(
       ctx,
       `${gameData.redScore}`,
-      1920 / 2 - timerWidth / 2 - timerWidth / 6 - (scoreWidth) / 2,
+      1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth / 2,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
@@ -90,7 +90,14 @@ export function score(
     drawCenteredText(
       ctx,
       settings.redTeamShortName.toUpperCase(),
-      settings.showTeamLogos ? 1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) / 3 - 3 : 1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) / 2 - 3,
+      settings.showTeamLogos
+        ? 1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) / 3 - 3
+        : 1920 / 2 -
+            timerWidth / 2 -
+            timerWidth / 6 -
+            scoreWidth -
+            (teamWidth - scoreWidth) / 2 -
+            3,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
@@ -104,7 +111,14 @@ export function score(
 
       ctx.drawImage(
         teamLogos.red,
-        1920 / 2 - timerWidth / 2 - timerWidth / 6 - scoreWidth - (teamWidth - scoreWidth) + (teamWidth - scoreWidth) / 4 - 3 - logoSize / 2,
+        1920 / 2 -
+          timerWidth / 2 -
+          timerWidth / 6 -
+          scoreWidth -
+          (teamWidth - scoreWidth) +
+          (teamWidth - scoreWidth) / 4 -
+          3 -
+          logoSize / 2,
         timerHeight / 2 + 10 - logoSize / 2,
         logoSize,
         logoSize
@@ -150,7 +164,7 @@ export function score(
     drawCenteredText(
       ctx,
       `${gameData.blueScore}`,
-      1920 / 2 + timerWidth / 2 + timerWidth / 6 + (scoreWidth) / 2,
+      1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth / 2,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
@@ -162,7 +176,14 @@ export function score(
     drawCenteredText(
       ctx,
       settings.blueTeamShortName.toUpperCase(),
-      settings.showTeamLogos ? 1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) / 3 + 3 : 1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) / 2 + 3,
+      settings.showTeamLogos
+        ? 1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) / 3 + 3
+        : 1920 / 2 +
+            timerWidth / 2 +
+            timerWidth / 6 +
+            scoreWidth +
+            (teamWidth - scoreWidth) / 2 +
+            3,
       timerHeight / 2 + 10,
       "50px Tungsten",
       "white",
@@ -176,7 +197,14 @@ export function score(
 
       ctx.drawImage(
         teamLogos.blue,
-        1920 / 2 + timerWidth / 2 + timerWidth / 6 + scoreWidth + (teamWidth - scoreWidth) - (teamWidth - scoreWidth) / 4 + 3 - logoSize / 2,
+        1920 / 2 +
+          timerWidth / 2 +
+          timerWidth / 6 +
+          scoreWidth +
+          (teamWidth - scoreWidth) -
+          (teamWidth - scoreWidth) / 4 +
+          3 -
+          logoSize / 2,
         timerHeight / 2 + 10 - logoSize / 2,
         logoSize,
         logoSize

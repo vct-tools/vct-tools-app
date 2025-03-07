@@ -1,6 +1,10 @@
 import { type OverlaySettings } from "./overlayType";
 
-export function sponsors(ctx: CanvasRenderingContext2D, settings: OverlaySettings, sponsorImages: HTMLImageElement[]): void {
+export function sponsors(
+  ctx: CanvasRenderingContext2D,
+  settings: OverlaySettings,
+  sponsorImages: HTMLImageElement[]
+): void {
   ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
   const w = 350;
   const h = 150;

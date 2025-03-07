@@ -61,7 +61,7 @@
     <div class="panel selectable" @click="openUrl(`https://status.vcttools.net`)">
       <div class="title">STATUS</div>
       <div class="content">
-        Do you have any problems with VCT Tools?<br>
+        Do you have any problems with VCT Tools?<br />
         Click here to check the server status.
       </div>
     </div>

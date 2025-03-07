@@ -123,7 +123,12 @@ export async function renderTeamRight(
       // Get side
       const sideColor = gameData.blueSide == "attack" ? atkC : defC;
       ctx.fillStyle = `rgba(${sideColor}, 1)`;
-      ctx.fillRect(1920 - 25 - playerHeight / 2, y - playerHeight * 5 + offset, playerHeight / 2, playerHeight);
+      ctx.fillRect(
+        1920 - 25 - playerHeight / 2,
+        y - playerHeight * 5 + offset,
+        playerHeight / 2,
+        playerHeight
+      );
       ctx.save();
       ctx.scale(-1, 1);
       ctx.drawImage(

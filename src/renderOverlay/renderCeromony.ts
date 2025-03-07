@@ -40,24 +40,14 @@ export function roundWin(
   if (animationProgress >= 0.2) {
     if (settings.roundOutcomeBanner.useBackground) {
       if (background) {
-        ctx.drawImage(
-          background,
-          1920 / 2 - width / 2,
-          locationY - height / 2,
-          width, height
-        );
+        ctx.drawImage(background, 1920 / 2 - width / 2, locationY - height / 2, width, height);
       }
     } else {
       ctx.fillRect(1920 / 2 - width / 2, locationY - height / 2, width, height);
     }
 
     ctx.fillStyle = `rgba(${winningTeamSide.toLowerCase() == "attack" ? atkC : defC}, ${easeInOutExpo(0, 0.3, animationDelay(0.5, 0.9, animationProgress))})`;
-    ctx.fillRect(
-      1920 / 2 - 4,
-      locationY - height / 2,
-      8,
-      height
-    );
+    ctx.fillRect(1920 / 2 - 4, locationY - height / 2, 8, height);
 
     ctx.fillStyle = `rgba(${winningTeamSide.toLowerCase() == "defense" ? defC : atkC}, ${easeInOutExpo(0, 1, animationDelay(0.5, 0.9, animationProgress))})`;
     ctx.fillRect(
@@ -108,16 +98,12 @@ export function roundWin(
       ctx,
       ceromony.toUpperCase(),
       winningTeamSide.toLowerCase() == "attack"
-          ? easeInOutExpo(
-              1920 / 2,
-              1920 / 2 - width / 4,
-              animationDelay(0.4, 0.9, animationProgress)
-            )
-          : easeInOutExpo(
-              1920 / 2,
-              1920 / 2 + width / 4,
-              animationDelay(0.4, 0.9, animationProgress)
-            ),
+        ? easeInOutExpo(1920 / 2, 1920 / 2 - width / 4, animationDelay(0.4, 0.9, animationProgress))
+        : easeInOutExpo(
+            1920 / 2,
+            1920 / 2 + width / 4,
+            animationDelay(0.4, 0.9, animationProgress)
+          ),
       locationY +
         (settings.series.showBrandingImg
           ? easeInOutExpo(60, 50, animationDelay(0.4, 0.9, animationProgress))
@@ -163,10 +149,14 @@ export function roundWin(
   if (animationProgress >= 0.4) {
     if (settings.showTeamLogos) {
       let winningTeamStart = "red";
-      if (winningTeamSide.toLowerCase() == "attack" && gameData.redSide == "attack") winningTeamStart = "red";
-      if (winningTeamSide.toLowerCase() == "defense" && gameData.redSide == "defense") winningTeamStart = "red";
-      if (winningTeamSide.toLowerCase() == "attack" && gameData.redSide == "defense") winningTeamStart = "blue";
-      if (winningTeamSide.toLowerCase() == "defense" && gameData.redSide == "attack") winningTeamStart = "blue";
+      if (winningTeamSide.toLowerCase() == "attack" && gameData.redSide == "attack")
+        winningTeamStart = "red";
+      if (winningTeamSide.toLowerCase() == "defense" && gameData.redSide == "defense")
+        winningTeamStart = "red";
+      if (winningTeamSide.toLowerCase() == "attack" && gameData.redSide == "defense")
+        winningTeamStart = "blue";
+      if (winningTeamSide.toLowerCase() == "defense" && gameData.redSide == "attack")
+        winningTeamStart = "blue";
 
       const x = winningTeamStart === "red" ? teamLogos.red : teamLogos.blue;
 

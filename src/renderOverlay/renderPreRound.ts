@@ -278,7 +278,7 @@ export async function preRound(
             y - playerHeight * 5 - 50 - 25 - 100 + roundWidth / 2 + 10,
             roundWidth - 20,
             roundWidth - 20
-          )
+          );
         }
 
         if (round == 2) {

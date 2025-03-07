@@ -12,7 +12,13 @@ export const demoGameData: GameData = {
   live: { spikePlanted: true },
   matchLog: [
     // First half
-    { roundNumber: 1, winner: "blue", cause: "elimination", blueSide: "defense", redSide: "attack" },
+    {
+      roundNumber: 1,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "defense",
+      redSide: "attack"
+    },
     { roundNumber: 2, winner: "red", cause: "elimination", blueSide: "defense", redSide: "attack" },
     { roundNumber: 3, winner: "red", cause: "elimination", blueSide: "defense", redSide: "attack" },
     { roundNumber: 4, winner: "red", cause: "detonation", blueSide: "defense", redSide: "attack" },
@@ -23,21 +29,87 @@ export const demoGameData: GameData = {
     { roundNumber: 9, winner: "blue", cause: "defuse", blueSide: "defense", redSide: "attack" },
     { roundNumber: 10, winner: "blue", cause: "defuse", blueSide: "defense", redSide: "attack" },
     { roundNumber: 11, winner: "blue", cause: "defuse", blueSide: "defense", redSide: "attack" },
-    { roundNumber: 12, winner: "red", cause: "elimination", blueSide: "defense", redSide: "attack" },
+    {
+      roundNumber: 12,
+      winner: "red",
+      cause: "elimination",
+      blueSide: "defense",
+      redSide: "attack"
+    },
 
     // Second half - teams swap sides
     { roundNumber: 13, winner: "red", cause: "defuse", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 14, winner: "red", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 15, winner: "blue", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 16, winner: "blue", cause: "detonation", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 17, winner: "blue", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 18, winner: "blue", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 19, winner: "blue", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 20, winner: "blue", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 21, winner: "red", cause: "elimination", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 22, winner: "blue", cause: "detonation", blueSide: "attack", redSide: "defense" },
+    {
+      roundNumber: 14,
+      winner: "red",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 15,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 16,
+      winner: "blue",
+      cause: "detonation",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 17,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 18,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 19,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 20,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 21,
+      winner: "red",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
+    {
+      roundNumber: 22,
+      winner: "blue",
+      cause: "detonation",
+      blueSide: "attack",
+      redSide: "defense"
+    },
     { roundNumber: 23, winner: "red", cause: "defuse", blueSide: "attack", redSide: "defense" },
-    { roundNumber: 24, winner: "blue", cause: "elimination", blueSide: "attack", redSide: "defense" },
+    {
+      roundNumber: 24,
+      winner: "blue",
+      cause: "elimination",
+      blueSide: "attack",
+      redSide: "defense"
+    },
 
     // Overtime
     { roundNumber: 25, winner: "blue", cause: "defuse", blueSide: "defense", redSide: "attack" }
@@ -247,4 +319,4 @@ export const demoGameData: GameData = {
       credits: 1400
     }
   ]
-}
+};

@@ -87,12 +87,12 @@
       <UIButton @click="newSponsor()">Add sponsor</UIButton>
       <UIButtonLabel>Accent color (any CSS color)</UIButtonLabel>
       <div class="flex-h">
-        <UIField v-model="model.accentColor" style="margin-bottom: -1px;"></UIField>
+        <UIField v-model="model.accentColor" style="margin-bottom: -1px"></UIField>
         <div :style="`width: 50%; background-color: ${model.accentColor}`"></div>
       </div>
     </div>
     <div class="flex-v p">
-      <div style="position: sticky; top: 0px;">
+      <div style="position: sticky; top: 0px">
         <UIButtonLabel>Preview</UIButtonLabel>
         <canvas
           width="1920"
@@ -105,7 +105,7 @@
       </div>
     </div>
     <div class="flex-v flex-qh p">
-      <div style="position: sticky; top: 0px;">
+      <div style="position: sticky; top: 0px">
         <UIButtonLabel>Preview options</UIButtonLabel>
         <UISelect
           v-model="previewGameData.phase as string"
@@ -128,9 +128,21 @@
         <UIButton @click="preview_TriggerCeromony()">Trigger ceromony</UIButton>
         <UIButtonLabel>Display</UIButtonLabel>
         <UIButton @click="fullscreenPreview()">Fullscreen preview</UIButton>
-        <div style="width: 100%; text-align: center; margin-top: 5px; color: #f34453; border: 1px solid #6b7476; padding: 5px;">
-          <BIconExclamationTriangle></BIconExclamationTriangle><br>
-          <span style="font-size: 9pt;">Offset edges may be visible in the preview due to downscaled resolution. For best results, use a 1080p monitor.</span>
+        <div
+          style="
+            width: 100%;
+            text-align: center;
+            margin-top: 5px;
+            color: #f34453;
+            border: 1px solid #6b7476;
+            padding: 5px;
+          "
+        >
+          <BIconExclamationTriangle></BIconExclamationTriangle><br />
+          <span style="font-size: 9pt"
+            >Offset edges may be visible in the preview due to downscaled resolution. For best
+            results, use a 1080p monitor.</span
+          >
         </div>
       </div>
     </div>
