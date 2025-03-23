@@ -1,20 +1,20 @@
 <template>
   <div class="top-nav">
     <div class="top-nav-buttons" style="justify-content: start;">
-      <div class="btn" @click="openLink(`/`)">
+      <div class="btn" @click="openLink(`/`)" v-if="!controlPage">
         <BIconXCircleFill></BIconXCircleFill>
       </div>
     </div>
     <div class="top-nav-header">
-      <img :src="LogoImage" class="top-nav-header-logo" draggable="false">
-      //
-      <span class="top-nav-header-pagename">{{ $props.pageName }}</span>
+      <img :src="LogoImage" class="top-nav-header-logo" draggable="false" :style="controlPage ? `margin-right: 0;` : ``" />
+      <span v-if="!controlPage">//</span>
+      <span class="top-nav-header-pagename" v-if="!controlPage">{{ $props.pageName }}</span>
     </div>
     <div class="top-nav-buttons" style="justify-content: end;">
-      <div class="btn" @click="openLink(`/account`)">
+      <div class="btn" @click="openLink(`/account`)" v-if="!controlPage">
         <BIconPersonFill></BIconPersonFill>
       </div>
-      <div class="btn" @click="openLink(`/news`)">
+      <div class="btn" @click="openLink(`/news`)" v-if="!controlPage">
         <BIconNewspaper></BIconNewspaper>
       </div>
     </div>
@@ -22,8 +22,8 @@
 
   <div class="version">Client version: vue{{ version }} vcttools{{ npmV }}</div>
 
-  <SmallResWarning></SmallResWarning>
-  <div class="tabs-container">
+  <SmallResWarning v-if="$props.includeSmallResCode"></SmallResWarning>
+  <div class="tabs-container" v-if="$props.showTabs">
     <div
       :class="`tab ${$props.pageName == 'Map picker' ? 'selected' : ''}`"
       @click="openLink(`/map_picker`)"
@@ -71,7 +71,19 @@ declare global {
 }
 
 defineProps({
-  pageName: String
+  pageName: String,
+  showTabs: {
+    type: Boolean,
+    default: true
+  },
+  controlPage: {
+    type: Boolean,
+    default: false
+  },
+  includeSmallResCode: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const openLink = (link: string) => {
