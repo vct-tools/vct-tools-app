@@ -1,18 +1,29 @@
 <template>
-  <UIDialogBox header="Account" v-model="accountDialog">
-    <UIButtonLabel style="color: rgb(255, 70, 70)">YOU ARE NOT LOGGED IN</UIButtonLabel>
-    <UIButtonIcon :icon="RiotGames" :disabled="true">Log in with Riot Games</UIButtonIcon>
-  </UIDialogBox>
+  <div class="top-nav">
+    <div class="top-nav-buttons" style="justify-content: start;">
+      <div class="btn" @click="openLink(`/`)">
+        <BIconXCircleFill></BIconXCircleFill>
+      </div>
+    </div>
+    <div class="top-nav-header">
+      <img :src="LogoImage" class="top-nav-header-logo" draggable="false">
+      //
+      <span class="top-nav-header-pagename">{{ $props.pageName }}</span>
+    </div>
+    <div class="top-nav-buttons" style="justify-content: end;">
+      <div class="btn" @click="openLink(`/account`)">
+        <BIconPersonFill></BIconPersonFill>
+      </div>
+      <div class="btn" @click="openLink(`/news`)">
+        <BIconNewspaper></BIconNewspaper>
+      </div>
+    </div>
+  </div>
 
   <div class="version">Client version: vue{{ version }} vcttools{{ npmV }}</div>
 
   <SmallResWarning></SmallResWarning>
-
-  <div class="header-container">
-    <header-big>VCT Tools // {{ $props.pageName }}</header-big>
-  </div>
   <div class="tabs-container">
-    <div :class="`tab`" @click="openLink(`/`)">MAIN MENU</div>
     <div
       :class="`tab ${$props.pageName == 'Map picker' ? 'selected' : ''}`"
       @click="openLink(`/map_picker`)"
@@ -37,15 +48,9 @@
     >
       CREATE GRAPHICS
     </div>
-    <div :class="`tab ${$props.pageName == 'News' ? 'selected' : ''}`" @click="openLink(`/news`)">
-      NEWS
+    <div :class="`tab ${$props.pageName == 'Brackets' ? 'selected' : ''}`" @click="openLink(`/brackets`)">
+      BRACKETS
     </div>
-    <!-- <div
-      :class="`tab`"
-      @click="accountDialog = true"
-    >
-      MY ACCOUNT
-    </div> -->
   </div>
   <div class="body">
     <slot></slot>
@@ -53,14 +58,11 @@
 </template>
 
 <script setup lang="ts">
-import HeaderBig from "@/components/HeaderBig.vue";
-import { ref } from "vue";
-import { UIButtonLabel, UIButtonIcon, UIDialogBox } from "vct-tools-components";
-import RiotGames from "@/assets/images/riot_games.png";
-
 import { version } from "vue";
 import { version as npmV } from "../../package.json";
 import SmallResWarning from "./SmallResWarning.vue";
+import LogoImage from "@/assets/images/logo-large.png";
+import { BIconNewspaper, BIconPersonFill, BIconXCircleFill } from "bootstrap-icons-vue";
 
 declare global {
   interface Window {
@@ -72,20 +74,12 @@ defineProps({
   pageName: String
 });
 
-const accountDialog = ref(false);
-
 const openLink = (link: string) => {
   window.location.href = link;
 };
 </script>
 
 <style scoped>
-.header-container {
-  display: flex;
-  justify-content: center;
-
-  padding-top: 1em;
-}
 
 .tabs-container {
   color: #6b7476;
@@ -155,5 +149,54 @@ const openLink = (link: string) => {
 
   font-size: 9pt;
   color: rgba(201, 201, 201, 0.534);
+}
+
+.top-nav {
+  width: 100%;
+  padding: 1em;
+  border-bottom: 1px solid #6b747642;
+  background-color: #54758142;
+  display: flex;
+
+  margin-bottom: 2em;
+}
+
+.top-nav-header {
+  font-size: 26pt;
+  color: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  font-family: "Tungsten", sans-serif;
+}
+
+.top-nav-header-logo {
+  display: inline;
+  height: 1em;
+  vertical-align: bottom;
+  margin-right: 15px;
+}
+
+.top-nav-header-pagename {
+  color: #e0ebb9;
+  margin-left: 15px;
+}
+
+.top-nav-buttons {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  gap: 20px;
+  flex: 1;
+}
+
+.top-nav .btn {
+  cursor: pointer;
+  font-size: 20pt;
+  width: 1em;
+  height: 1em;
+}
+
+.top-nav .btn:hover {
+  color: #04ca8f;
 }
 </style>

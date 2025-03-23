@@ -13,6 +13,7 @@
     <div class="btn" @click="openUrl(`/overlay_control`)">Overlay</div>
     <div class="btn" @click="openUrl(`/learn_maps`)">Learn Maps</div>
     <div class="btn" @click="openUrl(`/graphic_creator`)">Create Graphics</div>
+    <div class="btn" @click="openUrl(`/brackets`)">Brackets</div>
   </div>
 
   <div class="rightbar">
@@ -64,6 +65,12 @@
         Do you have any problems with VCT Tools?<br />
         Click here to check the server status.
       </div>
+    </div>
+    <div class="panel selectable" @click="openUrl(`/account`)">
+      <div class="title">MY ACCOUNT</div>
+      <!-- <div class="content">
+
+      </div> -->
     </div>
     <div class="panel">
       <div class="title">LEGAL</div>
