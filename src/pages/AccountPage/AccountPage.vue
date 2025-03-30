@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header-container pageName="My Account">
-      <div class="account-body">
+      <div class="account-body" v-if="loaded">
         <div class="section">
           <div class="title">WARNING</div>
           <div class="content">
@@ -70,6 +70,9 @@
           </div>
         </div>
       </div>
+      <div class="account-body" v-else>
+        <UIThrobber></UIThrobber>
+      </div>
     </header-container>
   </div>
 </template>
@@ -133,7 +136,7 @@
 
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
-import { UIButton } from "vct-tools-components";
+import { UIButton, UIThrobber } from "vct-tools-components";
 import { ref } from "vue";
 
 const accountStatus = ref({
@@ -142,6 +145,8 @@ const accountStatus = ref({
   tagline: null,
   email: null
 });
+
+const loaded = ref(false);
 
 const openLogin = () => {
   window.location.href = import.meta.env.DEV ? "http://localhost/v1/rso_flow/login_redirect" : "https://api.vcttools.net/v1/rso_flow/login_redirect";
@@ -172,5 +177,7 @@ const openLogout = () => {
       email: null
     };
   }
+
+  loaded.value = true;
 })();
 </script>
