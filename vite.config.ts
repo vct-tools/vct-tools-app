@@ -37,7 +37,8 @@ export default defineConfig({
         privacy: resolve(__dirname, "privacy.html"),
         terms_of_service: resolve(__dirname, "terms_of_service.html"),
         account: resolve(__dirname, "account.html"),
-        brackets: resolve(__dirname, "brackets.html")
+        brackets: resolve(__dirname, "brackets.html"),
+        small_res_warning: resolve(__dirname, "small_res_warning.html")
       }
     }
   }

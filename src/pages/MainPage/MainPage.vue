@@ -13,7 +13,7 @@
     <div class="btn" @click="openUrl(`/overlay_control`)">Overlay</div>
     <div class="btn" @click="openUrl(`/learn_maps`)">Learn Maps</div>
     <div class="btn" @click="openUrl(`/graphic_creator`)">Create Graphics</div>
-    <div class="btn" @click="openUrl(`/brackets`)">Brackets</div>
+    <!-- <div class="btn" @click="openUrl(`/brackets`)">Brackets</div> -->
   </div>
 
   <div class="rightbar">
@@ -68,9 +68,13 @@
     </div>
     <div class="panel selectable" @click="openUrl(`/account`)">
       <div class="title">MY ACCOUNT</div>
-      <!-- <div class="content">
-
-      </div> -->
+      <div class="content" v-if="accountInformation.loaded">
+        <span v-if="accountInformation.loggedIn">You're logged in as {{ accountInformation.gameName }}#{{ accountInformation.tagLine }}</span>
+        <span v-else>You're not logged in</span>
+      </div>
+      <div class="content" v-else>
+        <UIThrobber></UIThrobber>
+      </div>
     </div>
     <div class="panel">
       <div class="title">LEGAL</div>
@@ -218,10 +222,36 @@ import { BIconExclamationTriangle } from "bootstrap-icons-vue";
 import SmallResWarning from "@/components/SmallResWarning.vue";
 
 const latestNews = ref([false, "", ""]);
+const accountInformation = ref({
+  loaded: false,
+  loggedIn: false,
+  gameName: null,
+  tagLine: null
+});
 
 (async () => {
   const a = (await (await fetch(import.meta.env.DEV ? `http://localhost/v1/news/latest` : `https://api.vcttools.net/v1/news/latest`)).json()).data[0];
   latestNews.value = [true, a.title, a.preview];
+})();
+
+(async () => {
+  const b = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info", { credentials: "include" });
+  if (b.ok) {
+    const data = (await b.json()).data;
+    accountInformation.value = {
+      loaded: true,
+      loggedIn: true,
+      gameName: data.riotGameName,
+      tagLine: data.riotTagLine
+    };
+  } else {
+    accountInformation.value = {
+      loaded: true,
+      loggedIn: false,
+      gameName: null,
+      tagLine: null
+    };
+  }
 })();
 
 const openUrl = (url: string) => {

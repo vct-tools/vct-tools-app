@@ -5,7 +5,7 @@
         <div class="section">
           <div class="title">WARNING</div>
           <div class="content">
-            <div class="panel">This page is not fully complete, and some buttons don't work at the moment. Notice that if you log in, you will not be able to Log out, Add or change email address, Remove email address, Request a copy of your data, or Delete your account.</div>
+            <div class="panel" style="background-color: #04ca8f42;">This page is not fully complete, and some buttons don't work at the moment. Notice that if you log in, you will not be able to Log out, Add or change email address, Remove email address, Request a copy of your data, or Delete your account.</div>
           </div>
         </div>
 
@@ -157,9 +157,7 @@ const openLogout = () => {
 }
 
 (async () => {
-  const response = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info", {
-    credentials: "include"
-  });
+  const response = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info", { credentials: "include" });
 
   if (response.ok) {
     const data = (await response.json()).data;

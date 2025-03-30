@@ -11,6 +11,7 @@
       <span class="top-nav-header-pagename" v-if="!controlPage">{{ $props.pageName }}</span>
     </div>
     <div class="top-nav-buttons" style="justify-content: end;">
+      <div :class="`btn-label ${accountInformation.loggedIn ? `show` : ``}`" v-if="!controlPage">{{ accountInformation.gameName }}#{{ accountInformation.tagLine }}</div>
       <div class="btn" @click="openLink(`/account`)" v-if="!controlPage">
         <BIconPersonFill></BIconPersonFill>
       </div>
@@ -48,9 +49,9 @@
     >
       CREATE GRAPHICS
     </div>
-    <div :class="`tab ${$props.pageName == 'Brackets' ? 'selected' : ''}`" @click="openLink(`/brackets`)">
+    <!-- <div :class="`tab ${$props.pageName == 'Brackets' ? 'selected' : ''}`" @click="openLink(`/brackets`)">
       BRACKETS
-    </div>
+    </div> -->
   </div>
   <div class="body">
     <slot></slot>
@@ -63,6 +64,7 @@ import { version as npmV } from "../../package.json";
 import SmallResWarning from "./SmallResWarning.vue";
 import LogoImage from "@/assets/images/logo-large.png";
 import { BIconNewspaper, BIconPersonFill, BIconXCircleFill } from "bootstrap-icons-vue";
+import { ref } from "vue";
 
 declare global {
   interface Window {
@@ -89,9 +91,48 @@ defineProps({
 const openLink = (link: string) => {
   window.location.href = link;
 };
+
+const accountInformation = ref({
+  loaded: false,
+  loggedIn: false,
+  gameName: null,
+  tagLine: null
+});
+
+(async () => {
+  const b = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info", { credentials: "include" });
+  if (b.ok) {
+    const data = (await b.json()).data;
+    accountInformation.value = {
+      loaded: true,
+      loggedIn: true,
+      gameName: data.riotGameName,
+      tagLine: data.riotTagLine
+    };
+  } else {
+    accountInformation.value = {
+      loaded: true,
+      loggedIn: false,
+      gameName: null,
+      tagLine: null
+    };
+  }
+})();
 </script>
 
 <style scoped>
+.btn-label {
+  opacity: 0;
+  color: #ffffff00;
+  transform: translateY(10px);
+  transition: ease-out 0.3s;
+}
+
+.btn-label.show {
+  color: #ffffff;
+  transform: translateY(0px);
+  opacity: 1;
+}
 
 .tabs-container {
   color: #6b7476;
