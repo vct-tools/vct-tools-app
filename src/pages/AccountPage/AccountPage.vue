@@ -157,7 +157,7 @@ const openLogout = () => {
   });
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()).data;
     accountStatus.value = {
       loggedIn: true,
       gameName: data.riotGameName,
