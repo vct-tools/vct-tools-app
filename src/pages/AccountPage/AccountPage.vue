@@ -152,7 +152,9 @@ const openLogout = () => {
 }
 
 (async () => {
-  const response = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info");
+  const response = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info", {
+    credentials: "include"
+  });
 
   if (response.ok) {
     const data = await response.json();
