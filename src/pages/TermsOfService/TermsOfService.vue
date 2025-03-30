@@ -111,6 +111,10 @@
             Tools a non-exclusive, worldwide, royalty-free license to use, modify, and display such
             content for the operation of the Services.
           </li>
+          <li>
+            Users are not permitted to erase or hide any branding or watermarks placed on content
+            produced by Apps unless they are permitted to do so via our subscriptions.
+          </li>
         </ul>
 
         <HeaderSmall>6. Termination</HeaderSmall>

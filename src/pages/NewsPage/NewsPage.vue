@@ -210,7 +210,7 @@ const data = ref([
 
 (async () => {
   try {
-    const response = await fetch(`https://api.vcttools.net/v1/news/latest`);
+    const response = await fetch(import.meta.env.DEV ? `http://localhost/v1/news/latest` : `https://api.vcttools.net/v1/news/latest`);
 
     if (!response.ok) {
       throw new Error(

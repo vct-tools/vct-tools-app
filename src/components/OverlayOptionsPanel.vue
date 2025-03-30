@@ -18,6 +18,7 @@
       <UISwitch v-model="model.gameOverviewVisible.agentImages">Agent images</UISwitch>
       <UISwitch v-model="model.gameOverviewVisible.matchLog">Match log</UISwitch>
       <UIButtonLabel>Series - Branding</UIButtonLabel>
+      <UISwitch v-model="showBranding">Show VCT Tools branding <UIProLabel></UIProLabel></UISwitch>
       <UISwitch v-model="model.series.showBrandingImg">Show branding</UISwitch>
       <UIButton @click="loadBranding()">Select branding image</UIButton>
       <UIButtonLabel>Series - Maps</UIButtonLabel>
@@ -104,7 +105,7 @@
         <AdsenseMultiplexAd></AdsenseMultiplexAd>
       </div>
     </div>
-    <div class="flex-v flex-qh p">
+    <div class="flex-v flex-hh p">
       <div style="position: sticky; top: 0px">
         <UIButtonLabel>Preview options</UIButtonLabel>
         <UISelect
@@ -218,8 +219,10 @@ import { ceromonyFilter } from "@/renderOverlay/overlayPreParse";
 import { demoGameData } from "@/renderOverlay/demoGameData";
 import { BIconExclamationTriangle } from "bootstrap-icons-vue";
 import AdsenseMultiplexAd from "./Adsense/AdsenseMultiplexAd.vue";
+import UIProLabel from "./UIProLabel.vue";
 
 const canvasElement: Ref<HTMLCanvasElement | null> = ref(null);
+const showBranding = ref(true);
 const previewOptions = ref({
   triggerCeromonyType: "Round Win",
   triggerCeromonyWinTeam: "Attack"

@@ -13,6 +13,7 @@
     <div class="btn" @click="openUrl(`/overlay_control`)">Overlay</div>
     <div class="btn" @click="openUrl(`/learn_maps`)">Learn Maps</div>
     <div class="btn" @click="openUrl(`/graphic_creator`)">Create Graphics</div>
+    <div class="btn" @click="openUrl(`/brackets`)">Brackets</div>
   </div>
 
   <div class="rightbar">
@@ -64,6 +65,12 @@
         Do you have any problems with VCT Tools?<br />
         Click here to check the server status.
       </div>
+    </div>
+    <div class="panel selectable" @click="openUrl(`/account`)">
+      <div class="title">MY ACCOUNT</div>
+      <!-- <div class="content">
+
+      </div> -->
     </div>
     <div class="panel">
       <div class="title">LEGAL</div>
@@ -213,7 +220,7 @@ import SmallResWarning from "@/components/SmallResWarning.vue";
 const latestNews = ref([false, "", ""]);
 
 (async () => {
-  const a = (await (await fetch("https://api.vcttools.net/v1/news/latest")).json()).data[0];
+  const a = (await (await fetch(import.meta.env.DEV ? `http://localhost/v1/news/latest` : `https://api.vcttools.net/v1/news/latest`)).json()).data[0];
   latestNews.value = [true, a.title, a.preview];
 })();
 

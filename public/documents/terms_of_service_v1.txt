@@ -50,6 +50,7 @@ You agree not to:
 - The Services were created under Riot Games' "Legal Jibber Jabber" policy (https://www.riotgames.com/en/legal) using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.
 - All original content created by VCT Tools, including but not limited to software code, user interface design, and analytics tools, remains the exclusive property of VCT Tools.
 - If users submit any content through the Services, they retain ownership but grant VCT Tools a non-exclusive, worldwide, royalty-free license to use, modify, and display such content for the operation of the Services.
+- Users are not permitted to erase or hide any branding or watermarks placed on content produced by Apps unless they are permitted to do so via our subscriptions.
 
 6. Termination
 - We reserve the right to suspend or terminate your access to the Services if you violate these Terms.

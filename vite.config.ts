@@ -35,7 +35,9 @@ export default defineConfig({
         stat_com: resolve(__dirname, "stat_com.html"),
         graphic_creator: resolve(__dirname, "graphic_creator.html"),
         privacy: resolve(__dirname, "privacy.html"),
-        terms_of_service: resolve(__dirname, "terms_of_service.html")
+        terms_of_service: resolve(__dirname, "terms_of_service.html"),
+        account: resolve(__dirname, "account.html"),
+        brackets: resolve(__dirname, "brackets.html")
       }
     }
   }
