@@ -3,6 +3,13 @@
     <header-container pageName="My Account">
       <div class="account-body">
         <div class="section">
+          <div class="title">WARNING</div>
+          <div class="content">
+            <div class="panel">This page is not fully complete, and some buttons don't work at the moment. Notice that if you log in, you will not be able to Log out, Add or change email address, Remove email address, Request a copy of your data, or Delete your account.</div>
+          </div>
+        </div>
+
+        <div class="section">
           <div class="title">LOG IN // SIGN UP</div>
           <div class="content">
             <div class="panel">
@@ -14,15 +21,19 @@
                 }}
               </div>
 
-              <div style="display: flex; gap: 2px;">
-                <UIButton :disabled="accountStatus.loggedIn">Log in with Riot Games</UIButton>
-                <UIButton :disabled="!accountStatus.loggedIn">Log out</UIButton>
+              <div style="display: flex; gap: 2px; margin-bottom: 1em;">
+                <UIButton :disabled="accountStatus.loggedIn" @click="openLogin()">Log in with Riot Games</UIButton>
+                <UIButton :disabled="!accountStatus.loggedIn" @click="openLogout()">Log out</UIButton>
+              </div>
+
+              <div>
+                By logging in, you agree to the <a href="/terms_of_service">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
               </div>
             </div>
           </div>
         </div>
 
-        <div class="section">
+        <div class="section" v-if="false">
           <div class="title">BILLING</div>
           <div class="content">
             <div class="panel">
@@ -38,7 +49,7 @@
               <span style="display: inline-block; margin-bottom: 1em;">You may add your email address to your account information to receive alerts.</span>
               <span style="display: inline-block; margin-bottom: 1em;">Email address on file: {{ accountStatus.email || "N/A"}}</span>
               <div style="display: flex; gap: 2px;">
-                <UIButton>Add or change email address</UIButton>
+                <UIButton :disabled="true">Add or change email address</UIButton>
                 <UIButton :disabled="accountStatus.email == null">Remove email address</UIButton>
               </div>
             </div>
@@ -50,11 +61,11 @@
           <div class="content">
             <div class="panel">
               <span style="display: inline-block; margin-bottom: 1em;">In accordance with the <a href="/privacy">Privacy Policy</a>, you are able to get a copy of all your data stored by VCT Tools.</span>
-              <UIButton>Request a copy of your data</UIButton>
+              <UIButton :disabled="true">Request a copy of your data</UIButton>
             </div>
             <div class="panel">
               <span style="display: inline-block; margin-bottom: 1em;">Deleting your account is permanent and effective immediately.</span>
-              <UIButton>Delete my account</UIButton>
+              <UIButton :disabled="true">Delete my account</UIButton>
             </div>
           </div>
         </div>
@@ -122,9 +133,7 @@
 
 <script setup lang="ts">
 import HeaderContainer from "@/components/HeaderContainer.vue";
-import { BIconPlus } from "bootstrap-icons-vue";
 import { UIButton } from "vct-tools-components";
-import UIField from "vct-tools-components/src/UIElement/UIField.vue";
 import { ref } from "vue";
 
 const accountStatus = ref({
@@ -133,4 +142,33 @@ const accountStatus = ref({
   tagline: null,
   email: null
 });
+
+const openLogin = () => {
+  window.location.href = import.meta.env.DEV ? "http://localhost/v1/rso_flow/login_redirect" : "https://api.vcttools.net/v1/rso_flow/login_redirect";
+}
+
+const openLogout = () => {
+
+}
+
+(async () => {
+  const response = await fetch(import.meta.env.DEV ? "http://localhost/v1/account/account_info" : "https://api.vcttools.net/v1/account/account_info");
+
+  if (response.ok) {
+    const data = await response.json();
+    accountStatus.value = {
+      loggedIn: true,
+      gameName: data.riotGameName,
+      tagline: data.riotTagLine,
+      email: data.email
+    };
+  } else {
+    accountStatus.value = {
+      loggedIn: false,
+      gameName: null,
+      tagline: null,
+      email: null
+    };
+  }
+})();
 </script>

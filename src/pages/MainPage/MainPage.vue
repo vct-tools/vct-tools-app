@@ -220,7 +220,7 @@ import SmallResWarning from "@/components/SmallResWarning.vue";
 const latestNews = ref([false, "", ""]);
 
 (async () => {
-  const a = (await (await fetch("https://api.vcttools.net/v1/news/latest")).json()).data[0];
+  const a = (await (await fetch(import.meta.env.DEV ? `http://localhost/v1/news/latest` : `https://api.vcttools.net/v1/news/latest`)).json()).data[0];
   latestNews.value = [true, a.title, a.preview];
 })();
 
