@@ -70,6 +70,6 @@ You agree not to:
 - If changes are significant, we will notify users via email or a website notice.
 
 10. Contact Information
-- For questions or concerns regarding these Terms, contact us at contact@vcttools.net.
+- For questions or concerns regarding these Terms, contact us at "contact[at]vcttools[dot]net".
 
 By using VCT Tools, you acknowledge that you have read, understood, and agreed to these Terms of Service.

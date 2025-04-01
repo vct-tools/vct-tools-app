@@ -162,7 +162,7 @@
         <ul>
           <li>
             For questions or concerns regarding these Terms, contact us at
-            <a href="mailto:contact@vcttools.net">contact@vcttools.net</a>.
+            "contact[at]vcttools[dot]net".
           </li>
         </ul>
 

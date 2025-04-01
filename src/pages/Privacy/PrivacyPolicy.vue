@@ -118,7 +118,7 @@
           made. A notice will also be available on the website.
         </p>
         <HeaderSmall>7. Contact Information</HeaderSmall>
-        <p>You can email "contact@vcttools.net" for questions or concerns regarding the Policy.</p>
+        <p>You can email "contact[at]vcttools[dot]net" for questions or concerns regarding the Policy.</p>
       </div>
     </header-container>
   </div>
