@@ -11,7 +11,10 @@
       <span class="top-nav-header-pagename" v-if="!controlPage">{{ $props.pageName }}</span>
     </div>
     <div class="top-nav-buttons" style="justify-content: end;">
-      <div :class="`btn-label ${accountInformation.loggedIn ? `show` : ``}`" v-if="!controlPage">{{ accountInformation.gameName }}#{{ accountInformation.tagLine }}</div>
+      <div :class="`btn-label ${accountInformation.loggedIn ? `show` : ``}`" v-if="!controlPage">{{ accountInformation.gameName }}#{{ accountInformation.tagLine }} <UIBadge v-if="accountInformation.emailPending">
+        <BIconExclamationTriangleFill style="vertical-align: bottom; margin-right: 5px;"></BIconExclamationTriangleFill>
+        Pending email verification
+      </UIBadge></div>
       <div class="btn" @click="openLink(`/account`)" v-if="!controlPage">
         <BIconPersonFill></BIconPersonFill>
       </div>
@@ -63,8 +66,9 @@ import { version } from "vue";
 import { version as npmV } from "../../package.json";
 import SmallResWarning from "./SmallResWarning.vue";
 import LogoImage from "@/assets/images/logo-large.png";
-import { BIconNewspaper, BIconPersonFill, BIconXCircleFill } from "bootstrap-icons-vue";
+import { BIconExclamationTriangleFill, BIconNewspaper, BIconPersonFill, BIconXCircleFill } from "bootstrap-icons-vue";
 import { ref } from "vue";
+import UIBadge from "./UIBadge.vue";
 
 declare global {
   interface Window {
@@ -96,7 +100,8 @@ const accountInformation = ref({
   loaded: false,
   loggedIn: false,
   gameName: null,
-  tagLine: null
+  tagLine: null,
+  emailPending: false
 });
 
 (async () => {
@@ -107,14 +112,16 @@ const accountInformation = ref({
       loaded: true,
       loggedIn: true,
       gameName: data.riotGameName,
-      tagLine: data.riotTagLine
+      tagLine: data.riotTagLine,
+      emailPending: data.pendingEmailVerification
     };
   } else {
     accountInformation.value = {
       loaded: true,
       loggedIn: false,
       gameName: null,
-      tagLine: null
+      tagLine: null,
+      emailPending: false
     };
   }
 })();

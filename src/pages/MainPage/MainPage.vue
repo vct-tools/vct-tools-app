@@ -79,8 +79,7 @@
     <div class="panel">
       <div class="title">LEGAL</div>
       <div class="content">
-        The background media on this page is owned by Riot Games.
-        <br /><br /><a href="/privacy">Privacy Policy</a> &bull;
+        <a href="/privacy">Privacy Policy</a> &bull;
         <a href="/terms_of_service">Terms of Service</a>
       </div>
     </div>
@@ -211,7 +210,7 @@
 </style>
 
 <script setup lang="ts">
-import HomeScreenVideo from "@/assets/homescreen_10_02.webm";
+import HomeScreenVideo from "@/assets/homescreen_ascent.webm";
 import { UIButtonIcon, UIThrobber } from "vct-tools-components";
 import LargeLogo from "@/assets/images/logo-large.png";
 
